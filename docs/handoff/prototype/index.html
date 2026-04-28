@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ontogony — A Field Guide to the Transductive Universe</title>
+<link rel="stylesheet" href="../ontogony.css" />
+<style>
+  /* --- tweak modes ----------------------------------------------------- */
+  /* posture: descend (default) / ascend / level */
+  body[data-posture="ascend"] .strata-stack { display: flex; flex-direction: column-reverse; }
+  body[data-posture="ascend"] .stratum-locator { flex-direction: column-reverse; }
+  body[data-posture="level"] .band { padding-top: 56px; padding-bottom: 64px; }
+  body[data-posture="level"] .band.tinted { background: var(--paper); }
+  body[data-posture="level"] .band-header .stratum { color: var(--ink-3); }
+  body[data-posture="level"] .stratum-locator li[aria-current="true"] { border-left-color: var(--ink-2); color: var(--ink); }
+
+  /* temperature: ivory / bone / graphite */
+  body[data-temp="bone"] {
+    --paper: oklch(98.0% 0.004 95);
+    --paper-2: oklch(96.0% 0.004 95);
+    --paper-3: oklch(94.0% 0.004 95);
+    --ink: oklch(20.0% 0.006 250);
+    --ink-2: oklch(38.0% 0.006 250);
+    --ink-3: oklch(56.0% 0.006 250);
+    --rule: oklch(82.0% 0.004 250);
+    --rule-strong: oklch(66.0% 0.006 250);
+    --gold: oklch(56.0% 0.18 245);
+    --gold-soft: oklch(72.0% 0.10 245);
+    --blue: oklch(56.0% 0.18 245);
+  }
+  body[data-temp="graphite"] {
+    --paper: oklch(22.0% 0.008 250);
+    --paper-2: oklch(25.0% 0.008 250);
+    --paper-3: oklch(28.0% 0.008 250);
+    --ink: oklch(94.0% 0.010 85);
+    --ink-2: oklch(76.0% 0.008 85);
+    --ink-3: oklch(58.0% 0.008 85);
+    --rule: oklch(38.0% 0.008 250);
+    --rule-strong: oklch(52.0% 0.010 250);
+    --gold: oklch(78.0% 0.12 80);
+    --gold-soft: oklch(60.0% 0.08 80);
+    --blue: oklch(72.0% 0.16 245);
+    --selection: oklch(50.0% 0.14 80 / 0.4);
+  }
+
+  /* density: generous / canonical / dense */
+  body[data-density="generous"] .frame { padding-top: 72px; padding-bottom: 160px; gap: 64px; }
+  body[data-density="generous"] .band { padding: 96px 0 112px; }
+  body[data-density="generous"] .display { font-size: 60px; line-height: 1.02; }
+  body[data-density="generous"] .standfirst { font-size: 24px; line-height: 1.5; }
+  body[data-density="generous"] .anchor-list li { padding: 26px 0; }
+  body[data-density="generous"] .anchor-list .a-title { font-size: 24px; }
+
+  body[data-density="dense"] .frame { padding-top: 28px; padding-bottom: 96px; gap: 36px; }
+  body[data-density="dense"] .band { padding: 40px 0 48px; }
+  body[data-density="dense"] .band-header { margin-bottom: 20px; }
+  body[data-density="dense"] .display { font-size: 42px; line-height: 1.08; }
+  body[data-density="dense"] .standfirst { font-size: 19px; line-height: 1.4; }
+  body[data-density="dense"] .anchor-list li { padding: 11px 0; }
+  body[data-density="dense"] .anchor-list .a-title { font-size: 18px; }
+  body[data-density="dense"] .anchor-list .a-gloss { font-size: 14px; }
+  body[data-density="dense"] .rail-left, body[data-density="dense"] .rail-right { font-size: 11px; }
+  body[data-density="dense"] .stratum-locator { gap: 14px; }
+</style>
+</head>
+<body>
+
+<header class="instrument-bar">
+  <div class="inner">
+    <a class="wordmark" href="index.html">ONTOGONY <em>a field guide</em></a>
+    <div class="readouts">
+      <span>HOME</span>
+      <span class="active" id="readout-stratum">R4</span>
+      <span>v0.3 · APR 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="frame">
+
+  <aside class="rail-left">
+    <div>
+      <ul class="nav">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="theory.html">Core theory</a></li>
+        <li><a href="concepts.html">Concepts</a></li>
+        <li><a href="essays.html">Essays</a></li>
+        <li><a href="paths.html">Reading paths</a></li>
+        <li><a href="diagrams.html">Diagrams</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="handoff.html">Handoff</a></li>
+      </ul>
+      <ul class="stratum-locator" id="locator">
+        <li data-r="R4"><span class="name">R4 · Institutional</span><span class="gloss">symbolic-political</span></li>
+        <li data-r="R3"><span class="name">R3 · Cognitive</span><span class="gloss">neural-integrative</span></li>
+        <li data-r="R2"><span class="name">R2 · Biological</span><span class="gloss">metabolic-closure</span></li>
+        <li data-r="R1"><span class="name">R1 · Field</span><span class="gloss">pre-individual</span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="reading" style="max-width: none;">
+
+    <section style="padding-bottom: 56px;">
+      <p class="micro" style="margin: 0 0 28px; color: var(--ink-3);">A FIELD GUIDE TO THE TRANSDUCTIVE UNIVERSE</p>
+      <h1 class="display">Ontogony.<br/>A field guide to&nbsp;the becoming of&nbsp;things.</h1>
+      <p class="standfirst" style="max-width: 64ch; margin-top: 36px;">
+        A theoretical instrument for thinking about how regimes <em>install</em>, <em>persist</em>, and <em>fold around</em> one another — from the metastable field through the metabolic, cognitive, and institutional strata. Persistence is priced; cessation is diagnostic; transduction is the operator that links them.
+      </p>
+      <div style="display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap;">
+        <a class="link" href="essays/worm.html">→ Read the five-minute orientation</a>
+        <a class="link" href="concepts.html">→ Open the concepts atlas</a>
+        <a class="link" href="paths/cost-of-persistence.html">→ Begin a reading path</a>
+      </div>
+    </section>
+
+    <div class="strata-stack">
+    <!-- R4 -->
+    <section class="band" data-stratum="R4">
+      <div class="band-header">
+        <div><span class="stratum">R4</span><span class="name">INSTITUTIONAL</span><span class="gloss">the symbolic-political stratum — norms revisable by procedure and sanction</span></div>
+        <div class="count">14 concepts</div>
+      </div>
+      <ul class="anchor-list">
+        <li><a class="a-title" href="concepts/normogenesis.html">Normogenesis</a><span class="a-gloss">The appearance of enveloping closures whose function is to manage the instability of prior closures.</span><span class="a-meta">CONCEPT · Ch.7</span></li>
+        <li><a class="a-title" href="concepts/witness-canon.html">Witness–Canon architecture</a><span class="a-gloss">The coupling by which fragile singularities are inscribed and compressed into durable objectivity.</span><span class="a-meta">CONCEPT · Ch.6</span></li>
+        <li><a class="a-title" href="concepts/closure-crisis-lemma.html">Closure-Crisis Lemma</a><span class="a-gloss">The structural arc by which successful closures generate the coordination crises that may force a fold.</span><span class="a-meta">CONCEPT · Ch.7</span></li>
+      </ul>
+    </section>
+
+    <!-- R3 -->
+    <section class="band tinted" data-stratum="R3">
+      <div class="band-header">
+        <div><span class="stratum">R3</span><span class="name">COGNITIVE</span><span class="gloss">the neural-integrative stratum — competence under latency pressure</span></div>
+        <div class="count">19 concepts</div>
+      </div>
+      <ul class="anchor-list">
+        <li><a class="a-title" href="concepts/thickened-observer.html">Thickened observer</a><span class="a-gloss">A system whose observational capacities are constitutively shaped by its own self-maintenance.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/non-constructibility.html">Non-constructibility</a><span class="a-gloss">The operational impossibility of recovering a new regime's control parameters from the prior regime's vocabulary.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/priced-operation.html">Priced operation</a><span class="a-gloss">An operation whose performance any embedded system must fund at non-zero free-energy cost.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+      </ul>
+    </section>
+
+    <!-- R2 -->
+    <section class="band" data-stratum="R2">
+      <div class="band-header">
+        <div><span class="stratum">R2</span><span class="name">BIOLOGICAL</span><span class="gloss">the metabolic-closure stratum — viability is the verdict</span></div>
+        <div class="count">28 concepts</div>
+      </div>
+      <ul class="anchor-list">
+        <li><a class="a-title" href="concepts/cessation-signature.html">Cessation signature</a><span class="a-gloss">The regime-specific sequence of collapses that maps what was being maintained.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/burn-rate.html">Burn rate</a><span class="a-gloss">The rate of free-energy dissipation required to maintain a closure's constraint-architecture.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/closure.html">Closure</a><span class="a-gloss">A dynamical regime whose own expenditure regenerates the boundary conditions of its further expenditure.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/purchased-absence.html">Purchased absence</a><span class="a-gloss">Equilibrium kept from arriving — death deferred at continuous metabolic cost.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+      </ul>
+    </section>
+
+    <!-- R1 -->
+    <section class="band tinted" data-stratum="R1">
+      <div class="band-header">
+        <div><span class="stratum">R1</span><span class="name">FIELD</span><span class="gloss">the pre-individual metastable field — incompatible potentials in deferral</span></div>
+        <div class="count">11 concepts</div>
+      </div>
+      <ul class="anchor-list">
+        <li><a class="a-title" href="concepts/preindividual.html">Pré-individuel</a><span class="a-gloss">A metastable field of incompatible potentials ontologically prior to any individual.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/transduction.html">Transduction</a><span class="a-gloss">The irreversible resolution of metastable tension through which new constraint-identities precipitate.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+        <li><a class="a-title" href="concepts/the-fold.html">The fold</a><span class="a-gloss">The threshold at which persistence shifts from energetic favourability to throughput-dependence.</span><span class="a-meta">CONCEPT · Ch.1</span></li>
+      </ul>
+    </section>
+    </div>
+
+    <section style="padding-top: 64px;">
+      <div class="band-header" style="margin-bottom: 24px;">
+        <div><span class="stratum">PATHS</span><span class="name">THREE READING ROUTES</span><span class="gloss">curated traversals across the strata</span></div>
+        <div class="count">14–25 min each</div>
+      </div>
+      <ul class="anchor-list">
+        <li><a class="a-title" href="paths/cost-of-persistence.html">The cost of persistence</a><span class="a-gloss">From the worm in the mud to burn rate, cessation signature, and the fold.</span><span class="a-meta">7 STOPS · ~16 MIN</span></li>
+        <li><a class="a-title" href="paths.html">Genesis, stabilisation, stratification</a><span class="a-gloss">The three engines of compositional immanence, in order.</span><span class="a-meta">9 STOPS · ~22 MIN</span></li>
+        <li><a class="a-title" href="paths.html">Against the demon</a><span class="a-gloss">Why no embedded observer can survey the world for free.</span><span class="a-meta">6 STOPS · ~14 MIN</span></li>
+      </ul>
+    </section>
+
+    <footer class="colophon">
+      <div>
+        <h4>The work</h4>
+        <ul>
+          <li><a href="theory.html">Core theory</a></li>
+          <li><a href="concepts.html">Concepts atlas</a></li>
+          <li><a href="essays.html">Essays</a></li>
+          <li><a href="paths.html">Reading paths</a></li>
+          <li><a href="diagrams.html">Diagrams</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Colophon</h4>
+        <p style="margin: 0; line-height: 1.55;">Set in Source Serif 4 and JetBrains Mono. Composed as a field guide. No tracking, no analytics, no advertising.</p>
+      </div>
+      <div>
+        <h4>Correspondence</h4>
+        <p style="margin: 0; line-height: 1.55;">For citations, reading group invitations, and translation queries — <a href="about.html">about</a>.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <aside class="rail-right">
+    <div class="margin-notes">
+      <div class="note">
+        <span class="label">ORIENTATION</span>
+        Scroll downward into the field. R4 is overhead; R1 is the metastable ground from which everything precipitates.
+      </div>
+      <div class="note">
+        <span class="label">READOUT</span>
+        The locator at left tracks your scroll position across the four strata. The current band is gilded.
+      </div>
+      <div class="note">
+        <span class="label">FIRST TIME?</span>
+        Five minutes is enough. Begin with <a class="link" href="essays/worm.html">The Worm in the Mud</a>, then return here.
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- Tweaks defaults -->
+<script>
+  window.__TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "posture": "descend",
+    "temperature": "ivory",
+    "density": "canonical"
+  }/*EDITMODE-END*/;
+  (function applyInitial() {
+    var d = window.__TWEAK_DEFAULTS;
+    document.body.setAttribute('data-posture', d.posture);
+    document.body.setAttribute('data-temp', d.temperature);
+    document.body.setAttribute('data-density', d.density);
+  })();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+  function OntogonyTweaks() {
+    const [t, setTweak] = useTweaks(window.__TWEAK_DEFAULTS);
+    React.useEffect(() => {
+      document.body.setAttribute('data-posture', t.posture);
+      document.body.setAttribute('data-temp', t.temperature);
+      document.body.setAttribute('data-density', t.density);
+    }, [t.posture, t.temperature, t.density]);
+    return (
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Stratification posture" />
+        <TweakRadio
+          label="Direction"
+          value={t.posture}
+          options={[
+            { value: 'descend', label: 'Descend' },
+            { value: 'ascend',  label: 'Ascend'  },
+            { value: 'level',   label: 'Level'   }
+          ]}
+          onChange={(v) => setTweak('posture', v)}
+        />
+        <TweakSection label="Reading temperature" />
+        <TweakRadio
+          label="Palette"
+          value={t.temperature}
+          options={[
+            { value: 'ivory',    label: 'Ivory'    },
+            { value: 'bone',     label: 'Bone'     },
+            { value: 'graphite', label: 'Graphite' }
+          ]}
+          onChange={(v) => setTweak('temperature', v)}
+        />
+        <TweakSection label="Field density" />
+        <TweakRadio
+          label="Composition"
+          value={t.density}
+          options={[
+            { value: 'generous',  label: 'Generous'  },
+            { value: 'canonical', label: 'Canonical' },
+            { value: 'dense',     label: 'Dense'     }
+          ]}
+          onChange={(v) => setTweak('density', v)}
+        />
+      </TweaksPanel>
+    );
+  }
+  const __twkRoot = document.createElement('div');
+  document.body.appendChild(__twkRoot);
+  ReactDOM.createRoot(__twkRoot).render(<OntogonyTweaks />);
+</script>
+
+<script>
+  // Stratum locator: track which band is in view.
+  (function () {
+    var bands = document.querySelectorAll('section[data-stratum]');
+    var locator = document.querySelectorAll('#locator li');
+    var readout = document.getElementById('readout-stratum');
+    var byKey = {};
+    locator.forEach(function (li) { byKey[li.getAttribute('data-r')] = li; });
+
+    function setActive(key) {
+      locator.forEach(function (li) {
+        if (li.getAttribute('data-r') === key) li.setAttribute('aria-current', 'true');
+        else li.removeAttribute('aria-current');
+      });
+      if (readout && key) readout.textContent = key;
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        // pick the entry closest to the top that is intersecting
+        var visible = entries.filter(function (e) { return e.isIntersecting; });
+        if (visible.length) {
+          visible.sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+          setActive(visible[0].target.getAttribute('data-stratum'));
+        }
+      }, { rootMargin: '-25% 0px -55% 0px', threshold: 0 });
+      bands.forEach(function (b) { io.observe(b); });
+    }
+    setActive('R4');
+  })();
+</script>
+
+</body>
+</html>

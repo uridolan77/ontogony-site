@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Handoff — Ontogony Field Guide → ontogony-site repo</title>
+<link rel="stylesheet" href="ontogony.css" />
+<style>
+  .handoff main { max-width: 78ch; }
+  .handoff h2.section { font-family: var(--serif); font-size: 28px; line-height: 1.15; margin: 64px 0 8px; letter-spacing: -0.005em; }
+  .handoff h2.section .num { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.16em; color: var(--gold); display: block; margin-bottom: 8px; text-transform: uppercase; }
+  .handoff h3.sub { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 36px 0 12px; }
+  .handoff p { font-size: 17px; line-height: 1.65; margin: 0 0 14px; max-width: 70ch; }
+  .handoff p.note { color: var(--ink-2); font-style: italic; }
+
+  .handoff table { width: 100%; border-collapse: collapse; margin: 16px 0 10px; font-family: var(--sans); font-size: 13.5px; }
+  .handoff th, .handoff td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.45; }
+  .handoff th { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); padding-bottom: 8px; border-bottom: 1px solid var(--rule-strong); }
+  .handoff td.k { font-family: var(--mono); font-size: 12px; color: var(--ink); white-space: nowrap; }
+  .handoff td.k.gold { color: var(--gold); }
+  .handoff td.k.blue { color: var(--blue); }
+  .handoff td.swatch { width: 28px; padding: 0; }
+  .handoff td.swatch span { display: block; width: 22px; height: 22px; border: 1px solid var(--rule-strong); }
+  .handoff td.gloss { color: var(--ink-2); font-family: var(--serif); font-size: 14.5px; line-height: 1.5; }
+  .handoff td.status { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .handoff td.status.has { color: var(--ink); }
+  .handoff td.status.add { color: var(--gold); }
+  .handoff td.status.gone { color: var(--ink-3); }
+
+  .handoff pre {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper-2);
+    border-left: 1px solid var(--gold-soft);
+    padding: 16px 20px;
+    margin: 14px 0 18px;
+    overflow-x: auto;
+    white-space: pre;
+    tab-size: 2;
+  }
+  .handoff pre .c { color: var(--ink-3); font-style: italic; }
+  .handoff pre .k { color: var(--gold); }
+  .handoff pre .s { color: var(--ink); }
+  .handoff pre .b { color: var(--blue); }
+
+  .handoff code { font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--paper-2); padding: 1px 5px; border: 1px solid var(--rule); }
+  .handoff p code, .handoff li code, .handoff td code { font-size: 12.5px; }
+
+  .handoff .pages { list-style: none; padding: 0; margin: 18px 0 8px; }
+  .handoff .pages li {
+    display: grid;
+    grid-template-columns: 28px 220px 1fr auto;
+    gap: 18px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .handoff .pages li:last-child { border-bottom: 1px solid var(--rule); }
+  .handoff .pages .n { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; }
+  .handoff .pages .t { font-family: var(--serif); font-size: 18px; line-height: 1.3; }
+  .handoff .pages .t a { color: var(--ink); text-decoration: none; }
+  .handoff .pages .t a:hover { color: var(--blue); }
+  .handoff .pages .g { font-family: var(--serif); font-size: 14.5px; color: var(--ink-2); line-height: 1.5; }
+  .handoff .pages .m { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+
+  .handoff .principles { list-style: none; padding: 0; margin: 12px 0 8px; counter-reset: p; }
+  .handoff .principles li { padding: 10px 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: baseline; counter-increment: p; }
+  .handoff .principles li:first-child { border-top: none; }
+  .handoff .principles li::before { content: counter(p, decimal-leading-zero); font-family: var(--mono); font-size: 11px; color: var(--gold); letter-spacing: 0.06em; }
+  .handoff .principles strong { font-weight: 500; color: var(--ink); }
+
+  .handoff .open-questions li::before { color: var(--blue); }
+
+  .handoff .copy-btn {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  .handoff .copy-btn:hover { color: var(--ink); border-color: var(--ink-2); }
+  .handoff .pre-head { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+  .handoff .pre-head .label { margin: 0; }
+</style>
+</head>
+<body class="handoff">
+
+<header class="instrument-bar">
+  <div class="inner">
+    <a class="wordmark" href="prototype/index.html">ONTOGONY <em>a field guide</em></a>
+    <div class="readouts">
+      <span>HANDOFF</span>
+      <span class="gold">PROTOTYPE → REPO</span>
+      <span class="active">v0.3 · APR 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="frame">
+
+  <aside class="rail-left">
+    <div>
+      <ul class="nav">
+        <li><a href="prototype/index.html">Home</a></li>
+        <li><a href="prototype/concepts.html">Concepts</a></li>
+        <li><a href="prototype/concepts/cessation-signature.html">Concept detail</a></li>
+        <li><a href="prototype/essays/worm.html">Essay</a></li>
+        <li><a href="prototype/paths/cost-of-persistence.html">Reading path</a></li>
+        <li><a href="handoff.html" aria-current="page">Handoff</a></li>
+      </ul>
+      <ul class="stratum-locator">
+        <li><span class="name">§1 · Pages</span></li>
+        <li><span class="name">§2 · Tokens</span></li>
+        <li><span class="name">§3 · Components</span></li>
+        <li><span class="name">§4 · Schema</span></li>
+        <li><span class="name">§5 · Type</span></li>
+        <li><span class="name">§6 · Tweaks</span></li>
+        <li><span class="name">§7 · Open Q's</span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="reading" style="max-width: 78ch;">
+
+    <p class="micro" style="color: var(--ink-3); margin: 0 0 18px;">HANDOFF · PROTOTYPE → ONTOGONY-SITE</p>
+    <h1 class="display" style="font-size: 44px;">From the prototype to the repo.</h1>
+    <p class="standfirst" style="margin-top: 24px; max-width: 64ch;">
+      Five completed templates, mapped onto the existing Astro project. This sheet specifies the token migration, the component map (what to keep, what to add, what to retire), and the proposed extension to the concept content schema. The accent system is <span class="tag plain" style="color: var(--gold);">gold</span> + <span class="tag plain" style="color: var(--blue); border-color: var(--blue);">blue</span>; the type system gains <strong>Source Serif 4</strong> alongside <strong>JetBrains Mono</strong>.
+    </p>
+
+    <!-- ============================================================ §1 -->
+    <h2 class="section"><span class="num">§ 1</span>The five completed templates</h2>
+    <p>Each is a static HTML file in this prototype, ready to be ported as an Astro layout / page. Open them and pull markup directly.</p>
+
+    <ul class="pages">
+      <li>
+        <span class="n">01</span>
+        <span class="t"><a href="prototype/index.html">Homepage</a></span>
+        <span class="g">Vertical stratified map: hero → R4 / R3 / R2 / R1 bands → reading paths → colophon. Stratum locator follows scroll.</span>
+        <span class="m">→ src/pages/index.astro</span>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <span class="t"><a href="prototype/concepts.html">Concepts atlas (index)</a></span>
+        <span class="g">All concepts grouped by stratum, alphabetical within. Same band rhythm as the homepage; tighter row component.</span>
+        <span class="m">→ src/pages/concepts/index.astro</span>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <span class="t"><a href="prototype/concepts/cessation-signature.html">Concept detail</a></span>
+        <span class="g">Ledger of fixed fields (Register, Definition, Burn-rate, Cessation signature, Genealogy, Related, What it is not, Where to go next), then short prose, then a closing &ldquo;Where to go next&rdquo; block.</span>
+        <span class="m">→ src/pages/concepts/[slug].astro</span>
+      </li>
+      <li>
+        <span class="n">04</span>
+        <span class="t"><a href="prototype/essays/worm.html">Essay detail</a></span>
+        <span class="g">Long-form prose: standfirst, body with footnote markers, pull-quote rule, marginal notes, then &ldquo;Where to go next&rdquo;.</span>
+        <span class="m">→ src/pages/essays/[slug].astro</span>
+      </li>
+      <li>
+        <span class="n">05</span>
+        <span class="t"><a href="prototype/paths/cost-of-persistence.html">Reading path</a></span>
+        <span class="g">Atlas-route component: numbered stops, gold spine on the left, blue cursor at the active step, terminal end-glyph, plus a sticky path ribbon at viewport bottom.</span>
+        <span class="m">→ src/pages/paths/[slug].astro</span>
+      </li>
+    </ul>
+
+    <h3 class="sub">UX invariant on every page</h3>
+    <p>Every template ends with a <strong>Where to go next</strong> block (3–5 forward moves, kind-tagged). This answers the brief's central UX question and gives the dev a single shared component to ship: <code>&lt;WhereNext steps={[…]} /&gt;</code>.</p>
+
+    <!-- ============================================================ §2 -->
+    <h2 class="section"><span class="num">§ 2</span>Token migration</h2>
+    <p>The repo's <code>src/styles/global.css</code> currently ships six color tokens, two font tokens, and one accent. The prototype expands this to the field-guide system. Migration is additive: keep the repo's existing names, add the new ones, retune the values.</p>
+
+    <h3 class="sub">2.1 — Color tokens</h3>
+    <table>
+      <tr>
+        <th></th>
+        <th>Repo (current)</th>
+        <th>Prototype value</th>
+        <th>Role</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(96.0% 0.012 85);"></span></td>
+        <td class="k">--color-paper</td>
+        <td class="k">oklch(96% 0.012 85)</td>
+        <td class="gloss">Default page background. Warm ivory.</td>
+        <td class="status has">Retune</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(94.0% 0.012 85);"></span></td>
+        <td class="k">— add —</td>
+        <td class="k">--color-paper-2</td>
+        <td class="gloss">Tinted band background (alternating R-bands).</td>
+        <td class="status add">Add</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(22.0% 0.012 60);"></span></td>
+        <td class="k">--color-ink</td>
+        <td class="k">oklch(22% 0.012 60)</td>
+        <td class="gloss">Body text, headings.</td>
+        <td class="status has">Retune</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(38.0% 0.010 60);"></span></td>
+        <td class="k">--color-ink-soft</td>
+        <td class="k">oklch(38% 0.010 60)</td>
+        <td class="gloss">Standfirst, glosses, secondary prose.</td>
+        <td class="status has">Retune</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(56.0% 0.008 60);"></span></td>
+        <td class="k">--color-ink-muted</td>
+        <td class="k">oklch(56% 0.008 60)</td>
+        <td class="gloss">Metadata, mono labels, footnote markers.</td>
+        <td class="status has">Retune</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(78.0% 0.006 70);"></span></td>
+        <td class="k">--color-rule</td>
+        <td class="k">oklch(78% 0.006 70)</td>
+        <td class="gloss">Hairline dividers. Default underline.</td>
+        <td class="status has">Retune</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(62.0% 0.008 70);"></span></td>
+        <td class="k">— add —</td>
+        <td class="k">--color-rule-strong</td>
+        <td class="gloss">Section openers, ledger top-rule.</td>
+        <td class="status add">Add</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(70.0% 0.10 80);"></span></td>
+        <td class="k">--color-accent <span style="color: var(--ink-3); font-family: var(--serif); font-style: italic; font-size: 12px;">(was #6b3a1f rust)</span></td>
+        <td class="k gold">oklch(70% 0.10 80)</td>
+        <td class="gloss">Register tags, stratum markers, paid/unpriced badges, route spine. <strong>Migrate the existing variable's value</strong> from rust to muted gold; keep the name.</td>
+        <td class="status add">Retune</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(82.0% 0.06 80);"></span></td>
+        <td class="k">— add —</td>
+        <td class="k">--color-accent-soft</td>
+        <td class="gloss">Tag underlines, route-spine background.</td>
+        <td class="status add">Add</td>
+      </tr>
+      <tr>
+        <td class="swatch"><span style="background: oklch(56.0% 0.18 245);"></span></td>
+        <td class="k">— add —</td>
+        <td class="k blue">--color-active</td>
+        <td class="gloss">The <em>transduction</em> color. Used <strong>only</strong> for active state: link hover, current path step, &ldquo;you are here&rdquo;.</td>
+        <td class="status add">Add</td>
+      </tr>
+    </table>
+
+    <p class="note">The two-accent split is doing real semantic work. Gold is <em>structural</em> — it labels what is. Blue is <em>kinetic</em> — it labels where you are. Do not let the dev collapse them back to a single accent.</p>
+
+    <h3 class="sub">2.2 — Type tokens</h3>
+    <table>
+      <tr>
+        <th></th>
+        <th>Repo (current)</th>
+        <th>Prototype</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td class="k" style="font-family: var(--serif); font-size: 18px; padding-right: 16px;">Aa</td>
+        <td class="k">--font-serif: <em>Crimson Pro</em></td>
+        <td class="k">--font-serif: <em>Source Serif 4</em></td>
+        <td class="status add">Replace</td>
+      </tr>
+      <tr>
+        <td class="k" style="font-family: var(--sans); font-size: 18px; padding-right: 16px;">Aa</td>
+        <td class="k">--font-sans: <em>Inter</em></td>
+        <td class="k">--font-sans: <em>Inter Tight</em></td>
+        <td class="status add">Replace</td>
+      </tr>
+      <tr>
+        <td class="k" style="font-family: var(--mono); font-size: 18px; padding-right: 16px;">Aa</td>
+        <td class="k">— missing —</td>
+        <td class="k">--font-mono: <em>JetBrains Mono</em></td>
+        <td class="status add">Add</td>
+      </tr>
+    </table>
+
+    <p>The mono is the load-bearing addition. Without it, register tags, instrument readouts, the locator, footnote markers, and ledger field labels all collapse into the sans, which flattens the field-guide texture. <strong>Adding mono is non-negotiable.</strong></p>
+
+    <h3 class="sub">2.3 — Drop-in @theme block</h3>
+    <p>Replace the current <code>@theme</code> block in <code>src/styles/global.css</code> with this. Tailwind's design-token names are preserved where they exist (<code>--color-paper</code>, <code>--color-ink</code>, etc.).</p>
+
+    <div class="pre-head">
+      <span class="label">src/styles/global.css</span>
+      <button class="copy-btn" data-copy="theme">Copy</button>
+    </div>
+    <pre id="code-theme"><span class="c">/* Ontogony — A Field Guide to the Transductive Universe */</span>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  <span class="c">/* type */</span>
+  --font-serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+  --font-sans:  "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  <span class="c">/* paper + ink (warm) */</span>
+  --color-paper:        oklch(96.0% 0.012 85);
+  --color-paper-2:      oklch(94.0% 0.012 85);
+  --color-paper-3:      oklch(92.0% 0.012 85);
+  --color-ink:          oklch(22.0% 0.012 60);
+  --color-ink-soft:     oklch(38.0% 0.010 60);
+  --color-ink-muted:    oklch(56.0% 0.008 60);
+  --color-rule:         oklch(78.0% 0.006 70);
+  --color-rule-strong:  oklch(62.0% 0.008 70);
+
+  <span class="c">/* accents — gold is structural, blue is kinetic */</span>
+  --color-accent:       <span class="k">oklch(70.0% 0.10  80)</span>;  <span class="c">/* gold */</span>
+  --color-accent-soft:  <span class="k">oklch(82.0% 0.06  80)</span>;
+  --color-active:       <span class="b">oklch(56.0% 0.18 245)</span>;  <span class="c">/* electric blue */</span>
+}</pre>
+
+    <!-- ============================================================ §3 -->
+    <h2 class="section"><span class="num">§ 3</span>Component map</h2>
+    <p>The repo started a small port already. Here's exactly what each existing class maps to, what to add, and what is retired by the new system.</p>
+
+    <table>
+      <tr>
+        <th>Repo class</th>
+        <th>Prototype class</th>
+        <th>Action</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td class="k">.page-shell</td>
+        <td class="k">.frame</td>
+        <td class="status has">Replace</td>
+        <td class="gloss">Three-column grid (left rail / reading / right rail) instead of single-column shell. Falls back to single column on narrow viewports.</td>
+      </tr>
+      <tr>
+        <td class="k">.kicker</td>
+        <td class="k">.micro</td>
+        <td class="status has">Rename</td>
+        <td class="gloss">Same role; mono instead of sans for the field-guide texture.</td>
+      </tr>
+      <tr>
+        <td class="k">.page-title / .home-title</td>
+        <td class="k">.h1 / .display</td>
+        <td class="status has">Keep both</td>
+        <td class="gloss"><code>.display</code> for hero only; <code>.h1</code> for everything else. Both serif, weight 400 (not 600 — Source Serif 4 holds presence at 400).</td>
+      </tr>
+      <tr>
+        <td class="k">.lede</td>
+        <td class="k">.standfirst</td>
+        <td class="status has">Rename</td>
+        <td class="gloss">Field-guide vocabulary. Roman serif (no italic) at 22px; italic only on the actual page-by-page instances when they want it.</td>
+      </tr>
+      <tr>
+        <td class="k">.prose</td>
+        <td class="k">.body</td>
+        <td class="status has">Keep + extend</td>
+        <td class="gloss">Adds: <code>p + p</code> indent, <code>sup.fn</code> footnote markers, <code>p.lede</code> opening paragraph. Width tightened to 58–68ch for reading.</td>
+      </tr>
+      <tr>
+        <td class="k">.next-steps-list</td>
+        <td class="k">.where-next</td>
+        <td class="status has">Rename</td>
+        <td class="gloss">Same intent; the prototype version uses <code>title / kind / arrow</code> rather than the repo's <code>kind / title</code>. Either layout works — pick one.</td>
+      </tr>
+      <tr>
+        <td class="k">.ledger-list / .ledger-row</td>
+        <td class="k">.ledger / .ledger-row</td>
+        <td class="status has">Diverge</td>
+        <td class="gloss"><strong>Two different uses.</strong> Repo's <code>ledger-list</code> is a list-of-concepts component. Prototype's <code>ledger</code> is the fixed-field grid <em>inside</em> a single concept page (Register / Definition / Burn-rate …). Both are needed; rename one. <strong>Suggested:</strong> rename repo's to <code>.atlas-list</code> (it's a list of atlas entries); reserve <code>.ledger</code> for the fixed-field component.</td>
+      </tr>
+      <tr>
+        <td class="k">.ledger-meta</td>
+        <td class="k">.ledger-row[Related]</td>
+        <td class="status has">Fold in</td>
+        <td class="gloss">The repo's <code>.ledger-meta</code> (label + values list) is just one row of the prototype's full ledger. Implement it as a single row with a comma-separated values list inside <code>&lt;dd&gt;</code>.</td>
+      </tr>
+      <tr>
+        <td class="k">.instrument-bar</td>
+        <td class="k">.instrument-bar</td>
+        <td class="status has">Diverge</td>
+        <td class="gloss">Repo's is a top nav (wordmark + UPPERCASE links). Prototype's is wordmark + page-context readouts (kind, register, position) — links live in the left rail. <strong>Suggested:</strong> adopt the prototype's split, since the field guide has more hierarchy than nav can carry.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.nav</td>
+        <td class="status add">Add</td>
+        <td class="gloss">The actual site navigation. Mono, vertical, in the left rail. Links: Home / Theory / Concepts / Essays / Paths / Diagrams / About.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.stratum-locator</td>
+        <td class="status add">Add</td>
+        <td class="gloss">The R4 / R3 / R2 / R1 ladder in the left rail. <code>aria-current="true"</code> gilds the active stratum. On the homepage, an IntersectionObserver tracks scroll across the bands.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.band</td>
+        <td class="status add">Add</td>
+        <td class="gloss">Section component used on Home and Concepts atlas. Top rule, header (stratum tag + name + gloss + count), then list. Optional <code>.tinted</code> modifier for alternating bands.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.anchor-list / .atlas-list</td>
+        <td class="status add">Add</td>
+        <td class="gloss">Two list flavours. <code>.anchor-list</code> for the homepage (3 columns: title / gloss / meta, bigger type). <code>.atlas-list</code> for the concepts index (4 columns: name / gloss / register-tag / arrow, smaller type).</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.route / .route-stop / .route-end</td>
+        <td class="status add">Add</td>
+        <td class="gloss">The reading-path component. Vertical gold spine, dot per stop, blue dot for the active stop, diamond for the terminal step. Pure CSS — no SVG.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.path-ribbon</td>
+        <td class="status add">Add</td>
+        <td class="gloss">Sticky bottom strip, only present when a reading path is active. Mono. Renders the full route inline; current step is blue. Implementation suggestion below.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.tag</td>
+        <td class="status add">Add</td>
+        <td class="gloss">The register chip: <code>R1 R2 R3 R4</code>. Mono, gold, with optional gold underline. The single most common micro-element across the system.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.pullquote</td>
+        <td class="status add">Add</td>
+        <td class="gloss">Essay component: italic serif, 22px, bordered top + bottom by hairlines. Used sparingly.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.section-glyph</td>
+        <td class="status add">Add</td>
+        <td class="gloss">A centered character (·, §, ❧) flanked by hairlines. Replaces ordinary <code>&lt;hr&gt;</code> between major essay sections.</td>
+      </tr>
+      <tr>
+        <td class="k">— missing —</td>
+        <td class="k">.colophon</td>
+        <td class="status add">Add</td>
+        <td class="gloss">Footer. Three columns of small sans text: links / colophon paragraph / correspondence.</td>
+      </tr>
+    </table>
+
+    <!-- ============================================================ §4 -->
+    <h2 class="section"><span class="num">§ 4</span>Schema extensions</h2>
+    <p>The repo's concept schema is currently <code>{ title, short, order?, related[] }</code>. The MDX bodies already manually contain a <em>What it is not</em> section and inline forward references — proof that the structure exists in the prose. Lifting them into frontmatter unlocks the full ledger as a layout, not as repeated authorial discipline.</p>
+
+    <h3 class="sub">4.1 — Concepts</h3>
+    <div class="pre-head">
+      <span class="label">src/content.config.ts (excerpt)</span>
+      <button class="copy-btn" data-copy="schema-concept">Copy</button>
+    </div>
+    <pre id="code-schema-concept">const concepts = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/concepts' }),
+  schema: z.object({
+    <span class="c">// existing</span>
+    title:    z.string(),
+    short:    z.string(),
+    order:    z.number().optional(),
+    related:  z.array(z.string()).default([]),
+
+    <span class="c">// new — structural fields exposed to the ledger</span>
+    <span class="k">register</span>:   z.enum(['R1', 'R2', 'R3', 'R4']),                <span class="c">// stratum locator + tag</span>
+    <span class="k">chapter</span>:    z.string().optional(),                          <span class="c">// e.g. "Ch. 7 §3.2"</span>
+    <span class="k">burnRate</span>:   z.string().optional(),                          <span class="c">// prose, denominated</span>
+    <span class="k">cessation</span>:  z.string().optional(),                          <span class="c">// the cessation signature, prose</span>
+    <span class="k">genealogy</span>:  z.array(z.string()).default([]),                 <span class="c">// e.g. ["Simondon 1958", "Friston 2010"]</span>
+    <span class="k">notThis</span>:    z.array(z.string()).default([]),                 <span class="c">// "Not a phase transition that…", etc</span>
+    <span class="k">whereNext</span>:  z.array(z.object({
+      kind: z.enum(['concept', 'essay', 'path', 'diagram']),
+      slug: z.string(),
+      title: z.string().optional(),
+      <span class="k">why</span>: z.string().optional(),                                 <span class="c">// the gloss under the link</span>
+    })).default([]),
+  }),
+});</pre>
+
+    <p class="note">The <code>register</code> field becomes <code>required</code>. It's the spine of the whole macro-organisation — without it the homepage and atlas can't sort.</p>
+
+    <h3 class="sub">4.2 — Essays</h3>
+    <div class="pre-head">
+      <span class="label">essays</span>
+      <button class="copy-btn" data-copy="schema-essay">Copy</button>
+    </div>
+    <pre id="code-schema-essay">const essays = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/essays' }),
+  schema: z.object({
+    title:       z.string(),
+    summary:     z.string(),
+    date:        z.coerce.date().optional(),
+    <span class="k">register</span>:    z.enum(['R1', 'R2', 'R3', 'R4']).optional(),  <span class="c">// primary stratum</span>
+    <span class="k">readingTime</span>: z.number().optional(),                         <span class="c">// minutes; printed in readouts</span>
+    <span class="k">number</span>:      z.number().optional(),                         <span class="c">// "Essay 03"</span>
+    <span class="k">whereNext</span>:   z.array(z.object({
+      kind: z.enum(['concept', 'essay', 'path', 'diagram']),
+      slug: z.string(),
+      title: z.string().optional(),
+      why: z.string().optional(),
+    })).default([]),
+  }),
+});</pre>
+
+    <h3 class="sub">4.3 — Reading paths</h3>
+    <div class="pre-head">
+      <span class="label">paths</span>
+      <button class="copy-btn" data-copy="schema-path">Copy</button>
+    </div>
+    <pre id="code-schema-path">const pathStop = z.object({
+  kind:   z.enum(['concept', 'essay', 'note']),
+  slug:   z.string().optional(),                                  <span class="c">// for concept | essay</span>
+  title:  z.string().optional(),                                  <span class="c">// override or note title</span>
+  body:   z.string().optional(),                                  <span class="c">// inline prose for "note" kind</span>
+  <span class="k">register</span>: z.enum(['R1', 'R2', 'R3', 'R4']).optional(),
+  <span class="k">minutes</span>:  z.number().optional(),
+});
+
+const paths = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/paths' }),
+  schema: z.object({
+    title:       z.string(),
+    description: z.string(),
+    <span class="k">number</span>:      z.number().optional(),                         <span class="c">// "Path 02"</span>
+    <span class="k">strataCovered</span>: z.array(z.enum(['R1','R2','R3','R4'])).default([]),
+    <span class="k">totalMinutes</span>: z.number().optional(),
+    steps:       z.array(pathStop),
+  }),
+});</pre>
+
+    <p>Every page template the prototype ships uses these new fields. Until they exist in the schema, the layout has to either hardcode them in MDX or punt to a default — both worse than just extending the schema.</p>
+
+    <!-- ============================================================ §5 -->
+    <h2 class="section"><span class="num">§ 5</span>Type rules</h2>
+
+    <h3 class="sub">5.1 — Three families, three jobs</h3>
+    <table>
+      <tr>
+        <th>Family</th>
+        <th>Used for</th>
+        <th>Never used for</th>
+      </tr>
+      <tr>
+        <td class="k" style="font-family: var(--serif);">Source Serif 4</td>
+        <td class="gloss">Headings, body prose, ledger values, route stop titles.</td>
+        <td class="gloss">Metadata, navigation, register tags.</td>
+      </tr>
+      <tr>
+        <td class="k" style="font-family: var(--sans);">Inter Tight</td>
+        <td class="gloss">Footer, colophon. <em>Used minimally.</em></td>
+        <td class="gloss">Body. Headings.</td>
+      </tr>
+      <tr>
+        <td class="k" style="font-family: var(--mono);">JetBrains Mono</td>
+        <td class="gloss">Register tags, instrument readouts, navigation labels, ledger field labels, footnote markers, page numbers, kind tags, stratum locator.</td>
+        <td class="gloss">Body prose. Headings.</td>
+      </tr>
+    </table>
+
+    <h3 class="sub">5.2 — Scale (canonical density)</h3>
+    <table>
+      <tr><th>Token</th><th>Size / line</th><th>Used for</th></tr>
+      <tr><td class="k">.display</td><td class="k">52 / 1.05</td><td class="gloss">Hero on homepage, occasionally elsewhere.</td></tr>
+      <tr><td class="k">.h1</td><td class="k">38 / 1.10</td><td class="gloss">Page title (concept, essay, path).</td></tr>
+      <tr><td class="k">.h2</td><td class="k">26 / 1.20</td><td class="gloss">Section heads inside body prose.</td></tr>
+      <tr><td class="k">.standfirst</td><td class="k">22 / 1.45</td><td class="gloss">Roman serif standfirst directly below title.</td></tr>
+      <tr><td class="k">.body p</td><td class="k">18.5 / 1.65</td><td class="gloss">Reading text.</td></tr>
+      <tr><td class="k">.label</td><td class="k">12 mono</td><td class="gloss">Section labels, ledger keys.</td></tr>
+      <tr><td class="k">.micro</td><td class="k">11 mono</td><td class="gloss">Top-of-page kicker, readouts, footnote markers.</td></tr>
+    </table>
+
+    <p class="note">Three densities (Generous / Canonical / Dense) are exposed as a Tweak in the prototype. Ship Canonical as default; the others are <code>data-density="…"</code> on <code>&lt;body&gt;</code>.</p>
+
+    <!-- ============================================================ §6 -->
+    <h2 class="section"><span class="num">§ 6</span>Tweaks (already approved)</h2>
+    <p>Three Tweak axes are wired into the prototype. They persist via the standard <code>__edit_mode_set_keys</code> protocol against an <code>EDITMODE-BEGIN/END</code> JSON block in <code>index.html</code>. For the Astro port, lift them to a small client-only React island, or cookie-back them and apply via a <code>data-*</code> attribute on <code>&lt;body&gt;</code> in the layout.</p>
+
+    <ul class="principles">
+      <li><div><strong>Stratification posture</strong> — Descend (default) / Ascend / Level. Flips the R-stack and de-emphasises strata when level. <code>data-posture</code>.</div></li>
+      <li><div><strong>Reading temperature</strong> — Ivory (default) / Bone / Graphite. Three palette retunes; Graphite is the inverted nighttime variant. <code>data-temp</code>.</div></li>
+      <li><div><strong>Field density</strong> — Generous / Canonical (default) / Dense. Re-paces the page at once. <code>data-density</code>.</div></li>
+    </ul>
+
+    <!-- ============================================================ §7 -->
+    <h2 class="section"><span class="num">§ 7</span>Open questions</h2>
+    <ul class="principles open-questions">
+      <li><div><strong>Theory page (Core theory).</strong> Not yet designed. Proposal: a single long-scroll essay with the same body component as essays, plus a sticky table-of-contents in the right rail (replacing the margin notes for that page only).</div></li>
+      <li><div><strong>Diagrams page.</strong> Out of scope per the latest brief, but the homepage links to it. Proposal for the placeholder: a simple atlas-list of figures, each with a caption and a chapter cite. No interactive diagrams (per brief).</div></li>
+      <li><div><strong>Footnotes.</strong> Currently inline-anchor with manual <code>sup.fn</code> markers. Proposal: a remark/rehype plugin to lift Markdown footnote syntax (<code>[^1]</code>) into <code>sup.fn</code> automatically and render the footnote block in the right margin where space permits, falling back to end of essay.</div></li>
+      <li><div><strong>Search.</strong> Not in the prototype. The atlas-list and stratum-locator carry most of the discovery load. If search is added, propose a <kbd>/</kbd>-triggered command bar that searches concept titles + glosses only.</div></li>
+      <li><div><strong>Path ribbon persistence.</strong> The ribbon currently appears on path-bound pages. Behaviour when a user clicks out to an unrelated concept: should the ribbon persist (with a "leave path" affordance) or vanish? The prototype persists; recommend the dev keeps that.</div></li>
+    </ul>
+
+    <h2 class="section"><span class="num">§ 8</span>Suggested PR sequence</h2>
+    <ul class="principles">
+      <li><div><strong>1 — Theme migration.</strong> Replace <code>@theme</code>; add <code>--font-mono</code>; add <code>--color-accent-soft</code>, <code>--color-active</code>, <code>--color-paper-2/3</code>, <code>--color-rule-strong</code>. Visual diff only.</div></li>
+      <li><div><strong>2 — Schema extension.</strong> Land the new frontmatter fields. Backfill the seven existing concept MDX files. No layout changes yet.</div></li>
+      <li><div><strong>3 — Layout: BaseLayout + InstrumentBar + LeftRail.</strong> The cross-cutting chrome.</div></li>
+      <li><div><strong>4 — Concept atlas + Concept detail.</strong> Highest-leverage pair; uses the schema work from PR 2.</div></li>
+      <li><div><strong>5 — Homepage.</strong> Reuses the band component from PR 4.</div></li>
+      <li><div><strong>6 — Essay detail + Reading path + Path ribbon.</strong></div></li>
+      <li><div><strong>7 — Tweaks island.</strong> Low priority; ship without and add later.</div></li>
+    </ul>
+
+    <hr style="margin: 64px 0 36px;" />
+
+    <p class="micro" style="color: var(--ink-3);">END OF HANDOFF · v0.3 · APR 2026</p>
+
+  </main>
+
+  <aside class="rail-right">
+    <div class="margin-notes">
+      <div class="note">
+        <span class="label">SCOPE</span>
+        Five page templates. Tokens, components, schema. The rest (theory, diagrams, search) is staged in §7.
+      </div>
+      <div class="note">
+        <span class="label">PRINCIPLE</span>
+        Gold is structural, blue is kinetic. Do not collapse them into one accent.
+      </div>
+      <div class="note">
+        <span class="label">PRINCIPLE</span>
+        Mono is load-bearing. Adding JetBrains Mono is non-negotiable.
+      </div>
+      <div class="note">
+        <span class="label">START HERE</span>
+        Open §2.3 and §3, then §4, then port the components in PR order.
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = 'code-' + btn.getAttribute('data-copy');
+      var el = document.getElementById(id);
+      if (!el) return;
+      var text = el.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = orig; }, 1400);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
