@@ -109,8 +109,22 @@ http://localhost:4321/admin/
 
 ## Production Workflow
 
-1. Set Tina env vars in Vercel
-2. Build with `tinacms build && astro build`
+Current deployment-safe default in this branch:
+
+```bash
+npm run build
+# runs: tinacms build --local --skip-cloud-checks && astro build
+```
+
+This ensures Vercel can build and publish `public/admin` even before Tina Cloud secrets are configured.
+
+Cloud-authenticated Tina build (preferred once credentials are ready):
+
+1. Set Tina env vars in Vercel:
+   - `TINA_CLIENT_ID`
+   - `TINA_TOKEN`
+   - `TINA_BRANCH=main`
+2. Build with `npm run build:cms` (or set default build back to `tinacms build && astro build`)
 3. Visit `https://ontogony.net/admin/`
 4. Tina commits edits to GitHub
 5. Vercel rebuilds
