@@ -1,5 +1,11 @@
 import { getCollection, type CollectionKey } from 'astro:content';
 
+type MaybeStatusEntry = {
+  data?: {
+    status?: string;
+  };
+};
+
 /**
  * Wraps getCollection() with a draft filter active only in production
  * builds. Drafts (status === 'draft') stay visible in `npm run dev` so
@@ -17,4 +23,14 @@ export async function getPublished<K extends CollectionKey>(name: K) {
     const status = (entry.data as { status?: string }).status;
     return status !== 'draft';
   });
+}
+
+export function isLinkable<T extends MaybeStatusEntry>(entry: T | undefined | null) {
+  if (!entry) return false;
+  if (!import.meta.env.PROD) return true;
+  return entry.data?.status !== 'draft';
+}
+
+export function getLinkable<T extends MaybeStatusEntry>(entries: T[]) {
+  return entries.filter((entry) => isLinkable(entry));
 }

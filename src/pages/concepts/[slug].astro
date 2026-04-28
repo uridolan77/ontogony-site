@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getPublished } from '../../lib/content';
+import { getPublished, isLinkable } from '../../lib/content';
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
@@ -13,20 +13,30 @@ export async function getStaticPaths() {
   // including drafts, so titles resolve even when the target won't render
   // its own page in production. Routing only generates published entries.
   const all = await getCollection('concepts');
+  const essays = await getCollection('essays');
+  const paths = await getCollection('paths');
+  const diagrams = await getCollection('diagrams');
   return published.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, all },
+    props: { entry, all, essays, paths, diagrams },
   }));
 }
 
-const { entry, all } = Astro.props;
+const { entry, all, essays, paths, diagrams } = Astro.props;
 const { Content } = await render(entry);
 
 const byId = new Map(all.map((c) => [c.id, c]));
+const essaysById = new Map(essays.map((e) => [e.id, e]));
+const pathsById = new Map(paths.map((p) => [p.id, p]));
+const diagramsById = new Map(diagrams.map((d) => [d.id, d]));
 
 const related = (entry.data.related ?? [])
   .map((slug) => byId.get(slug))
-  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+  .filter((c): c is NonNullable<typeof c> => Boolean(c))
+  .map((c) => ({
+    entry: c,
+    linkable: isLinkable(c),
+  }));
 
 const stratumName: Record<Stratum, string> = {
   R1: 'FIELD',
@@ -58,31 +68,54 @@ const kickerLine =
 const whereNext = (entry.data.whereNext ?? []).map((step) => {
   let title = step.title;
   let metaSuffix = '';
+  let href: string | undefined;
+  let targetIsDraft = false;
 
   if (step.kind === 'concept') {
     const c = byId.get(step.slug);
     if (c) {
       title = title ?? c.data.title;
       metaSuffix = ` · ${c.data.register}`;
+      targetIsDraft = !isLinkable(c);
     } else {
       title = title ?? step.slug;
     }
-  } else if (!title) {
-    title = step.slug;
+    href = `/concepts/${step.slug}`;
+  } else if (step.kind === 'essay') {
+    const e = essaysById.get(step.slug);
+    if (e) {
+      title = title ?? e.data.title;
+      if (e.data.register) metaSuffix = ` · ${e.data.register}`;
+      targetIsDraft = !isLinkable(e);
+    } else if (!title) {
+      title = step.slug;
+    }
+    href = `/essays/${step.slug}`;
+  } else if (step.kind === 'path') {
+    const p = pathsById.get(step.slug);
+    if (p) {
+      title = title ?? p.data.title;
+      targetIsDraft = !isLinkable(p);
+    } else if (!title) {
+      title = step.slug;
+    }
+    href = `/paths/${step.slug}`;
+  } else {
+    const d = diagramsById.get(step.slug);
+    if (d) {
+      title = title ?? d.data.title;
+      targetIsDraft = !isLinkable(d);
+    } else if (!title) {
+      title = step.slug;
+    }
+    href = `/diagrams/${step.slug}`;
   }
 
-  const href =
-    step.kind === 'concept'
-      ? `/concepts/${step.slug}`
-      : step.kind === 'essay'
-        ? `/essays/${step.slug}`
-        : step.kind === 'path'
-          ? `/paths/${step.slug}`
-          : `/diagrams/${step.slug}`;
+  if (import.meta.env.PROD && targetIsDraft) href = undefined;
 
   const meta = `${step.kind.toUpperCase()}${metaSuffix}`;
 
-  return { href, title: title!, why: step.why, meta };
+  return { href, title: title!, why: step.why, meta, linkable: Boolean(href) };
 });
 ---
 
@@ -143,7 +176,11 @@ const whereNext = (entry.data.whereNext ?? []).map((step) => {
           {related.map((rel, i) => (
             <>
               {i > 0 && ' · '}
-              <a class="link" href={`/concepts/${rel.id}`}>{rel.data.title}</a>
+              {rel.linkable ? (
+                <a class="link" href={`/concepts/${rel.entry.id}`}>{rel.entry.data.title}</a>
+              ) : (
+                <span class="muted">{rel.entry.data.title}</span>
+              )}
             </>
           ))}
         </dd>
@@ -167,14 +204,24 @@ const whereNext = (entry.data.whereNext ?? []).map((step) => {
         <dd>
           <div class="where-next">
             {whereNext.map((w) => (
-              <a class="next" href={w.href}>
-                <span class="next-title">
-                  {w.title}
-                  {w.why && <em>{w.why}</em>}
-                </span>
-                <span class="next-meta">{w.meta}</span>
-                <span class="next-arrow">·→</span>
-              </a>
+              w.linkable ? (
+                <a class="next" href={w.href}>
+                  <span class="next-title">
+                    {w.title}
+                    {w.why && <em>{w.why}</em>}
+                  </span>
+                  <span class="next-meta">{w.meta}</span>
+                  <span class="next-arrow">·→</span>
+                </a>
+              ) : (
+                <div class="next" aria-disabled="true">
+                  <span class="next-title">
+                    {w.title}
+                    {w.why && <em>{w.why}</em>}
+                  </span>
+                  <span class="next-meta">{w.meta}</span>
+                </div>
+              )
             ))}
           </div>
         </dd>
@@ -203,7 +250,11 @@ const whereNext = (entry.data.whereNext ?? []).map((step) => {
         {related.map((rel, i) => (
           <>
             {i > 0 && ' · '}
-            <a class="link" href={`/concepts/${rel.id}`}>{rel.data.title}</a>
+            {rel.linkable ? (
+              <a class="link" href={`/concepts/${rel.entry.id}`}>{rel.entry.data.title}</a>
+            ) : (
+              <span class="muted">{rel.entry.data.title}</span>
+            )}
           </>
         ))}
       </div>
