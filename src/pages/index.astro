@@ -1,11 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import NextSteps from '../components/NextSteps.astro';
+
+const beginItems = [
+  {
+    href: '/theory',
+    title: 'Theory overview',
+    def: 'The five-minute orientation to Ontogony.',
+  },
+  {
+    href: '/concepts',
+    title: 'Concept atlas',
+    def: 'The vocabulary of Ontogony, one term at a time.',
+  },
+  {
+    href: '/concepts/transduction',
+    title: 'Transduction',
+    def: 'The operator the rest of the framework is built on.',
+  },
+];
 ---
 
 <BaseLayout description="A field guide to the Transductive Universe.">
   <section class="home-hero">
-    <p class="home-wordmark">Ontogony</p>
     <h1 class="home-title">A Field Guide to the Transductive Universe</h1>
     <p class="home-subtitle">
       A theory of becoming — about what it costs for anything to be the kind
@@ -15,24 +31,20 @@ import NextSteps from '../components/NextSteps.astro';
 
   <hr />
 
-  <div class="prose">
-    <p>
-      This site is a working field guide to <a href="/theory">Ontogony</a>:
-      short, self-contained entries that map the framework's vocabulary,
-      arguments, and through-lines. It is meant to be read piecewise. There is
-      no front-to-back order; every page tries to answer the question, “where
-      do I go next?”
-    </p>
-    <p>
-      If you have five minutes, start with the <a href="/theory">overview</a>.
-      If you want one specific idea, start with the
-      <a href="/concepts/transduction">Transduction</a> page — it is the
-      operator the rest of the framework is built on.
-    </p>
-  </div>
-
-  <NextSteps
-    heading="Where to begin"
-    concepts={['transduction']}
-  />
+  <section>
+    <p class="kicker">Begin</p>
+    <ul class="ledger-list">
+      {
+        beginItems.map((item) => (
+          <li>
+            <a class="ledger-row" href={item.href}>
+              <span class="ledger-row-title">{item.title}</span>
+              <span class="ledger-row-def">{item.def}</span>
+              <span class="ledger-row-marker" aria-hidden="true">·→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </BaseLayout>

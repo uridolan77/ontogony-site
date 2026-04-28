@@ -6,12 +6,17 @@ export async function getStaticPaths() {
   const entries = await getCollection('concepts');
   return entries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: { entry, all: entries },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, all } = Astro.props;
 const { Content } = await render(entry);
+
+const byId = new Map(all.map((c) => [c.id, c]));
+const related = (entry.data.related ?? [])
+  .map((slug) => byId.get(slug))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.short}>
@@ -23,5 +28,20 @@ const { Content } = await render(entry);
     <div class="prose">
       <Content />
     </div>
+
+    {
+      related.length > 0 && (
+        <section class="ledger-meta">
+          <span class="ledger-meta-label">Related concepts</span>
+          <ul class="ledger-meta-values">
+            {related.map((rel) => (
+              <li>
+                <a href={`/concepts/${rel.id}`}>{rel.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </article>
 </BaseLayout>

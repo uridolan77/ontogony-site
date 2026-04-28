@@ -236,59 +236,112 @@
     text-underline-offset: 3px;
   }
 
-  .concept-index-list {
+  .ledger-list {
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  .concept-index-list li {
+  .ledger-list li {
     border-top: 1px solid var(--color-rule);
-    padding: 1.5rem 0;
   }
 
-  .concept-index-list li:first-child {
-    border-top: 0;
+  .ledger-list li:last-child {
+    border-bottom: 1px solid var(--color-rule);
   }
 
-  .concept-index-list h2 {
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding: 1.1rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (min-width: 768px) {
+    .ledger-row {
+      grid-template-columns: 12rem 1fr auto;
+      gap: 2rem;
+      align-items: baseline;
+    }
+  }
+
+  .ledger-row-title {
     font-family: var(--font-serif);
     font-weight: 600;
-    font-size: 1.4rem;
-    line-height: 1.2;
-    margin: 0 0 0.4rem 0;
+    font-size: 1.2rem;
     letter-spacing: -0.005em;
+    color: var(--color-ink);
   }
 
-  .concept-index-list h2 a {
-    text-decoration: none;
+  .ledger-row-def {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
   }
 
-  .concept-index-list h2 a:hover {
+  .ledger-row-marker {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-muted);
+  }
+
+  .ledger-row:hover .ledger-row-marker {
+    color: var(--color-accent);
+  }
+
+  .ledger-row:hover .ledger-row-title {
     text-decoration: underline;
     text-decoration-color: var(--color-ink);
     text-underline-offset: 3px;
   }
 
-  .concept-index-list p {
+  .ledger-meta {
+    margin-top: 3rem;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .ledger-meta {
+      grid-template-columns: 10rem 1fr;
+      gap: 2rem;
+      align-items: baseline;
+    }
+  }
+
+  .ledger-meta-label {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .ledger-meta-values {
+    list-style: none;
+    padding: 0;
     margin: 0;
-    color: var(--color-ink-soft);
-    font-style: italic;
-    max-width: 38rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    font-family: var(--font-serif);
+  }
+
+  .ledger-meta-values li {
+    margin: 0;
   }
 
   .home-hero {
     margin-bottom: 3rem;
-  }
-
-  .home-wordmark {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--color-ink-muted);
-    margin: 0 0 2.5rem 0;
   }
 
   .home-title {
@@ -308,5 +361,58 @@
     color: var(--color-ink-soft);
     margin: 0 0 2.5rem 0;
     max-width: 38rem;
+  }
+
+  .instrument-bar {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .instrument-bar-inner {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 1.1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .instrument-bar-inner {
+      padding: 1.25rem 2rem;
+    }
+  }
+
+  .instrument-bar-mark {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .instrument-bar-nav {
+    display: flex;
+    gap: 1.75rem;
+  }
+
+  .instrument-bar-nav a {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+  }
+
+  .instrument-bar-nav a:hover {
+    color: var(--color-ink);
+  }
+
+  .instrument-bar-nav a.is-active {
+    color: var(--color-ink);
   }
 }

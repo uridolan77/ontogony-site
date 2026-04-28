@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import InstrumentBar from '../components/InstrumentBar.astro';
 
 interface Props {
   title?: string;
@@ -30,6 +31,7 @@ const fullTitle = title ? `${title} — Ontogony` : 'Ontogony';
     />
   </head>
   <body>
+    <InstrumentBar />
     <div class="page-shell">
       <slot />
     </div>
