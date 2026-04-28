@@ -2,64 +2,43 @@
 
 ## Canonical Title
 
-Use this as the primary project title:
-
 ```txt
 Ontogony: A Field Guide to the Transductive Universe
 ```
 
-Acceptable variants:
+## Core Reframing
+
+The site should function as:
 
 ```txt
-Ontogony
-Ontogony: Field Guide
-The Transductive Universe
-A Field Guide to the Transductive Universe
+a public field guide and companion atlas to the book-length Ontogony / TTU project
 ```
 
-Avoid making the primary public title only:
-
-```txt
-A field guide to the becoming of things
-```
-
-That line is good as a poetic homepage subheading, but the main identity should now stay closer to the book.
-
-## Core Site Reframing
-
-The site should be framed as:
-
-```txt
-a public field guide and companion atlas to the Ontogony / TTU book project
-```
-
-The reader should understand that the site is organized around the book’s argument.
+The site should help readers traverse the book’s architecture without requiring the full manuscript at once.
 
 ## Chapter Spine
 
-The site should progressively cover the book through thirteen chapter-facing anchors:
+| Chapter | Book Title | Site-facing anchor |
+|---|---|---|
+| 1 | The Hard Problem of Grounding | Planarian / Cessation Signature / Grounding |
+| 2 | The Demon’s Unpaid Bill | Landauer / Finite Observer / Flat Physicalism |
+| 3 | The Price of Being | Beaker / Burn Rate / Thermodynamic Levels |
+| 4 | The Immanentist Underground | Genealogy / Exaptation / Triadic Minimum |
+| 5 | The Genesis Engine | Novelty / Variation–Encounter–Mediation |
+| 6 | The Stabilisation Engine | Hylogenesis / Witness–Canon |
+| 7 | The Stratification Engine | Normogenesis / Enveloping Closure |
+| 8 | The Bioelectric Governor | Bioelectric closure / Morphogenetic governance |
+| 9 | The Embodied Present | Allocentric governance / embodied world |
+| 10 | The Affective Witness | Felt valence / affective pricing |
+| 11 | The Offline Mind | simulation / counterfactual trajectories |
+| 12 | The Symbolic Exit | courtroom / symbolic order |
+| 13 | The Sixth Transduction | AI rupture / authority without Canon |
 
-| Chapter | Site-facing anchor |
-|---|---|
-| 1 | Grounding / Planarian / Cessation Signature |
-| 2 | Demon / Landauer / Finite Observer |
-| 3 | Price of Being / Thermodynamic Levels / Beaker |
-| 4 | Immanentist Underground / Genealogy of Exaptation |
-| 5 | Genesis Engine / Architecture of Novelty |
-| 6 | Stabilisation Engine / Hylogenesis / Witness–Canon |
-| 7 | Stratification Engine / Normogenesis |
-| 8 | Bioelectric Governor |
-| 9 | Embodied Present |
-| 10 | Affective Witness |
-| 11 | Offline Mind |
-| 12 | Symbolic Exit |
-| 13 | Sixth Transduction / AI rupture |
-
-## Suggested Site Collections by Book Function
+## Site Collections by Book Function
 
 ### Concepts
 
-Concepts should extract recurring theoretical operators from the book.
+Extract stable theoretical operators.
 
 Priority concepts:
 
@@ -69,8 +48,8 @@ Transduction
 Cessation Signature
 Burn Rate
 Landauer Floor
-Flat Physicalism
 Finite Observer
+Flat Physicalism
 Stratogonic Principle
 Metastable Field
 Variation
@@ -94,7 +73,7 @@ Sixth Transduction
 
 ### Essays
 
-Essays should become chapter companion pages.
+Use essays as chapter companions.
 
 Suggested essay set:
 
@@ -116,7 +95,7 @@ The Sixth Transduction
 
 ### Paths
 
-Reading paths should guide readers through the book.
+Reading paths should guide entry into the book.
 
 Suggested paths:
 
@@ -133,82 +112,41 @@ For AI / Knowledge-System Builders
 
 ### Diagrams
 
-Diagrams should make the book’s architecture visible.
-
-Suggested diagrams:
+Suggested first diagrams:
 
 ```txt
-Book Architecture Map
+The Book Spine
 R1–R4 Strata
 Variation–Encounter–Mediation
 Genesis Engine
 Stabilisation Engine
 Stratification Engine
 Witness–Canon Architecture
-The Cognitive Sequence: Bioelectric → Embodied → Affective → Offline → Symbolic
+The Cognitive Sequence
 The Sixth Transduction
 ```
 
 ### Fragments
 
-Fragments can preserve compact formulations from the manuscript.
-
-Examples:
+Fragments can preserve compact formulations:
 
 ```txt
 Persistence is priced.
 Cessation is diagnostic.
 The Demon has an unpaid bill.
-Genesis is the transition from structural 2 to structural 3.
+The ledger is open.
 Stratification is not ascent.
 The genome is the parts list; the bioelectric field is the construction plan.
 ```
 
-## Homepage Reframing
-
-Suggested homepage title:
-
-```txt
-Ontogony.
-A Field Guide to the Transductive Universe.
-```
-
-Suggested subtitle:
-
-```txt
-A public companion to a book-length theory of transduction, thermodynamic levels, and the genesis of regimes.
-```
-
-Alternative lyrical line:
-
-```txt
-A field guide to the becoming of things.
-```
-
-Use the lyrical line as a secondary phrase, not as the only identity.
-
-## About Page Reframing
-
-The About page should answer:
-
-```txt
-What is the book?
-What is the site?
-How should I read it?
-Where should I begin?
-How are concepts, essays, paths, diagrams, and fragments related?
-```
-
-## Chapter Companion Page Pattern
-
-Each chapter-facing essay/page can follow this pattern:
+## Chapter Companion Pattern
 
 ```md
 # Chapter N — Title
 
 ## The problem
 
-## The opening ordeal / anchor scene
+## The opening ordeal
 
 ## The central operator
 
@@ -221,12 +159,17 @@ Each chapter-facing essay/page can follow this pattern:
 ## Read next
 ```
 
-## First Priority
+## Homepage Framing
 
-The next content pass should update the existing MDX so the live site clearly presents itself as:
+Preferred:
 
 ```txt
-Ontogony: A Field Guide to the Transductive Universe
+Ontogony.
+A Field Guide to the Transductive Universe.
 ```
 
-and begins to map the thirteen-chapter manuscript.
+Subtitle:
+
+```txt
+A public companion to a book-length theory of transduction, thermodynamic levels, and the genesis of regimes.
+```

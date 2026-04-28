@@ -2,11 +2,9 @@
 
 ## Current Position
 
-The site is live at:
+Ontogony is live at:
 
 https://ontogony.net
-
-The next phase is to align it more closely with the book.
 
 Canonical title:
 
@@ -14,100 +12,97 @@ Canonical title:
 Ontogony: A Field Guide to the Transductive Universe
 ```
 
-## Strategic Goal
+The next phase is to transform it from a strong live site into a maintainable public companion atlas to the book.
 
-Turn the site into a public field guide and companion atlas to the book.
+## Phase 1 — TinaCMS / Editorial Workflow
 
-## Phase 1 — Content Alignment Pass
-
-Update the existing MDX and site copy so the title, homepage, theory/about pages, and metadata clearly frame the site as:
+Goal:
 
 ```txt
-Ontogony: A Field Guide to the Transductive Universe
+Make the site easy to write and maintain.
 ```
 
-and as a public companion to the book’s argument.
+Work:
 
-## Phase 2 — Chapter Spine
+- draft/published status
+- createdAt / updatedAt
+- production draft filtering
+- TinaCMS admin
+- MDX body editing
+- slug/reference audit
+- Vercel admin deploy
 
-Create a visible chapter map.
+## Phase 2 — Book Alignment
 
-Possible page:
+Goal:
 
 ```txt
-/book
+Make the book architecture visible.
 ```
 
-or:
+Work:
+
+- homepage title/framing update
+- theory/about as book companion orientation
+- thirteen-chapter spine
+- chapter-to-concept mapping
+- existing concept language alignment
+
+## Phase 3 — Chapter Companion Pages
+
+Goal:
 
 ```txt
-/theory
+Create public entry points into each chapter.
 ```
 
-Structure:
+Start with:
 
-```txt
-Chapter 1 — The Hard Problem of Grounding
-Chapter 2 — The Demon’s Unpaid Bill
-Chapter 3 — The Price of Being
-Chapter 4 — The Immanentist Underground
-Chapter 5 — The Genesis Engine
-Chapter 6 — The Stabilisation Engine
-Chapter 7 — The Stratification Engine
-Chapter 8 — The Bioelectric Governor
-Chapter 9 — The Embodied Present
-Chapter 10 — The Affective Witness
-Chapter 11 — The Offline Mind
-Chapter 12 — The Symbolic Exit
-Chapter 13 — The Sixth Transduction
-```
-
-## Phase 3 — Chapter Companion Essays
-
-Create one shorter public companion page per chapter.
-
-Each page should summarize:
-
-- the problem
-- the ordeal
-- the operator
-- key concepts
-- what the chapter establishes
-- what it hands forward
+1. The Hard Problem of Grounding
+2. The Demon’s Unpaid Bill
+3. The Price of Being
+4. The Genesis Engine
+5. The Sixth Transduction
 
 ## Phase 4 — Concept Expansion
 
-Extract concepts from the book into field-guide entries.
-
-Priority concepts:
+Add concepts extracted from the manuscript:
 
 ```txt
 Cessation Signature
 Burn Rate
 Landauer Floor
 Finite Observer
-Flat Physicalism
 Stratogonic Principle
 Genesis Engine
 Stabilisation Engine
-Witness
-Canon
+Witness–Canon
 Closure-Crisis Lemma
 Stratification Engine
-Normogenesis
 Bioelectric Governor
-Embodied Present
 Affective Witness
 Offline Mind
 Symbolic Exit
 Sixth Transduction
 ```
 
-## Phase 5 — Reading Paths
+## Phase 5 — Diagrams
 
-Build reading paths that help readers enter the book.
+Create:
 
-Suggested paths:
+```txt
+Book Spine
+R1–R4 Strata
+Variation–Encounter–Mediation
+Three Engines
+Witness–Canon
+Cognitive Sequence
+Sixth Transduction
+```
+
+## Phase 6 — Reading Paths
+
+Create:
 
 ```txt
 Start Here: The Book in 20 Minutes
@@ -118,32 +113,15 @@ The Cognitive Strata
 Symbolic Order and AI
 ```
 
-## Phase 6 — Diagrams
+## Phase 7 — Search and Backlinks
 
-Create diagrams for the book architecture.
+Add static search and generated reverse links.
 
-Suggested first diagrams:
+## Phase 8 — Public Presentation
 
-```txt
-The Book Spine
-The R1–R4 Strata
-Variation–Encounter–Mediation
-The Three Engines
-Witness–Canon Architecture
-The Cognitive Sequence
-The Sixth Transduction
-```
+Create:
 
-## Phase 7 — CMS
-
-Add TinaCMS or another Git-backed CMS so the book-site relation is easy to maintain.
-
-## Phase 8 — Search and Backlinks
-
-Once the book content is represented, add:
-
-- search
-- backlinks
-- appears-in sections
-- chapter-to-concept references
-- concept-to-chapter references
+- launch/refined announcement
+- short public description
+- about-the-book page
+- feedback invitation

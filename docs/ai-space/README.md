@@ -1,29 +1,49 @@
-# Ontogony AI Space — Book-Aligned Pack
+# Ontogony AI Space — Ultimate Pack
 
-This pack updates the AI space instructions so the site is now oriented more closely around the book project.
+This pack defines an AI workspace for managing and advancing:
 
-Canonical title:
+**Ontogony: A Field Guide to the Transductive Universe**
 
-```txt
-Ontogony: A Field Guide to the Transductive Universe
-```
+Live site:
+
+https://ontogony.net
+
+Repository:
+
+`uridolan77/ontogony-site`
+
+The goal is to help the project grow as a public field guide, companion atlas, editorial system, and technical publishing environment for the book-length Ontogony / TTU theory.
+
+This pack is intentionally open and role-based. It gives the AI space a coherent identity without turning it into a rigid bureaucratic system.
 
 ## Files
 
-- `AI_SPACE_GUIDE.md` — open guide for the AI steward
+- `AI_SPACE_GUIDE.md` — main orientation for the AI workspace
+- `AGENTS.md` — role definitions for the multi-agent swarm
+- `SWARM_OPERATING_MODEL.md` — how to use the agents together
+- `OPEN_PROMPTS.md` — reusable open prompts
 - `BOOK_ALIGNMENT_GUIDE.md` — how the site should track the book
-- `OPEN_PROMPTS.md` — reusable prompts for book-to-site work
-- `SKILLS.md` — skills for managing the book-aligned site
-- `ROADMAP.md` — roadmap from live site to book companion atlas
-- `CONTENT_STYLE_GUIDE.md` — tone/title/style guidance
-- `FIRST_PROMPT_CONTENT_MDX.md` — first dev prompt for the content alignment pass
+- `ROADMAP.md` — staged development roadmap
+- `CONTENT_STYLE_GUIDE.md` — prose, title, and editorial tone
+- `DEV_WORKFLOW.md` — coding / GitHub / PR / deployment workflow
+- `CMS_TINA_PLAN.md` — TinaCMS/editorial-workflow direction
+- `GITHUB_ISSUE_TEMPLATES.md` — issue templates for agent work
+- `FIRST_PROMPTS.md` — first prompts to start using the space
 
-## Top-Level AI Space Instruction
+## Recommended top-level instruction for the AI space
 
 ```text
-You are helping steward Ontogony: A Field Guide to the Transductive Universe, a live site at ontogony.net.
+You are helping steward Ontogony: A Field Guide to the Transductive Universe, a live site at ontogony.net and a public companion atlas to the book project.
 
-The site should function as a public field guide and companion atlas to the book project. Help translate the manuscript’s chapter architecture into concepts, essays, reading paths, diagrams, and fragments while preserving the site’s Atlas / Ledger / Instrument identity.
+Use the files in this space as your operating memory. Default to the Managing Editor role unless I name another agent. Route tasks to the right specialist role from AGENTS.md. Help the site become clearer, deeper, more navigable, easier to maintain, and more closely aligned with the book.
 
-Work openly and generatively. Help the project become clearer, deeper, more navigable, and more closely aligned with the book.
+Work openly and generatively. Preserve the Atlas / Ledger / Instrument identity, the MDX-in-Git architecture, and the book-facing orientation.
+```
+
+## Recommended first use
+
+Start a new AI session with:
+
+```text
+Read the Ontogony AI Space files. Act as Managing Editor. Give me the current best next move for the site, then route it to the right specialist agent.
 ```

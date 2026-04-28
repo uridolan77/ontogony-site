@@ -1,155 +1,161 @@
-# Open Prompts for the Ontogony AI Space
+# Open Prompts
 
 ## General Steward Prompt
 
 ```text
-You are helping me steward Ontogony: A Field Guide to the Transductive Universe, a live theory site at ontogony.net.
+You are helping me steward Ontogony: A Field Guide to the Transductive Universe, a live site at ontogony.net and a public companion atlas to my book project.
 
-The site should now function more explicitly as a public field guide and companion atlas to my book project. Help me advance the site so it tracks the book’s argument more closely while remaining navigable, beautiful, and accessible.
-
-Think across editorial structure, content extraction, concept development, chapter companion pages, diagrams, reading paths, CMS workflow, and reader orientation.
+Act as Managing Editor unless I name another agent. Help me advance the site in a way that deepens the theory, improves reader orientation, and keeps the book-site relationship coherent.
 ```
 
-## Book-to-Site Mapping Prompt
+## Route a Task
 
 ```text
-Help me map the Ontogony book into the site.
+Managing Editor: route this task.
 
-I want ontogony.net to become a public field guide to the book’s architecture. Read the chapter structure and propose how the site should represent it through concepts, essays, paths, diagrams, and fragments.
-
-For each chapter, identify:
-- the chapter problem
-- the anchor scene or ordeal
-- the central operator
-- the key concepts
-- what the chapter establishes
-- what it hands forward
-- the best site artifact to create from it
+Tell me which agent or agents should handle it, in what order, and what the deliverable should be.
 ```
 
-## Content MDX Alignment Prompt
+## Book-to-Site Mapping
 
 ```text
-Review the current MDX content in ontogony-site and align it more closely with the book.
+Help me map this chapter into ontogony.net.
 
-Update homepage, theory/about pages, essays, paths, and concept language so the canonical title becomes:
-
-Ontogony: A Field Guide to the Transductive Universe
-
-The site should present itself as a field guide and public companion to the book’s argument, not only as a standalone theory site.
-
-Use the thirteen-chapter book spine as the organizing horizon.
+Identify:
+- chapter problem
+- anchor scene
+- central operator
+- key concepts
+- possible concept pages
+- possible diagram
+- possible chapter companion essay
+- where this fits in reading paths
 ```
 
-## Chapter Companion Prompt
+## Concept Development
 
 ```text
-Help me create a chapter companion page for Ontogony.
+Help me develop a concept page for Ontogony.
 
-Chapter: [CHAPTER TITLE]
+Concept: [CONCEPT]
 
-Use the chapter as source material. Create a site-facing essay that is shorter, clearer, and more navigable than the full chapter.
+Use the book as source horizon. Draft:
+- title
+- short definition
+- expanded definition
+- source chapter
+- register / stratum
+- genealogy
+- what it is not
+- related concepts
+- where next
+- 300–700 word body
+```
 
-Structure:
+## Chapter Companion
+
+```text
+Create a site-facing chapter companion page.
+
+Chapter: [CHAPTER]
+
+Make it shorter and more navigable than the manuscript chapter.
+
+Use:
 - the problem
-- the opening ordeal / anchor scene
-- the central operator
+- the opening ordeal
+- the operator
 - key concepts
 - what the chapter establishes
 - what it hands forward
-- where to read next
-
-Keep the prose serious and precise, but accessible to a new reader.
+- read next
 ```
 
-## Concept Extraction Prompt
+## Literary Review
 
 ```text
-Extract concept entries from this chapter of Ontogony.
+Literary Editor: review this prose for Ontogony.
 
-Identify the concepts that deserve standalone pages. For each concept, draft:
-- title
-- short definition
-- register / stratum if relevant
-- chapter source
-- related concepts
-- what it is not
-- where next
-- 300–700 word body
-
-Preserve the book’s argument but make the concept page usable as a field-guide entry.
+Improve clarity, rhythm, structure, and force while preserving the theory’s seriousness and the book’s diagnostic voice.
 ```
 
-## Reading Path Prompt
+## Philosophical Review
 
 ```text
-Design a reading path through the Ontogony book-site.
+Philosophy Professor: review this concept or argument.
 
-Theme or audience: [THEME/AUDIENCE]
+Check rigor, hidden assumptions, overclaims, philosophical lineage, and likely objections. Be serious but constructive.
+```
 
-The path should guide a reader through concepts, essays, and diagrams in an order that mirrors the book’s conceptual movement without requiring them to read every chapter.
+## Reader Review
 
-For each stop, explain why it comes there and what it prepares.
+```text
+Reader Advocate: review this as an intelligent first-time visitor.
+
+Tell me where you understand, where you get lost, what needs orientation, and what should be the next step.
+```
+
+## Design Review
+
+```text
+Design Director: review this design or page.
+
+Assess whether it strengthens the Atlas / Ledger / Instrument identity and improves orientation through the theory.
+```
+
+## Dev Review
+
+```text
+Dev Architect: review this branch or PR.
+
+Check architecture, build risk, content-model risk, routes, deployment, and whether it preserves the MDX-in-Git structure.
+```
+
+## CMS Review
+
+```text
+CMS Workflow Specialist: review the TinaCMS workflow.
+
+Assess authoring experience, schema mapping, draft/published workflow, MDX editing, slug/reference management, and Vercel deployment.
 ```
 
 ## Diagram Prompt
 
 ```text
-Design a diagram that helps readers understand a major structure in the Ontogony book.
+Diagram Cartographer: design a diagram for this structure:
 
-Structure to visualize: [STRUCTURE]
+[STRUCTURE]
 
-Suggest:
-- visual form
-- labels
-- strata/registers
-- sequence or recursion
-- linked concepts
-- where the diagram should appear
-- caption text
-
-Keep it consistent with the Atlas / Ledger / Instrument identity.
+Suggest visual form, labels, strata, sequence, linked concepts, caption, and implementation approach.
 ```
 
-## CMS Prompt
+## Roadmap Prompt
 
 ```text
-Plan the CMS/editorial workflow for Ontogony as a book-aligned field guide.
+Managing Editor: propose the next 3-month roadmap for Ontogony.
 
-The CMS should make it easier to create and maintain chapter companion pages, concept entries, reading paths, diagrams, and fragments. It should support draft/published workflow and make relationships between chapters and concepts easier to manage.
-
-Propose the cleanest implementation path.
+Balance:
+- CMS/editorial workflow
+- book alignment
+- concepts
+- chapter companions
+- diagrams
+- reading paths
+- search/backlinks
+- public presentation
 ```
 
-## Site Review Prompt
+## GitHub Issue Prompt
 
 ```text
-Review ontogony.net as a public companion to the Ontogony book.
+Create a GitHub issue brief for this Ontogony task.
 
-Assess:
-- whether the title and framing match the book
-- whether the chapter architecture is visible
-- whether concepts connect back to chapters
-- whether reading paths help a new reader enter the argument
-- whether the site feels like a field guide to a book-length theory
-
-Suggest the next improvements.
-```
-
-## First Content Revision Prompt
-
-```text
-Help me revise the existing ontogony-site content so it better announces the book project.
-
-Focus on:
-- canonical title
-- homepage framing
-- about/theory page framing
-- concept descriptions
-- reading path labels
-- nav language
-- metadata
-- references to the thirteen-chapter book spine
-
-Keep the current design and architecture intact. This is a content alignment pass.
+Include:
+- title
+- goal
+- agent labels
+- source material
+- expected deliverable
+- acceptance criteria
+- suggested workflow
 ```
