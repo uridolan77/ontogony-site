@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NextSteps from '../components/NextSteps.astro';
+---
+
+<BaseLayout
+  title="The Theory"
+  description="A short introduction to Ontogony and the Transductive Universe."
+>
+  <p class="kicker">The Theory</p>
+  <h1 class="page-title">Ontogony</h1>
+  <p class="lede">
+    A theory of becoming, built from the bottom up. About what it costs for
+    anything to be the kind of thing it is, and how new kinds of things come
+    into being at all.
+  </p>
+  <hr />
+
+  <div class="prose">
+    <p>
+      Ontogony starts from a simple observation: persistence is not free. Every
+      regime that holds itself together against the second law does so at a
+      measurable rate of energy dissipation. That rate is constitutive of what
+      the regime <em>is</em>, not incidental to it.
+    </p>
+    <p>
+      From that single commitment, a framework follows. The general operator at
+      its centre is <a href="/concepts/transduction">transduction</a> — the
+      irreversible resolution of a metastable field through which a new regime,
+      with its own vocabulary and its own conditions of failure, precipitates.
+      Transduction is what happens when the universe installs a new register of
+      description, and it is the structural shape that links a crystal forming,
+      a cell metabolising, and a symbolic system bootstrapping its own
+      grammar.
+    </p>
+    <p>
+      The theory is being written as a long book. This site is the field guide:
+      a set of short, self-contained entries that let a stranger get the shape
+      of the project quickly, and a serious reader trace the threads in
+      whatever order they prefer.
+    </p>
+  </div>
+
+  <NextSteps
+    heading="Where to start"
+    concepts={['transduction']}
+  />
+</BaseLayout>
