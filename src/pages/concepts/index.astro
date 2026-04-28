@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const concepts = (await getCollection('concepts')).sort((a, b) => {
+  const ao = a.data.order ?? Number.POSITIVE_INFINITY;
+  const bo = b.data.order ?? Number.POSITIVE_INFINITY;
+  if (ao !== bo) return ao - bo;
+  return a.data.title.localeCompare(b.data.title);
+});
+---
+
+<BaseLayout
+  title="Concepts"
+  description="The vocabulary of Ontogony — concept by concept."
+>
+  <p class="kicker">Index</p>
+  <h1 class="page-title">Concepts</h1>
+  <p class="lede">
+    The vocabulary of Ontogony, one term at a time. Each concept is built to
+    stand alone; together they compose the framework.
+  </p>
+  <hr />
+
+  <ul class="concept-index-list">
+    {
+      concepts.map((concept) => (
+        <li>
+          <h2>
+            <a href={`/concepts/${concept.id}`}>{concept.data.title}</a>
+          </h2>
+          <p>{concept.data.short}</p>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

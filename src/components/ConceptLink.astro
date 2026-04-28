@@ -1,0 +1,19 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props {
+  slug: string;
+  showTooltip?: boolean;
+}
+
+const { slug, showTooltip = true } = Astro.props;
+const entry = await getEntry('concepts', slug);
+
+const href = `/concepts/${slug}`;
+const label = entry?.data.title ?? slug;
+const tooltip = showTooltip ? entry?.data.short : undefined;
+---
+
+<a class="concept-link" href={href} data-tooltip={tooltip}>
+  <slot>{label}</slot>
+</a>
