@@ -2,8 +2,12 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
+
 export async function getStaticPaths() {
-  const entries = await getCollection('concepts');
+  const entries = (await getCollection('concepts')).sort(
+    (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
+  );
   return entries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry, all: entries },
@@ -14,24 +18,67 @@ const { entry, all } = Astro.props;
 const { Content } = await render(entry);
 
 const byId = new Map(all.map((c) => [c.id, c]));
+
 const related = (entry.data.related ?? [])
   .map((slug) => byId.get(slug))
   .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
-const stratumName: Record<'R1' | 'R2' | 'R3' | 'R4', string> = {
+const stratumName: Record<Stratum, string> = {
   R1: 'FIELD',
   R2: 'BIOLOGICAL',
   R3: 'COGNITIVE',
   R4: 'INSTITUTIONAL',
 };
+const stratumGloss: Record<Stratum, string> = {
+  R1: 'pre-individual',
+  R2: 'metabolic-closure',
+  R3: 'neural-integrative',
+  R4: 'symbolic-political',
+};
 
 const register = entry.data.register;
 const order = entry.data.order;
 const total = all.length;
-const indexLabel =
+
+const orderLabel =
   typeof order === 'number'
     ? `${String(order).padStart(3, '0')} / ${String(total).padStart(3, '0')}`
     : undefined;
+
+const kickerLine =
+  typeof order === 'number'
+    ? `CONCEPT · ENTRY ${String(order).padStart(3, '0')} · ${register} ${stratumName[register]}`
+    : `CONCEPT · ${register} ${stratumName[register]}`;
+
+const whereNext = (entry.data.whereNext ?? []).map((step) => {
+  let title = step.title;
+  let metaSuffix = '';
+
+  if (step.kind === 'concept') {
+    const c = byId.get(step.slug);
+    if (c) {
+      title = title ?? c.data.title;
+      metaSuffix = ` · ${c.data.register}`;
+    } else {
+      title = title ?? step.slug;
+    }
+  } else if (!title) {
+    title = step.slug;
+  }
+
+  const href =
+    step.kind === 'concept'
+      ? `/concepts/${step.slug}`
+      : step.kind === 'essay'
+        ? `/essays/${step.slug}`
+        : step.kind === 'path'
+          ? `/paths/${step.slug}`
+          : `/diagrams/${step.slug}`;
+
+  const meta = `${step.kind.toUpperCase()}${metaSuffix}`;
+
+  return { href, title: title!, why: step.why, meta };
+});
 ---
 
 <BaseLayout
@@ -39,31 +86,127 @@ const indexLabel =
   description={entry.data.short}
   kind="CONCEPT"
   detail={`${register} · ${stratumName[register]}`}
-  active={indexLabel}
+  active={orderLabel}
   currentStratum={register}
+  narrow
 >
-  <article>
-    <p class="kicker">Concept</p>
-    <h1 class="page-title">{entry.data.title}</h1>
-    <p class="lede">{entry.data.short}</p>
-    <hr />
-    <div class="prose">
-      <Content />
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">{kickerLine}</p>
+  <h1 class="h1">{entry.data.title}</h1>
+  <p class="standfirst" style="margin-top: 22px;">{entry.data.short}</p>
+
+  <dl class="ledger">
+    <div class="ledger-row">
+      <dt>Register</dt>
+      <dd>
+        <span class="tag plain">{register}</span> &nbsp;
+        <span class="muted">{stratumName[register].toLowerCase()} — {stratumGloss[register]}.</span>
+      </dd>
     </div>
 
-    {
-      related.length > 0 && (
-        <section class="ledger-meta">
-          <span class="ledger-meta-label">Related concepts</span>
-          <ul class="ledger-meta-values">
-            {related.map((rel) => (
-              <li>
-                <a href={`/concepts/${rel.id}`}>{rel.data.title}</a>
-              </li>
-            ))}
+    {entry.data.burnRate && (
+      <div class="ledger-row">
+        <dt>Burn rate</dt>
+        <dd>{entry.data.burnRate}</dd>
+      </div>
+    )}
+
+    {entry.data.cessation && (
+      <div class="ledger-row">
+        <dt>Cessation signature</dt>
+        <dd>{entry.data.cessation}</dd>
+      </div>
+    )}
+
+    {entry.data.genealogy.length > 0 && (
+      <div class="ledger-row">
+        <dt>Genealogy</dt>
+        <dd>{entry.data.genealogy.join(' · ')}</dd>
+      </div>
+    )}
+
+    {entry.data.chapter && (
+      <div class="ledger-row">
+        <dt>Appears in</dt>
+        <dd><span class="muted">{entry.data.chapter}</span></dd>
+      </div>
+    )}
+
+    {related.length > 0 && (
+      <div class="ledger-row">
+        <dt>Related</dt>
+        <dd>
+          {related.map((rel, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a class="link" href={`/concepts/${rel.id}`}>{rel.data.title}</a>
+            </>
+          ))}
+        </dd>
+      </div>
+    )}
+
+    {entry.data.notThis.length > 0 && (
+      <div class="ledger-row">
+        <dt>What it is not</dt>
+        <dd>
+          <ul>
+            {entry.data.notThis.map((n) => <li>{n}</li>)}
           </ul>
-        </section>
-      )
-    }
-  </article>
+        </dd>
+      </div>
+    )}
+
+    {whereNext.length > 0 && (
+      <div class="ledger-row last">
+        <dt>Where next</dt>
+        <dd>
+          <div class="where-next">
+            {whereNext.map((w) => (
+              <a class="next" href={w.href}>
+                <span class="next-title">
+                  {w.title}
+                  {w.why && <em>{w.why}</em>}
+                </span>
+                <span class="next-meta">{w.meta}</span>
+                <span class="next-arrow">·→</span>
+              </a>
+            ))}
+          </div>
+        </dd>
+      </div>
+    )}
+  </dl>
+
+  <div class="body" style="margin-top: 56px;">
+    <Content />
+  </div>
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">REGISTER</span>
+      {register} · {stratumName[register].toLowerCase()} — {stratumGloss[register]}.
+    </div>
+    {entry.data.genealogy.length > 0 && (
+      <div class="note">
+        <span class="label">GENEALOGY</span>
+        {entry.data.genealogy.join(' · ')}.
+      </div>
+    )}
+    {related.length > 0 && (
+      <div class="note">
+        <span class="label">RELATED</span>
+        {related.map((rel, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a class="link" href={`/concepts/${rel.id}`}>{rel.data.title}</a>
+          </>
+        ))}
+      </div>
+    )}
+    <div class="note">
+      <span class="label">PROTOCOL</span>
+      Hold throughput conditions fixed; record the order in which
+      macrovariables drop out. The sequence is the regime.
+    </div>
+  </Fragment>
 </BaseLayout>
