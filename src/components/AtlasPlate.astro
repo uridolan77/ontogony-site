@@ -1,0 +1,127 @@
+---
+interface Props {
+  title: string;
+  caption: string;
+  image: string;
+  href?: string;
+  label?: string;
+  priority?: boolean;
+}
+
+const {
+  title,
+  caption,
+  image,
+  href,
+  label = 'ATLAS PLATE',
+  priority = false,
+} = Astro.props as Props;
+
+const imageLoading = priority ? 'eager' : 'lazy';
+const imageFetchPriority = priority ? 'high' : 'auto';
+---
+
+<figure class="atlas-plate" data-atlas-plate>
+  <div class="atlas-frame">
+    <img
+      src={image}
+      alt={title}
+      loading={imageLoading}
+      fetchpriority={imageFetchPriority}
+      decoding="async"
+    />
+  </div>
+
+  <figcaption class="atlas-meta">
+    <p class="atlas-label">{label}</p>
+    <h2 class="atlas-title">{title}</h2>
+    <p class="atlas-caption">{caption}</p>
+    {href && <a class="atlas-link" href={href}>Open diagram page ·→</a>}
+  </figcaption>
+</figure>
+
+<style>
+  .atlas-plate {
+    width: min(94vw, 1600px);
+    margin: 40px 0;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-paper-2);
+    padding: clamp(12px, 1.3vw, 20px);
+    display: grid;
+    gap: 14px;
+  }
+
+  .atlas-frame {
+    border: 1px solid var(--color-rule);
+    background: var(--color-paper);
+  }
+
+  .atlas-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .atlas-meta {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 10px;
+  }
+
+  .atlas-label {
+    margin: 0 0 8px;
+    font-size: 11px;
+    letter-spacing: 0.11em;
+    color: var(--color-ink-muted);
+  }
+
+  .atlas-title {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.3vw, 1.32rem);
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  .atlas-caption {
+    margin: 8px 0 0;
+    color: var(--color-ink-soft);
+    line-height: 1.5;
+    max-width: 92ch;
+  }
+
+  .atlas-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--color-ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .atlas-link:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .atlas-link:focus-visible {
+    outline: 2px solid var(--color-active);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 760px) {
+    .atlas-plate {
+      width: calc(100vw - 24px);
+      margin: 30px 0;
+      margin-left: 50%;
+      padding: 12px;
+    }
+
+    .atlas-caption {
+      max-width: none;
+    }
+  }
+</style>

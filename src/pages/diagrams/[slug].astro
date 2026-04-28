@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AtlasPlate from '../../components/AtlasPlate.astro';
 import { getPublished } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -35,9 +36,12 @@ const chapterLabel = entry.data.chapterNumber
   )}
 
   {entry.data.image && (
-    <figure style="margin-top: 32px;">
-      <img src={entry.data.image} alt={entry.data.title} />
-    </figure>
+    <AtlasPlate
+      title={entry.data.title}
+      caption={entry.data.caption ?? `Diagram plate for ${entry.data.title}.`}
+      image={entry.data.image}
+      priority={true}
+    />
   )}
 
   <div class="body" style="margin-top: 36px;">

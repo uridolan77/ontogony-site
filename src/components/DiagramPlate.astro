@@ -41,9 +41,13 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
         aria-controls={modalId}
         data-expand-trigger
       >
-        {expandLabel}
+        <span class="overlay-icon" aria-hidden="true">⤢</span>
+        <span>{expandLabel}</span>
       </button>
-      <a class="overlay-button" href={href}>{openLabel} →</a>
+      <a class="overlay-button" href={href}>
+        <span class="overlay-icon" aria-hidden="true">↗</span>
+        <span>{openLabel}</span>
+      </a>
     </div>
   </div>
   <figcaption>
@@ -189,7 +193,7 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
   .image-actions {
     position: absolute;
     right: 12px;
-    bottom: 12px;
+    top: 12px;
     z-index: 2;
     display: flex;
     gap: 8px;
@@ -221,6 +225,15 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
     padding: 6px 10px;
     line-height: 1;
     white-space: nowrap;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .overlay-icon {
+    font-size: 0.78rem;
+    line-height: 1;
   }
 
   button.overlay-button {
