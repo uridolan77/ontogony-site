@@ -15,7 +15,9 @@
     "check": "npm run audit:slugs && npm run build",
     "tina:dev": "tinacms dev -c \"npm run dev\"",
     "tina:build": "tinacms build",
-    "tina:build:local": "tinacms build --local --skip-cloud-checks"
+    "tina:build:local": "tinacms build --local --skip-cloud-checks",
+    "tina:clean": "node scripts/tina-clean.mjs",
+    "debug:tina": "npm run tina:clean && npm run tina:build:local"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
