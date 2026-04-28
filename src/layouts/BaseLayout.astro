@@ -1,18 +1,41 @@
 ---
 import '../styles/global.css';
 import InstrumentBar from '../components/InstrumentBar.astro';
+import Nav from '../components/Nav.astro';
+import StratumLocator from '../components/StratumLocator.astro';
+
+type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Top-bar kind label, e.g. "HOME", "CONCEPT", "ESSAY · 03". */
+  kind?: string;
+  /** Top-bar detail (gold), e.g. "R2 · BIOLOGICAL", "7 STOPS". */
+  detail?: string;
+  /** Top-bar active readout, e.g. "014 / 087", "~6 MIN". */
+  active?: string;
+  /** Highlights this stratum in the locator. */
+  currentStratum?: Stratum;
+  /** Tightens reading column to 58ch. */
+  narrow?: boolean;
 }
 
 const {
   title,
   description = 'A field guide to the Transductive Universe.',
+  kind,
+  detail,
+  active,
+  currentStratum,
+  narrow = false,
 } = Astro.props;
 
-const fullTitle = title ? `${title} — Ontogony` : 'Ontogony';
+const fullTitle = title
+  ? `${title} — Ontogony`
+  : 'Ontogony — A Field Guide to the Transductive Universe';
+const readingClass = narrow ? 'reading narrow' : 'reading';
+const hasMarginNotes = Astro.slots.has('margin-notes');
 ---
 
 <!doctype html>
@@ -22,18 +45,33 @@ const fullTitle = title ? `${title} — Ontogony` : 'Ontogony';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap"
-    />
   </head>
   <body>
-    <InstrumentBar />
-    <div class="page-shell">
-      <slot />
+    <InstrumentBar kind={kind} detail={detail} active={active} />
+
+    <div class="frame">
+      <aside class="rail-left">
+        <div>
+          <Nav />
+          <StratumLocator current={currentStratum} />
+        </div>
+      </aside>
+
+      <main class={readingClass}>
+        <slot />
+      </main>
+
+      <aside class="rail-right">
+        <div>
+          {
+            hasMarginNotes && (
+              <div class="margin-notes">
+                <slot name="margin-notes" />
+              </div>
+            )
+          }
+        </div>
+      </aside>
     </div>
   </body>
 </html>

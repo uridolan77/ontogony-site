@@ -17,9 +17,31 @@ const byId = new Map(all.map((c) => [c.id, c]));
 const related = (entry.data.related ?? [])
   .map((slug) => byId.get(slug))
   .filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+const stratumName: Record<'R1' | 'R2' | 'R3' | 'R4', string> = {
+  R1: 'FIELD',
+  R2: 'BIOLOGICAL',
+  R3: 'COGNITIVE',
+  R4: 'INSTITUTIONAL',
+};
+
+const register = entry.data.register;
+const order = entry.data.order;
+const total = all.length;
+const indexLabel =
+  typeof order === 'number'
+    ? `${String(order).padStart(3, '0')} / ${String(total).padStart(3, '0')}`
+    : undefined;
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.short}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.short}
+  kind="CONCEPT"
+  detail={`${register} · ${stratumName[register]}`}
+  active={indexLabel}
+  currentStratum={register}
+>
   <article>
     <p class="kicker">Concept</p>
     <h1 class="page-title">{entry.data.title}</h1>

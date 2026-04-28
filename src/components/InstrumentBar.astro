@@ -1,26 +1,20 @@
 ---
-const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+interface Props {
+  kind?: string;
+  detail?: string;
+  active?: string;
+}
 
-const links = [
-  { href: '/theory', label: 'Theory' },
-  { href: '/concepts', label: 'Concepts' },
-];
-
-const isActive = (href: string) =>
-  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+const { kind, detail, active } = Astro.props;
 ---
 
 <header class="instrument-bar">
-  <div class="instrument-bar-inner">
-    <a class="instrument-bar-mark" href="/">Ontogony</a>
-    <nav class="instrument-bar-nav" aria-label="Primary">
-      {
-        links.map((link) => (
-          <a href={link.href} class:list={[{ 'is-active': isActive(link.href) }]}>
-            {link.label}
-          </a>
-        ))
-      }
-    </nav>
+  <div class="inner">
+    <a class="wordmark" href="/">ONTOGONY <em>a field guide</em></a>
+    <div class="readouts">
+      {kind && <span>{kind}</span>}
+      {detail && <span class="gold">{detail}</span>}
+      {active && <span class="active">{active}</span>}
+    </div>
   </div>
 </header>

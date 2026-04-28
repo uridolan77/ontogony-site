@@ -13,6 +13,8 @@ const concepts = (await getCollection('concepts')).sort((a, b) => {
 <BaseLayout
   title="Concepts"
   description="The vocabulary of Ontogony — concept by concept."
+  kind="ATLAS · CONCEPTS"
+  active={`${concepts.length} ENTRIES`}
 >
   <p class="kicker">Index</p>
   <h1 class="page-title">Concepts</h1>

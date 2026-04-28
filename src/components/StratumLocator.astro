@@ -1,0 +1,30 @@
+---
+type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
+
+interface Props {
+  current?: Stratum;
+}
+
+const { current } = Astro.props;
+
+const items: Array<{ r: Stratum; name: string; gloss: string }> = [
+  { r: 'R4', name: 'R4 · Institutional', gloss: 'symbolic-political' },
+  { r: 'R3', name: 'R3 · Cognitive', gloss: 'neural-integrative' },
+  { r: 'R2', name: 'R2 · Biological', gloss: 'metabolic-closure' },
+  { r: 'R1', name: 'R1 · Field', gloss: 'pre-individual' },
+];
+---
+
+<ul class="stratum-locator" id="stratum-locator">
+  {
+    items.map((item) => (
+      <li
+        data-r={item.r}
+        aria-current={current === item.r ? 'true' : undefined}
+      >
+        <span class="name">{item.name}</span>
+        <span class="gloss">{item.gloss}</span>
+      </li>
+    ))
+  }
+</ul>
