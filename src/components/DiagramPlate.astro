@@ -5,6 +5,8 @@ interface Props {
   image: string;
   href: string;
   label?: string;
+  expandLabel?: string;
+  openLabel?: string;
 }
 
 const {
@@ -13,20 +15,125 @@ const {
   image,
   href,
   label = 'DIAGRAM',
+  expandLabel = 'Expand',
+  openLabel = 'Open diagram page',
 } = Astro.props as Props;
+
+const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
 ---
 
-<figure class="diagram-plate">
-  <a class="image-link" href={href}>
+<figure class="diagram-plate" data-diagram-plate>
+  <button
+    class="image-button"
+    type="button"
+    aria-expanded="false"
+    aria-controls={modalId}
+    data-expand-trigger
+  >
     <img src={image} alt={title} loading="lazy" decoding="async" />
-  </a>
+  </button>
   <figcaption>
     <p class="plate-label">{label}</p>
     <h2 class="plate-title"><a href={href}>{title}</a></h2>
     <p class="plate-caption">{caption}</p>
-    <p class="plate-link"><a href={href}>Open full diagram ·→</a></p>
+    <div class="plate-actions">
+      <button
+        class="action-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls={modalId}
+        data-expand-trigger
+      >
+        {expandLabel}
+      </button>
+      <a class="action-link" href={href}>{openLabel} ·→</a>
+    </div>
   </figcaption>
 </figure>
+
+<div
+  id={modalId}
+  class="diagram-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-label={`Expanded diagram: ${title}`}
+  hidden
+  data-diagram-modal
+>
+  <div class="modal-backdrop" data-close-trigger></div>
+  <div class="modal-panel">
+    <div class="modal-frame">
+      <button class="close-button" type="button" aria-label={`Close expanded diagram: ${title}`} data-close-trigger>
+        Close
+      </button>
+      <img src={image} alt={title} loading="eager" decoding="async" />
+      <div class="modal-meta">
+        <p class="modal-label">{label}</p>
+        <h2>{title}</h2>
+        <p>{caption}</p>
+        <a href={href}>{openLabel} ·→</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ modalId }}>
+  (() => {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    const plate = modal.previousElementSibling;
+    if (!(plate instanceof HTMLElement)) return;
+
+    const expandButtons = plate.querySelectorAll('[data-expand-trigger]');
+    const closeTargets = modal.querySelectorAll('[data-close-trigger]');
+    const closeButton = modal.querySelector('.close-button');
+    let previousOverflow = '';
+
+    const setExpanded = (expanded) => {
+      expandButtons.forEach((button) => {
+        if (button instanceof HTMLElement) {
+          button.setAttribute('aria-expanded', String(expanded));
+        }
+      });
+    };
+
+    const open = () => {
+      previousOverflow = document.body.style.overflow;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      setExpanded(true);
+      if (closeButton instanceof HTMLElement) closeButton.focus();
+    };
+
+    const close = () => {
+      modal.hidden = true;
+      document.body.style.overflow = previousOverflow;
+      setExpanded(false);
+    };
+
+    expandButtons.forEach((button) => {
+      button.addEventListener('click', open);
+    });
+
+    closeTargets.forEach((target) => {
+      target.addEventListener('click', close);
+    });
+
+    modal.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (target.closest('.modal-frame')) return;
+      close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.hidden) {
+        close();
+      }
+    });
+  })();
+</script>
 
 <style>
   .diagram-plate {
@@ -39,13 +146,17 @@ const {
     gap: 14px;
   }
 
-  .image-link {
+  .image-button {
     display: block;
+    width: 100%;
     border: 1px solid var(--color-rule);
     background: var(--color-paper);
+    padding: 0;
+    margin: 0;
+    cursor: zoom-in;
   }
 
-  .image-link img {
+  .image-button img {
     display: block;
     width: 100%;
     height: auto;
@@ -80,24 +191,197 @@ const {
     line-height: 1.5;
   }
 
-  .plate-link {
-    margin: 10px 0 0;
-    font-size: 0.95rem;
+  .plate-actions {
+    margin: 12px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
   }
 
-  .plate-link a {
+  .action-button,
+  .action-link {
+    font: inherit;
+    margin: 10px 0 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    padding: 0;
+  }
+
+  .action-button {
+    background: transparent;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    cursor: pointer;
+  }
+
+  .action-link {
+    margin: 10px 0 0;
+  }
+
+  .action-button:hover,
+  .action-link:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-rule-strong);
+  }
+
+  .image-button:focus-visible,
+  .action-button:focus-visible,
+  .action-link:focus-visible,
+  .close-button:focus-visible,
+  .modal-meta a:focus-visible {
+    outline: 2px solid var(--color-active);
+    outline-offset: 2px;
+  }
+
+  .diagram-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 3vw, 48px);
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-panel {
+    position: relative;
+    width: min(96vw, 1680px);
+    z-index: 1;
+  }
+
+  .modal-frame {
+    border: 1px solid var(--color-rule);
+    background: var(--color-paper);
+    box-shadow: 0 20px 50px color-mix(in srgb, var(--color-ink) 20%, transparent);
+    padding: clamp(12px, 1.6vw, 20px);
+  }
+
+  .close-button {
+    display: inline-flex;
+    margin: 0 0 12px auto;
+    font: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--color-ink-soft);
+    border: 0;
+    border-bottom: 1px solid var(--color-rule);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .close-button:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-rule-strong);
+  }
+
+  .modal-frame img {
+    display: block;
+    width: 100%;
+    max-width: min(96vw, 1600px);
+    max-height: 86vh;
+    margin: 0 auto;
+    object-fit: contain;
+    border: 1px solid var(--color-rule);
+    background: var(--color-paper);
+  }
+
+  .modal-meta {
+    margin-top: 12px;
+    border-top: 1px solid var(--color-rule);
+    padding-top: 10px;
+  }
+
+  .modal-label {
+    margin: 0 0 8px;
+    font-size: 11px;
+    letter-spacing: 0.11em;
+    color: var(--color-ink-muted);
+  }
+
+  .modal-meta h2 {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    line-height: 1.25;
+  }
+
+  .modal-meta p {
+    margin: 8px 0 0;
+    color: var(--color-ink-soft);
+    line-height: 1.5;
+  }
+
+  .modal-meta a {
     color: inherit;
     text-decoration: none;
     border-bottom: 1px solid var(--color-rule);
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.86rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  .plate-link a:hover {
+  .modal-meta a:hover {
     border-bottom-color: var(--color-rule-strong);
   }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .diagram-modal {
+      animation: modal-fade 160ms ease-out;
+    }
+
+    .modal-panel {
+      animation: modal-rise 180ms ease-out;
+      transform-origin: center;
+    }
+  }
+
+  @keyframes modal-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modal-rise {
+    from {
+      opacity: 0;
+      transform: scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   @media (max-width: 700px) {
     .diagram-plate {
       padding: 14px;
       margin: 30px 0;
+    }
+
+    .modal-frame {
+      padding: 10px;
+    }
+
+    .modal-meta a {
+      font-size: 0.78rem;
     }
   }
 </style>
