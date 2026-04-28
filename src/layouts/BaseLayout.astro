@@ -3,6 +3,7 @@ import '../styles/global.css';
 import InstrumentBar from '../components/InstrumentBar.astro';
 import Nav from '../components/Nav.astro';
 import StratumLocator from '../components/StratumLocator.astro';
+import TweaksPanel from '../components/TweaksPanel.tsx';
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
@@ -47,6 +48,28 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
     <title>{fullTitle}</title>
   </head>
   <body>
+    <script is:inline>
+      (function () {
+        try {
+          var raw = window.localStorage.getItem('ontogony.tweaks');
+          var t = raw ? JSON.parse(raw) : null;
+          var POSTURES = ['descend', 'ascend', 'level'];
+          var TEMPS = ['ivory', 'bone', 'graphite'];
+          var DENSITIES = ['generous', 'canonical', 'dense'];
+          var posture = t && POSTURES.indexOf(t.posture) >= 0 ? t.posture : 'descend';
+          var temp = t && TEMPS.indexOf(t.temperature) >= 0 ? t.temperature : 'ivory';
+          var density = t && DENSITIES.indexOf(t.density) >= 0 ? t.density : 'canonical';
+          document.body.setAttribute('data-posture', posture);
+          document.body.setAttribute('data-temp', temp);
+          document.body.setAttribute('data-density', density);
+        } catch (e) {
+          document.body.setAttribute('data-posture', 'descend');
+          document.body.setAttribute('data-temp', 'ivory');
+          document.body.setAttribute('data-density', 'canonical');
+        }
+      })();
+    </script>
+
     <InstrumentBar kind={kind} detail={detail} active={active} />
 
     <div class="frame">
@@ -73,6 +96,8 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
         </div>
       </aside>
     </div>
+
+    <TweaksPanel client:idle />
 
     <script>
       import '../scripts/path-ribbon.ts';
