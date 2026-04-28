@@ -1,0 +1,19 @@
+{
+  "name": "ontogony-site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.4",
+    "@tailwindcss/vite": "4.1.18",
+    "astro": "^6.1.9",
+    "tailwindcss": "4.1.18"
+  }
+}
