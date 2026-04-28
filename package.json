@@ -7,9 +7,13 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "build:cms": "tinacms build && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "audit:slugs": "node scripts/audit-slugs.mjs"
+    "audit:slugs": "node scripts/audit-slugs.mjs",
+    "tina:dev": "tinacms dev -c \"npm run dev\"",
+    "tina:build": "tinacms build",
+    "tina:build:local": "tinacms build --local --skip-cloud-checks"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
@@ -23,7 +27,9 @@
     "tailwindcss": "4.1.18"
   },
   "devDependencies": {
+    "@tinacms/cli": "^2.2.4",
     "@types/js-yaml": "^4.0.9",
-    "js-yaml": "^4.1.1"
+    "js-yaml": "^4.1.1",
+    "tinacms": "^3.7.4"
   }
 }
