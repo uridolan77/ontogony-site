@@ -2,37 +2,123 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const concepts = (await getCollection('concepts')).sort((a, b) => {
-  const ao = a.data.order ?? Number.POSITIVE_INFINITY;
-  const bo = b.data.order ?? Number.POSITIVE_INFINITY;
-  if (ao !== bo) return ao - bo;
-  return a.data.title.localeCompare(b.data.title);
-});
+const concepts = await getCollection('concepts');
+
+const stratumOrder = ['R4', 'R3', 'R2', 'R1'] as const;
+const stratumName = {
+  R1: 'FIELD',
+  R2: 'BIOLOGICAL',
+  R3: 'COGNITIVE',
+  R4: 'INSTITUTIONAL',
+};
+const stratumGloss = {
+  R1: 'incompatible potentials in deferral',
+  R2: 'viability is the verdict',
+  R3: 'competence under latency pressure',
+  R4: 'norms revisable by procedure and sanction',
+};
+
+const grouped = stratumOrder.map((r, i) => ({
+  r,
+  name: stratumName[r],
+  gloss: stratumGloss[r],
+  tinted: i % 2 === 1,
+  entries: concepts
+    .filter((c) => c.data.register === r)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title)),
+}));
 ---
 
 <BaseLayout
   title="Concepts"
   description="The vocabulary of Ontogony — concept by concept."
+  kind="ATLAS · CONCEPTS"
+  active={`${concepts.length} ENTRIES`}
 >
-  <p class="kicker">Index</p>
-  <h1 class="page-title">Concepts</h1>
-  <p class="lede">
-    The vocabulary of Ontogony, one term at a time. Each concept is built to
-    stand alone; together they compose the framework.
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">CONCEPTS ATLAS · ALPHABETICAL WITHIN STRATUM</p>
+  <h1 class="h1">The concepts atlas.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    Every concept in the field guide, grouped by the stratum at which it
+    does its primary work. Scroll downward into the field; the locator at
+    left tracks your position.
   </p>
-  <hr />
 
-  <ul class="ledger-list">
-    {
-      concepts.map((concept) => (
-        <li>
-          <a class="ledger-row" href={`/concepts/${concept.id}`}>
-            <span class="ledger-row-title">{concept.data.title}</span>
-            <span class="ledger-row-def">{concept.data.short}</span>
-            <span class="ledger-row-marker" aria-hidden="true">·→</span>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+  {
+    grouped.map(({ r, name, gloss, tinted, entries }) => (
+      <section class:list={['band', { tinted }]} data-stratum={r}>
+        <div class="band-header">
+          <div>
+            <span class="stratum">{r}</span>
+            <span class="name">{name}</span>
+            <span class="gloss">{gloss}</span>
+          </div>
+          <div class="count">
+            {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
+          </div>
+        </div>
+        {entries.length > 0 && (
+          <ul class="atlas-list">
+            {entries.map((c) => (
+              <li>
+                <a href={`/concepts/${c.id}`}>
+                  <span class="c-name">{c.data.title}</span>
+                  <span class="c-gloss">{c.data.short}</span>
+                  <span class="c-tag">{c.data.register}</span>
+                  <span class="c-arrow">·→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))
+  }
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">ORIENTATION</span>
+      Scroll downward into the field. R4 is overhead; R1 is the metastable
+      ground from which everything precipitates.
+    </div>
+    <div class="note">
+      <span class="label">READOUT</span>
+      The locator at left tracks your position across the four strata. The
+      current band is gilded.
+    </div>
+    <div class="note">
+      <span class="label">CROSS-REGISTER</span>
+      Some concepts operate at a boundary; cross-register tags will arrive
+      with the next content drop.
+    </div>
+  </Fragment>
 </BaseLayout>
+
+<script>
+  const bands = document.querySelectorAll('section[data-stratum]');
+  const locator = document.querySelectorAll('#stratum-locator li');
+
+  function setActive(key: string | null) {
+    locator.forEach((li) => {
+      const r = li.getAttribute('data-r');
+      if (key && r === key) li.setAttribute('aria-current', 'true');
+      else li.removeAttribute('aria-current');
+    });
+  }
+
+  if ('IntersectionObserver' in window && bands.length > 0) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length) {
+          visible.sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
+          );
+          setActive(visible[0].target.getAttribute('data-stratum'));
+        }
+      },
+      { rootMargin: '-25% 0px -55% 0px', threshold: 0 },
+    );
+    bands.forEach((b) => io.observe(b));
+  }
+  setActive('R4');
+</script>

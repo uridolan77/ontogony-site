@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const essays = (await getCollection('essays')).sort((a, b) => {
+  return (a.data.number ?? 999) - (b.data.number ?? 999);
+});
+---
+
+<BaseLayout
+  title="Essays"
+  description="Long-form essays — opening orientations and case studies."
+  kind="ESSAYS"
+  active={`${essays.length} ${essays.length === 1 ? 'ENTRY' : 'ENTRIES'}`}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">ESSAYS · OPENING ORIENTATIONS AND CASE STUDIES</p>
+  <h1 class="h1">Essays.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    Long-form orientations and case studies. Each essay is built to stand
+    alone; together they sketch the field guide's working through-lines.
+  </p>
+
+  {essays.length > 0 && (
+    <ul class="anchor-list" style="margin-top: 36px;">
+      {essays.map((essay) => (
+        <li>
+          <a class="a-title" href={`/essays/${essay.id}`}>{essay.data.title}</a>
+          <span class="a-gloss">{essay.data.summary}</span>
+          <span class="a-meta">
+            ESSAY{essay.data.number ? ` · ${String(essay.data.number).padStart(2, '0')}` : ''}
+            {essay.data.readingTime ? ` · ~${essay.data.readingTime} MIN` : ''}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {essays.length === 0 && (
+    <p style="margin-top: 36px; color: var(--color-ink-soft); max-width: 60ch;">
+      No essays published yet. The first arrive shortly.
+    </p>
+  )}
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">STATUS</span>
+      Templates ready, more essays in writing.
+    </div>
+  </Fragment>
+</BaseLayout>

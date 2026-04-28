@@ -1,50 +1,157 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Colophon from '../components/Colophon.astro';
 
-const beginItems = [
-  {
-    href: '/theory',
-    title: 'Theory overview',
-    def: 'The five-minute orientation to Ontogony.',
-  },
-  {
-    href: '/concepts',
-    title: 'Concept atlas',
-    def: 'The vocabulary of Ontogony, one term at a time.',
-  },
-  {
-    href: '/concepts/transduction',
-    title: 'Transduction',
-    def: 'The operator the rest of the framework is built on.',
-  },
-];
+const concepts = await getCollection('concepts');
+
+const stratumOrder = ['R4', 'R3', 'R2', 'R1'] as const;
+const stratumName = {
+  R1: 'FIELD',
+  R2: 'BIOLOGICAL',
+  R3: 'COGNITIVE',
+  R4: 'INSTITUTIONAL',
+};
+const stratumGloss = {
+  R1: 'the pre-individual metastable field — incompatible potentials in deferral',
+  R2: 'the metabolic-closure stratum — viability is the verdict',
+  R3: 'the neural-integrative stratum — competence under latency pressure',
+  R4: 'the symbolic-political stratum — norms revisable by procedure and sanction',
+};
+
+const grouped = stratumOrder.map((r, i) => ({
+  r,
+  name: stratumName[r],
+  gloss: stratumGloss[r],
+  tinted: i % 2 === 1,
+  entries: concepts
+    .filter((c) => c.data.register === r)
+    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)),
+}));
 ---
 
-<BaseLayout description="A field guide to the Transductive Universe.">
-  <section class="home-hero">
-    <h1 class="home-title">A Field Guide to the Transductive Universe</h1>
-    <p class="home-subtitle">
-      A theory of becoming — about what it costs for anything to be the kind
-      of thing it is, and how new kinds of things come into being at all.
+<BaseLayout
+  description="A field guide to the Transductive Universe."
+  kind="HOME"
+  active="R4"
+>
+  <section style="padding-bottom: 56px;">
+    <p class="micro" style="margin: 0 0 28px; color: var(--color-ink-muted);">A FIELD GUIDE TO THE TRANSDUCTIVE UNIVERSE</p>
+    <h1 class="display">Ontogony.<br />A field guide to&nbsp;the becoming of&nbsp;things.</h1>
+    <p class="standfirst" style="max-width: 64ch; margin-top: 36px;">
+      A theoretical instrument for thinking about how regimes
+      <em>install</em>, <em>persist</em>, and <em>fold around</em> one
+      another — from the metastable field through the metabolic, cognitive,
+      and institutional strata. Persistence is priced; cessation is
+      diagnostic; transduction is the operator that links them.
     </p>
+    <div style="display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap;">
+      <a class="link" href="/theory">→ Read the overview</a>
+      <a class="link" href="/concepts">→ Open the concepts atlas</a>
+      <a class="link" href="/concepts/transduction">→ Begin with Transduction</a>
+    </div>
   </section>
 
-  <hr />
+  <div class="strata-stack">
+    {
+      grouped.map(({ r, name, gloss, tinted, entries }) => (
+        <section class:list={['band', { tinted }]} data-stratum={r}>
+          <div class="band-header">
+            <div>
+              <span class="stratum">{r}</span>
+              <span class="name">{name}</span>
+              <span class="gloss">{gloss}</span>
+            </div>
+            <div class="count">
+              {entries.length} {entries.length === 1 ? 'concept' : 'concepts'}
+            </div>
+          </div>
+          {entries.length > 0 && (
+            <ul class="anchor-list">
+              {entries.map((c) => (
+                <li>
+                  <a class="a-title" href={`/concepts/${c.id}`}>{c.data.title}</a>
+                  <span class="a-gloss">{c.data.short}</span>
+                  <span class="a-meta">CONCEPT · {c.data.register}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))
+    }
+  </div>
 
-  <section>
-    <p class="kicker">Begin</p>
-    <ul class="ledger-list">
-      {
-        beginItems.map((item) => (
-          <li>
-            <a class="ledger-row" href={item.href}>
-              <span class="ledger-row-title">{item.title}</span>
-              <span class="ledger-row-def">{item.def}</span>
-              <span class="ledger-row-marker" aria-hidden="true">·→</span>
-            </a>
-          </li>
-        ))
-      }
+  <section style="padding-top: 64px;">
+    <div class="band-header" style="margin-bottom: 24px;">
+      <div>
+        <span class="stratum">PATHS</span>
+        <span class="name">CURATED ROUTES</span>
+        <span class="gloss">traversals across the strata</span>
+      </div>
+      <div class="count">in composition</div>
+    </div>
+    <ul class="anchor-list">
+      <li>
+        <a class="a-title" href="/paths">All reading paths</a>
+        <span class="a-gloss">Templates ready; the first paths land with the next content drop.</span>
+        <span class="a-meta">INDEX</span>
+      </li>
     </ul>
   </section>
+
+  <Colophon />
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">ORIENTATION</span>
+      Scroll downward into the field. R4 is overhead; R1 is the metastable
+      ground from which everything precipitates.
+    </div>
+    <div class="note">
+      <span class="label">READOUT</span>
+      The locator at left tracks your scroll position across the four
+      strata. The current band is gilded.
+    </div>
+    <div class="note">
+      <span class="label">FIRST TIME?</span>
+      Five minutes is enough. Begin with the
+      <a class="link" href="/concepts/transduction">Transduction</a> page,
+      then return here.
+    </div>
+  </Fragment>
 </BaseLayout>
+
+<script>
+  const bands = document.querySelectorAll('section[data-stratum]');
+  const locator = document.querySelectorAll('#stratum-locator li');
+  const readout = document.querySelector(
+    '.instrument-bar .readouts .active',
+  ) as HTMLElement | null;
+
+  function setActive(key: string | null) {
+    locator.forEach((li) => {
+      const r = li.getAttribute('data-r');
+      if (key && r === key) li.setAttribute('aria-current', 'true');
+      else li.removeAttribute('aria-current');
+    });
+    if (readout && key) readout.textContent = key;
+  }
+
+  if ('IntersectionObserver' in window && bands.length > 0) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length) {
+          visible.sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
+          );
+          setActive(visible[0].target.getAttribute('data-stratum'));
+        }
+      },
+      { rootMargin: '-25% 0px -55% 0px', threshold: 0 },
+    );
+    bands.forEach((b) => io.observe(b));
+  }
+  setActive('R4');
+</script>

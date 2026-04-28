@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="About the Ontogony field guide."
+  kind="ABOUT"
+  active="v0.1"
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">ABOUT</p>
+  <h1 class="h1">About this field guide.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    A long-form theoretical work in progress, set as a public field guide.
+    The companion book — <em>Ontogony: A Field Guide to the Transductive
+    Universe</em> — is being drafted in parallel.
+  </p>
+
+  <hr style="margin: 36px 0; border: 0; border-top: 1px solid var(--color-rule);" />
+
+  <div class="body" style="max-width: 60ch;">
+    <p>
+      This site collects the central vocabulary, working essays, and curated
+      reading paths of an ongoing investigation into how regimes install,
+      persist, and fold around one another. There is no account, no tracking,
+      no advertising.
+    </p>
+    <p>
+      For citations, reading-group invitations, and translation queries —
+      correspondence is welcome. The colophon at the foot of the homepage
+      links the most direct route.
+    </p>
+  </div>
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">SCOPE</span>
+      Concepts atlas, working essays, curated reading paths. The book is
+      separate; the site is the field guide.
+    </div>
+    <div class="note">
+      <span class="label">VERSION</span>
+      v0.1 · April 2026. Schema and chrome stabilised; content fill in
+      progress.
+    </div>
+  </Fragment>
+</BaseLayout>

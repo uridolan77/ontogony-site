@@ -1,0 +1,190 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('essays');
+  const concepts = await getCollection('concepts');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, concepts },
+  }));
+}
+
+const { entry, concepts } = Astro.props;
+const { Content } = await render(entry);
+
+const stratumName: Record<Stratum, string> = {
+  R1: 'FIELD',
+  R2: 'BIOLOGICAL',
+  R3: 'COGNITIVE',
+  R4: 'INSTITUTIONAL',
+};
+
+const conceptById = new Map(concepts.map((c) => [c.id, c]));
+const cited = (entry.data.cites ?? [])
+  .map((slug) => conceptById.get(slug))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+const register = entry.data.register;
+const number = entry.data.number;
+const readingTime = entry.data.readingTime;
+
+const kindLabel = number ? `ESSAY · ${String(number).padStart(2, '0')}` : 'ESSAY';
+const detail =
+  register !== undefined ? `${register} · ${stratumName[register]}` : undefined;
+const active = readingTime ? `~${readingTime} MIN` : undefined;
+
+const whereNext = (entry.data.whereNext ?? []).map((step) => {
+  let title = step.title;
+  let metaSuffix = '';
+
+  if (step.kind === 'concept') {
+    const c = conceptById.get(step.slug);
+    if (c) {
+      title = title ?? c.data.title;
+      metaSuffix = ` · ${c.data.register}`;
+    } else {
+      title = title ?? step.slug;
+    }
+  } else if (!title) {
+    title = step.slug;
+  }
+
+  const href =
+    step.kind === 'concept'
+      ? `/concepts/${step.slug}`
+      : step.kind === 'essay'
+        ? `/essays/${step.slug}`
+        : step.kind === 'path'
+          ? `/paths/${step.slug}`
+          : `/diagrams/${step.slug}`;
+
+  return {
+    href,
+    title: title!,
+    why: step.why,
+    meta: `${step.kind.toUpperCase()}${metaSuffix}`,
+  };
+});
+
+const dateLabel = entry.data.date
+  ? entry.data.date.toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'long',
+    })
+  : undefined;
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.summary}
+  kind={kindLabel}
+  detail={detail}
+  active={active}
+  currentStratum={register}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">
+    {kindLabel}{number ? ' · OPENING ORIENTATION' : ''}
+  </p>
+  <h1 class="h1">{entry.data.title}.</h1>
+  <p class="standfirst" style="margin-top: 24px;">{entry.data.summary}</p>
+
+  <div class="body" style="margin-top: 40px;">
+    <Content />
+  </div>
+
+  <dl class="ledger">
+    {number && (
+      <div class="ledger-row">
+        <dt>Essay</dt>
+        <dd>
+          {String(number).padStart(2, '0')} · {entry.data.title}
+          {readingTime && (
+            <span class="muted"> — opening orientation, ~{readingTime} min</span>
+          )}
+        </dd>
+      </div>
+    )}
+    {dateLabel && (
+      <div class="ledger-row">
+        <dt>Authored</dt>
+        <dd>{dateLabel}</dd>
+      </div>
+    )}
+    {register && (
+      <div class="ledger-row">
+        <dt>Register focus</dt>
+        <dd>
+          <span class="tag plain">{register}</span> &nbsp;
+          <span class="muted">{stratumName[register].toLowerCase()}.</span>
+        </dd>
+      </div>
+    )}
+    {cited.length > 0 && (
+      <div class="ledger-row">
+        <dt>Cites</dt>
+        <dd>
+          {cited.map((c, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a class="link" href={`/concepts/${c.id}`}>{c.data.title}</a>
+            </>
+          ))}
+        </dd>
+      </div>
+    )}
+    {entry.data.chapter && (
+      <div class="ledger-row">
+        <dt>Source</dt>
+        <dd>{entry.data.chapter}</dd>
+      </div>
+    )}
+    {whereNext.length > 0 && (
+      <div class="ledger-row last">
+        <dt>Where next</dt>
+        <dd>
+          <div class="where-next">
+            {whereNext.map((w) => (
+              <a class="next" href={w.href}>
+                <span class="next-title">
+                  {w.title}
+                  {w.why && <em>{w.why}</em>}
+                </span>
+                <span class="next-meta">{w.meta}</span>
+                <span class="next-arrow">·→</span>
+              </a>
+            ))}
+          </div>
+        </dd>
+      </div>
+    )}
+  </dl>
+
+  <Fragment slot="margin-notes">
+    {
+      entry.data.footnotes.map((fn, i) => {
+        const sup = ['¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'][i] ?? String(i + 1);
+        return (
+          <div class="note" id={fn.id}>
+            <span class="label">FOOTNOTE · {sup}</span>
+            {fn.body}
+          </div>
+        );
+      })
+    }
+    {register && (
+      <div class="note">
+        <span class="label">REGISTER</span>
+        {register} · {stratumName[register].toLowerCase()}.
+      </div>
+    )}
+    <div class="note">
+      <span class="label">PROTOCOL</span>
+      Hold environment fixed. Reduce throughput. Record the order of
+      macrovariable collapse. The sequence <em>is</em> the regime.
+    </div>
+  </Fragment>
+</BaseLayout>

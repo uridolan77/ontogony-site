@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const paths = (await getCollection('paths')).sort((a, b) => {
+  return (a.data.number ?? 999) - (b.data.number ?? 999);
+});
+---
+
+<BaseLayout
+  title="Reading paths"
+  description="Curated traversals across the strata of Ontogony."
+  kind="PATHS"
+  active={`${paths.length} ${paths.length === 1 ? 'ROUTE' : 'ROUTES'}`}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">READING PATHS · CURATED ROUTES</p>
+  <h1 class="h1">Reading paths.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    Curated traversals through the field guide. Each path threads a
+    sequence of essays and concept entries with a clear destination.
+  </p>
+
+  {paths.length > 0 && (
+    <ul class="anchor-list" style="margin-top: 36px;">
+      {paths.map((path) => (
+        <li>
+          <a class="a-title" href={`/paths/${path.id}`}>{path.data.title}</a>
+          <span class="a-gloss">{path.data.description}</span>
+          <span class="a-meta">
+            {path.data.steps.length} STOPS{path.data.totalMinutes ? ` · ~${path.data.totalMinutes} MIN` : ''}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {paths.length === 0 && (
+    <p style="margin-top: 36px; color: var(--color-ink-soft); max-width: 60ch;">
+      No reading paths published yet. The first arrive shortly.
+    </p>
+  )}
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">HOW PATHS WORK</span>
+      Once you begin a path, a thin instrument bar appears at the foot of
+      every page in the route, marking the current stop. Close the bar to
+      leave the path.
+    </div>
+    <div class="note">
+      <span class="label">PATH STATE</span>
+      Stored locally in your browser. No account, no server.
+    </div>
+  </Fragment>
+</BaseLayout>

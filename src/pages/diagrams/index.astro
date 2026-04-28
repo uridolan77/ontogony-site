@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Diagrams"
+  description="Diagrams from the field guide."
+  kind="DIAGRAMS"
+  active="OUT OF v1 SCOPE"
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">DIAGRAMS</p>
+  <h1 class="h1">Diagrams.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    Static figures and chapter cites. Out of scope for v1 of the site, per
+    the design handoff. The route exists so the navigation does not break;
+    the page will fill out in a later release.
+  </p>
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">STATUS</span>
+      Out of v1 scope. Placeholder route only.
+    </div>
+  </Fragment>
+</BaseLayout>
