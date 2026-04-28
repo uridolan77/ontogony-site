@@ -23,22 +23,19 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
 ---
 
 <figure class="diagram-plate" data-diagram-plate>
-  <button
-    class="image-button"
-    type="button"
-    aria-expanded="false"
-    aria-controls={modalId}
-    data-expand-trigger
-  >
-    <img src={image} alt={title} loading="lazy" decoding="async" />
-  </button>
-  <figcaption>
-    <p class="plate-label">{label}</p>
-    <h2 class="plate-title"><a href={href}>{title}</a></h2>
-    <p class="plate-caption">{caption}</p>
-    <div class="plate-actions">
+  <div class="image-shell">
+    <button
+      class="image-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls={modalId}
+      data-expand-trigger
+    >
+      <img src={image} alt={title} loading="lazy" decoding="async" />
+    </button>
+    <div class="image-actions" aria-label="Diagram actions">
       <button
-        class="action-button"
+        class="overlay-button"
         type="button"
         aria-expanded="false"
         aria-controls={modalId}
@@ -46,8 +43,13 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
       >
         {expandLabel}
       </button>
-      <a class="action-link" href={href}>{openLabel} ·→</a>
+      <a class="overlay-button" href={href}>{openLabel} →</a>
     </div>
+  </div>
+  <figcaption>
+    <p class="plate-label">{label}</p>
+    <h2 class="plate-title"><a href={href}>{title}</a></h2>
+    <p class="plate-caption">{caption}</p>
   </figcaption>
 </figure>
 
@@ -148,6 +150,8 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
 
   .image-button {
     display: block;
+    position: relative;
+    z-index: 0;
     width: 100%;
     border: 1px solid var(--color-rule);
     background: var(--color-paper);
@@ -160,6 +164,73 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  .image-shell {
+    position: relative;
+  }
+
+  .image-shell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: color-mix(in srgb, var(--color-ink) 10%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+  }
+
+  .image-shell:hover::after,
+  .image-shell:focus-within::after {
+    opacity: 1;
+  }
+
+  .image-actions {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+  }
+
+  .image-shell:hover .image-actions,
+  .image-shell:focus-within .image-actions {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .overlay-button {
+    font: inherit;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    text-decoration: none;
+    border: 1px solid var(--color-rule);
+    background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(1px);
+    padding: 6px 10px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  button.overlay-button {
+    cursor: pointer;
+  }
+
+  .overlay-button:hover,
+  .overlay-button:active {
+    color: var(--color-ink);
+    background: var(--color-paper);
   }
 
   .plate-label {
@@ -191,48 +262,8 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
     line-height: 1.5;
   }
 
-  .plate-actions {
-    margin: 12px 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    align-items: center;
-  }
-
-  .action-button,
-  .action-link {
-    font: inherit;
-    margin: 10px 0 0;
-    font-size: 0.8rem;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--color-ink-soft);
-    text-decoration: none;
-    border-bottom: 1px solid var(--color-rule);
-    padding: 0;
-  }
-
-  .action-button {
-    background: transparent;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    cursor: pointer;
-  }
-
-  .action-link {
-    margin: 10px 0 0;
-  }
-
-  .action-button:hover,
-  .action-link:hover {
-    color: var(--color-ink);
-    border-bottom-color: var(--color-rule-strong);
-  }
-
   .image-button:focus-visible,
-  .action-button:focus-visible,
-  .action-link:focus-visible,
+  .overlay-button:focus-visible,
   .close-button:focus-visible,
   .modal-meta a:focus-visible {
     outline: 2px solid var(--color-active);
@@ -382,6 +413,19 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
 
     .modal-meta a {
       font-size: 0.78rem;
+    }
+  }
+
+  @media (hover: none) {
+    .image-shell::after {
+      opacity: 1;
+    }
+
+    .image-actions {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      pointer-events: auto;
     }
   }
 </style>
