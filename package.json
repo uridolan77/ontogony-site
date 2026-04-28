@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "tinacms build --local --skip-cloud-checks && astro build",
+    "build": "node scripts/tina-build.mjs && astro build",
     "build:astro": "astro build",
     "build:cms": "tinacms build && astro build",
     "preview": "astro preview",
