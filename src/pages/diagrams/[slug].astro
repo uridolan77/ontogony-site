@@ -1,0 +1,72 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getPublished('diagrams');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const chapterLabel = entry.data.chapterNumber
+  ? `CHAPTER ${String(entry.data.chapterNumber).padStart(2, '0')}`
+  : 'DIAGRAM';
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.caption ?? entry.data.title}
+  kind="DIAGRAM"
+  detail={chapterLabel}
+  active={entry.data.bookTitle}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">
+    DIAGRAM · {chapterLabel}
+  </p>
+  <h1 class="h1">{entry.data.title}.</h1>
+  {entry.data.caption && (
+    <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">{entry.data.caption}</p>
+  )}
+
+  {entry.data.image && (
+    <figure style="margin-top: 32px;">
+      <img src={entry.data.image} alt={entry.data.title} />
+    </figure>
+  )}
+
+  <div class="body" style="margin-top: 36px;">
+    <Content />
+  </div>
+
+  <dl class="ledger">
+    {entry.data.chapterNumber && (
+      <div class="ledger-row">
+        <dt>Chapter</dt>
+        <dd>{entry.data.chapterNumber}</dd>
+      </div>
+    )}
+    {entry.data.bookTitle && (
+      <div class="ledger-row">
+        <dt>Book title</dt>
+        <dd>{entry.data.bookTitle}</dd>
+      </div>
+    )}
+    <div class="ledger-row last">
+      <dt>Collection</dt>
+      <dd>Diagram</dd>
+    </div>
+  </dl>
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">USE</span>
+      Read this as a compressed map of one operator in the larger argument.
+    </div>
+  </Fragment>
+</BaseLayout>

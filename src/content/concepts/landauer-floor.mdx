@@ -1,0 +1,65 @@
+---
+title: Landauer Floor
+short: The thermodynamic lower bound on any discriminating operation — no physical system can irreversibly erase one bit of information while dissipating less than kT ln 2 joules — establishing that discrimination is never free.
+order: 10
+register: R1
+chapterNumber: 2
+bookTitle: "The Demon's Unpaid Bill"
+status: published
+createdAt: 2026-04-28
+related:
+  - burn-rate
+  - finite-observer
+  - flat-physicalism
+  - constitutive-dissipation
+genealogy:
+  - "Landauer 1961"
+  - "Bennett 1982"
+  - "Norton 2011"
+  - "Myrvold 2021"
+notThis:
+  - Not merely an engineering limit — it is a constraint on any physically embedded discriminating system.
+  - Not the same as the second law of thermodynamics, though closely related to it.
+  - Not restricted to computers or digital systems.
+  - Not undermined by reversible computing — reversible computation defers but cannot eliminate the erasure cost.
+whereNext:
+  - kind: concept
+    slug: finite-observer
+    why: what the Landauer floor implies for any observer embedded in the universe
+  - kind: concept
+    slug: burn-rate
+    why: how Landauer costs aggregate into the continuous cost of maintaining a regime
+  - kind: concept
+    slug: flat-physicalism
+    why: the standpoint the Landauer floor helps to exclude
+---
+
+## The one-sentence version
+
+**Every act of discrimination pays a physical toll.** Landauer's principle establishes that any operation which irreversibly erases information about a system's prior state must dissipate at minimum *kT* ln 2 joules into the environment — approximately 2.9 × 10⁻²¹ joules per bit at biological temperatures. Discrimination is not free. It never was.
+
+## Where the word comes from
+
+Rolf Landauer demonstrated in 1961 that logically irreversible computation — specifically, the erasure of a bit — has a thermodynamic lower bound. A many-to-one mapping (two possible input states → one output state) irreversibly loses information about the prior configuration, and that lost information must be paid for in heat. The principle was contested for decades, but experiments across colloidal, electronic, and quantum platforms have since confirmed it within experimental uncertainty.
+
+The interpretation of the principle remains debated: John Norton and Wayne Myrvold now agree that the entropic cost of discrimination is real, differing only on whether Landauer's principle or the second law is the more fundamental source of that cost. This framework uses the principle at the level of its agreed content: **no physically embedded system can perform a discriminating operation — distinguishing this configuration from that, selecting this ion over those, routing this signal rather than the other — without paying at least the Landauer minimum per bit resolved**.
+
+## Why it matters
+
+The Landauer floor is not primarily a fact about computers. It is a fact about **any system that makes and maintains distinctions**.
+
+Every ion pump that holds a membrane potential against the electrochemical gradient performs a discrimination: this ion here, not there. Every receptor that transduces a signal commits to a state-distinction: bound versus unbound, active versus inactive. Every neural system that maintains a stored pattern is holding a discrimination open against thermal noise. Each of these operations has a floor below which it cannot proceed without physics being violated.
+
+The floor has two consequences that compound:
+
+**First, it establishes that the burn rate has a principled lower bound per discriminating operation.** A regime's burn rate is not an arbitrary metabolic fact — it is bounded below by the aggregate Landauer costs of the discriminations that constitute the regime's constraint-architecture. More distinctions, more cost. The floor is physical, not biological.
+
+**Second, it excludes the Demon standpoint.** A system that surveys the complete microstate of the universe and performs arbitrary discriminations without paying any dissipative cost is not merely impractical — it is thermodynamically excluded. This exclusion is what the *finite observer* concept cashes out.
+
+The Landauer floor is the quantitative ground under the claim that **discrimination is a priced operation**, and that any framework that invokes unbounded discrimination without specifying a dissipation budget is invoking an unphysical standpoint.
+
+## What it is not
+
+The Landauer floor does not mean that every computation is expensive in practice. Reversible computation can defer the erasure cost indefinitely — but cannot eliminate it when the computation must produce a determinate output. The floor is a theoretical minimum; actual systems pay considerably more. What the floor establishes is that the minimum is strictly positive, not zero. That asymmetry — between zero cost and any positive cost — is where the whole argument lives.
+
+## Where to go next

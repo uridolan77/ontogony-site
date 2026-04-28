@@ -219,6 +219,8 @@ export default defineConfig({
             ui: { component: 'textarea' },
           },
           { type: 'number', name: 'order', label: 'Order' },
+          { type: 'number', name: 'chapterNumber', label: 'Chapter number' },
+          { type: 'string', name: 'bookTitle', label: 'Book chapter title' },
           {
             type: 'string',
             name: 'register',
@@ -226,7 +228,6 @@ export default defineConfig({
             options: REGISTER_OPTIONS,
             required: true,
           },
-          { type: 'string', name: 'chapter', label: 'Chapter (book reference)' },
           {
             type: 'string',
             name: 'burnRate',
@@ -310,7 +311,8 @@ export default defineConfig({
           { type: 'string', name: 'register', label: 'Primary register', options: REGISTER_OPTIONS },
           { type: 'number', name: 'readingTime', label: 'Reading time (minutes)' },
           { type: 'number', name: 'number', label: 'Essay number' },
-          { type: 'string', name: 'chapter', label: 'Source chapter' },
+          { type: 'number', name: 'chapterNumber', label: 'Chapter number' },
+          { type: 'string', name: 'bookTitle', label: 'Book chapter title' },
           {
             // Plain string list. See note on concept.related re Tina v3
             // reference-list limitation.
@@ -389,6 +391,12 @@ export default defineConfig({
           },
           { type: 'number', name: 'totalMinutes', label: 'Total minutes' },
           {
+            type: 'number',
+            name: 'chapters',
+            label: 'Chapters covered (numbers)',
+            list: true,
+          },
+          {
             type: 'object',
             name: 'steps',
             label: 'Steps',
@@ -434,6 +442,8 @@ export default defineConfig({
           { type: 'string', name: 'title', label: 'Title', required: true, isTitle: true },
           { type: 'string', name: 'caption', label: 'Caption' },
           { type: 'image', name: 'image', label: 'Image' },
+          { type: 'number', name: 'chapterNumber', label: 'Chapter number' },
+          { type: 'string', name: 'bookTitle', label: 'Book chapter title' },
           ...metaFields,
           {
             type: 'rich-text',
@@ -459,6 +469,8 @@ export default defineConfig({
         }),
         fields: [
           { type: 'string', name: 'title', label: 'Title' },
+          { type: 'number', name: 'chapterNumber', label: 'Chapter number' },
+          { type: 'string', name: 'bookTitle', label: 'Book chapter title' },
           ...metaFields,
           {
             type: 'rich-text',

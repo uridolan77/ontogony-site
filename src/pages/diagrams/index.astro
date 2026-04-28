@@ -1,25 +1,53 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
+
+const diagrams = (await getPublished('diagrams')).sort((a, b) => {
+  return (a.data.chapterNumber ?? 999) - (b.data.chapterNumber ?? 999);
+});
 ---
 
 <BaseLayout
   title="Diagrams"
   description="Diagrams from the field guide."
   kind="DIAGRAMS"
-  active="OUT OF v1 SCOPE"
+  active={`${diagrams.length} ${diagrams.length === 1 ? 'FIGURE' : 'FIGURES'}`}
 >
   <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">DIAGRAMS</p>
   <h1 class="h1">Diagrams.</h1>
   <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
-    Static figures and chapter cites. Out of scope for v1 of the site, per
-    the design handoff. The route exists so the navigation does not break;
-    the page will fill out in a later release.
+    Visual summaries of the book's architecture. Each figure compresses one
+    load-bearing operator, sequence, or stack into a single page.
   </p>
+
+  {diagrams.length > 0 && (
+    <ul class="anchor-list" style="margin-top: 36px;">
+      {diagrams.map((diagram) => (
+        <li>
+          <a class="a-title" href={`/diagrams/${diagram.id}`}>{diagram.data.title}</a>
+          <span class="a-gloss">
+            {diagram.data.caption ?? 'Diagram entry'}
+          </span>
+          <span class="a-meta">
+            {diagram.data.chapterNumber
+              ? `CHAPTER ${String(diagram.data.chapterNumber).padStart(2, '0')}`
+              : 'DIAGRAM'}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {diagrams.length === 0 && (
+    <p style="margin-top: 36px; color: var(--color-ink-soft); max-width: 60ch;">
+      No diagrams published yet.
+    </p>
+  )}
 
   <Fragment slot="margin-notes">
     <div class="note">
       <span class="label">STATUS</span>
-      Out of v1 scope. Placeholder route only.
+      Diagrams are now published as text-first figure pages.
     </div>
   </Fragment>
 </BaseLayout>
