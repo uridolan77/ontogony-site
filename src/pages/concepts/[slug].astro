@@ -1,16 +1,21 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
 export async function getStaticPaths() {
-  const entries = (await getCollection('concepts')).sort(
+  const published = (await getPublished('concepts')).sort(
     (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
   );
-  return entries.map((entry) => ({
+  // Cross-reference lookups (related, whereNext) need every entry by id,
+  // including drafts, so titles resolve even when the target won't render
+  // its own page in production. Routing only generates published entries.
+  const all = await getCollection('concepts');
+  return published.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, all: entries },
+    props: { entry, all },
   }));
 }
 

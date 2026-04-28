@@ -1,8 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
 
-const concepts = await getCollection('concepts');
+const concepts = await getPublished('concepts');
 
 const stratumOrder = ['R4', 'R3', 'R2', 'R1'] as const;
 const stratumName = {
