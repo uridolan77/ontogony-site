@@ -46,6 +46,9 @@ function readStored(): Tweaks {
 
 function applyTweaks(t: Tweaks) {
   if (typeof document === 'undefined') return;
+  document.documentElement.setAttribute('data-posture', t.posture);
+  document.documentElement.setAttribute('data-temp', t.temperature);
+  document.documentElement.setAttribute('data-density', t.density);
   document.body.setAttribute('data-posture', t.posture);
   document.body.setAttribute('data-temp', t.temperature);
   document.body.setAttribute('data-density', t.density);
@@ -83,12 +86,32 @@ function RadioGroup<T extends string>(props: {
 export default function TweaksPanel() {
   const [open, setOpen] = useState(false);
   const [tweaks, setTweaks] = useState<Tweaks>(DEFAULTS);
+  const [hasRibbon, setHasRibbon] = useState(false);
 
   useEffect(() => {
     const stored = readStored();
     setTweaks(stored);
     applyTweaks(stored);
   }, []);
+
+  useEffect(() => {
+    const checkRibbon = () => {
+      setHasRibbon(Boolean(document.querySelector('.path-ribbon')));
+    };
+
+    checkRibbon();
+    const observer = new MutationObserver(checkRibbon);
+    observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('resize', checkRibbon);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', checkRibbon);
+    };
+  }, []);
+
+  const toggleBottom = hasRibbon ? '76px' : '16px';
+  const panelBottom = hasRibbon ? '120px' : '60px';
 
   const update = <K extends keyof Tweaks>(key: K, value: Tweaks[K]) => {
     const next = { ...tweaks, [key]: value };
@@ -106,6 +129,7 @@ export default function TweaksPanel() {
       <button
         type="button"
         className="tweaks-toggle"
+        style={{ bottom: toggleBottom }}
         aria-label={open ? 'Close tweaks' : 'Open tweaks'}
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
@@ -114,7 +138,7 @@ export default function TweaksPanel() {
       </button>
 
       {open && (
-        <div className="tweaks-panel" role="dialog" aria-label="Tweaks">
+        <div className="tweaks-panel" style={{ bottom: panelBottom }} role="dialog" aria-label="Tweaks">
           <div className="tweaks-header">
             <span className="tweaks-title">TWEAKS</span>
             <button

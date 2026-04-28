@@ -4,7 +4,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://ontogony.example',
+  site: 'https://ontogony.net',
   integrations: [mdx(), react()],
   vite: {
     plugins: [tailwindcss()],
