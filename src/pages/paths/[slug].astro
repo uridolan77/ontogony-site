@@ -1,11 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished, isLinkable } from '../../lib/content';
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('paths');
+  const entries = await getPublished('paths');
+  // Concepts and essays kept unfiltered so step-title resolution works
+  // even when a draft target is referenced from a published path.
   const concepts = await getCollection('concepts');
   const essays = await getCollection('essays');
   return entries.map((entry) => ({
@@ -41,17 +44,22 @@ const resolved: Resolved[] = entry.data.steps.map((step, i) => {
   let href: string | undefined;
   let kindLabel = step.kind.toUpperCase();
   let metaParts: string[] = [];
+  let targetIsDraft = false;
 
   if (step.kind === 'concept' && step.slug) {
     const c = conceptById.get(step.slug);
     title = title ?? c?.data.title ?? step.slug;
-    href = `/concepts/${step.slug}`;
-    if (c) metaParts.push(c.data.register);
+    if (c) {
+      metaParts.push(c.data.register);
+      targetIsDraft = !isLinkable(c);
+    }
+    href = import.meta.env.PROD && targetIsDraft ? undefined : `/concepts/${step.slug}`;
   } else if (step.kind === 'essay' && step.slug) {
     const e = essayById.get(step.slug);
     title = title ?? e?.data.title ?? step.slug;
-    href = `/essays/${step.slug}`;
     if (e?.data.register) metaParts.push(e.data.register);
+    if (e) targetIsDraft = !isLinkable(e);
+    href = import.meta.env.PROD && targetIsDraft ? undefined : `/essays/${step.slug}`;
   } else {
     title = title ?? '';
   }
@@ -152,15 +160,27 @@ const active = totalMinutes ? `~${totalMinutes} MIN` : undefined;
           );
         }
         return (
-          <a class="route-stop" href={r.href} data-step={r.index}>
-            <span class="num">{String(r.index + 1).padStart(2, '0')}</span>
-            <span class="body-cell">
-              <span class="kind">{r.kindLabel}</span>
-              <span class="title">{r.title}</span>
-              {r.gloss && <span class="gloss">{r.gloss}</span>}
-            </span>
-            {r.meta && <span class="meta">{r.meta}</span>}
-          </a>
+          r.href ? (
+            <a class="route-stop" href={r.href} data-step={r.index}>
+              <span class="num">{String(r.index + 1).padStart(2, '0')}</span>
+              <span class="body-cell">
+                <span class="kind">{r.kindLabel}</span>
+                <span class="title">{r.title}</span>
+                {r.gloss && <span class="gloss">{r.gloss}</span>}
+              </span>
+              {r.meta && <span class="meta">{r.meta}</span>}
+            </a>
+          ) : (
+            <div class="route-stop" data-step={r.index} aria-disabled="true">
+              <span class="num">{String(r.index + 1).padStart(2, '0')}</span>
+              <span class="body-cell">
+                <span class="kind">{r.kindLabel}</span>
+                <span class="title">{r.title}</span>
+                {r.gloss && <span class="gloss">{r.gloss}</span>}
+              </span>
+              {r.meta && <span class="meta">{r.meta}</span>}
+            </div>
+          )
         );
       })
     }

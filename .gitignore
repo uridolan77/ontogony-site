@@ -2,6 +2,11 @@
 dist/
 .astro/
 
+# tina generated artefacts
+tina/__generated__/
+tina/tina-lock.json
+public/admin/
+
 # dependencies
 node_modules/
 

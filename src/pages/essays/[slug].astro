@@ -1,19 +1,30 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished, isLinkable } from '../../lib/content';
+import PullQuote from '../../components/mdx/PullQuote.astro';
+import SectionGlyph from '../../components/mdx/SectionGlyph.astro';
+import FootnoteMarker from '../../components/mdx/FootnoteMarker.astro';
+
+const mdxComponents = { PullQuote, SectionGlyph, FootnoteMarker };
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('essays');
+  const entries = await getPublished('essays');
+  // Reference collections kept unfiltered so title lookups still resolve
+  // in dev, while production link output can suppress draft targets.
   const concepts = await getCollection('concepts');
+  const essays = await getCollection('essays');
+  const paths = await getCollection('paths');
+  const diagrams = await getCollection('diagrams');
   return entries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, concepts },
+    props: { entry, concepts, essays, paths, diagrams },
   }));
 }
 
-const { entry, concepts } = Astro.props;
+const { entry, concepts, essays, paths, diagrams } = Astro.props;
 const { Content } = await render(entry);
 
 const stratumName: Record<Stratum, string> = {
@@ -24,9 +35,16 @@ const stratumName: Record<Stratum, string> = {
 };
 
 const conceptById = new Map(concepts.map((c) => [c.id, c]));
+const essayById = new Map(essays.map((e) => [e.id, e]));
+const pathById = new Map(paths.map((p) => [p.id, p]));
+const diagramById = new Map(diagrams.map((d) => [d.id, d]));
 const cited = (entry.data.cites ?? [])
   .map((slug) => conceptById.get(slug))
-  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+  .filter((c): c is NonNullable<typeof c> => Boolean(c))
+  .map((c) => ({
+    entry: c,
+    linkable: isLinkable(c),
+  }));
 
 const register = entry.data.register;
 const number = entry.data.number;
@@ -40,33 +58,57 @@ const active = readingTime ? `~${readingTime} MIN` : undefined;
 const whereNext = (entry.data.whereNext ?? []).map((step) => {
   let title = step.title;
   let metaSuffix = '';
+  let href: string | undefined;
+  let targetIsDraft = false;
 
   if (step.kind === 'concept') {
     const c = conceptById.get(step.slug);
     if (c) {
       title = title ?? c.data.title;
       metaSuffix = ` · ${c.data.register}`;
+      targetIsDraft = !isLinkable(c);
     } else {
       title = title ?? step.slug;
     }
-  } else if (!title) {
-    title = step.slug;
+    href = `/concepts/${step.slug}`;
+  } else if (step.kind === 'essay') {
+    const e = essayById.get(step.slug);
+    if (e) {
+      title = title ?? e.data.title;
+      if (e.data.register) metaSuffix = ` · ${e.data.register}`;
+      targetIsDraft = !isLinkable(e);
+    } else if (!title) {
+      title = step.slug;
+    }
+    href = `/essays/${step.slug}`;
+  } else if (step.kind === 'path') {
+    const p = pathById.get(step.slug);
+    if (p) {
+      title = title ?? p.data.title;
+      targetIsDraft = !isLinkable(p);
+    } else if (!title) {
+      title = step.slug;
+    }
+    href = `/paths/${step.slug}`;
+  } else {
+    const d = diagramById.get(step.slug);
+    if (d) {
+      title = title ?? d.data.title;
+      targetIsDraft = !isLinkable(d);
+    } else if (!title) {
+      title = step.slug;
+    }
+    href = `/diagrams/${step.slug}`;
   }
 
-  const href =
-    step.kind === 'concept'
-      ? `/concepts/${step.slug}`
-      : step.kind === 'essay'
-        ? `/essays/${step.slug}`
-        : step.kind === 'path'
-          ? `/paths/${step.slug}`
-          : `/diagrams/${step.slug}`;
+  if (import.meta.env.PROD && targetIsDraft) href = undefined;
 
   return {
     href,
     title: title!,
     why: step.why,
     meta: `${step.kind.toUpperCase()}${metaSuffix}`,
+    linkable: Boolean(href),
   };
 });
 
@@ -93,7 +135,7 @@ const dateLabel = entry.data.date
   <p class="standfirst" style="margin-top: 24px;">{entry.data.summary}</p>
 
   <div class="body" style="margin-top: 40px;">
-    <Content />
+    <Content components={mdxComponents} />
   </div>
 
   <dl class="ledger">
@@ -130,7 +172,11 @@ const dateLabel = entry.data.date
           {cited.map((c, i) => (
             <>
               {i > 0 && ' · '}
-              <a class="link" href={`/concepts/${c.id}`}>{c.data.title}</a>
+              {c.linkable ? (
+                <a class="link" href={`/concepts/${c.entry.id}`}>{c.entry.data.title}</a>
+              ) : (
+                <span class="muted">{c.entry.data.title}</span>
+              )}
             </>
           ))}
         </dd>
@@ -148,14 +194,24 @@ const dateLabel = entry.data.date
         <dd>
           <div class="where-next">
             {whereNext.map((w) => (
-              <a class="next" href={w.href}>
-                <span class="next-title">
-                  {w.title}
-                  {w.why && <em>{w.why}</em>}
-                </span>
-                <span class="next-meta">{w.meta}</span>
-                <span class="next-arrow">·→</span>
-              </a>
+              w.linkable ? (
+                <a class="next" href={w.href}>
+                  <span class="next-title">
+                    {w.title}
+                    {w.why && <em>{w.why}</em>}
+                  </span>
+                  <span class="next-meta">{w.meta}</span>
+                  <span class="next-arrow">·→</span>
+                </a>
+              ) : (
+                <div class="next" aria-disabled="true">
+                  <span class="next-title">
+                    {w.title}
+                    {w.why && <em>{w.why}</em>}
+                  </span>
+                  <span class="next-meta">{w.meta}</span>
+                </div>
+              )
             ))}
           </div>
         </dd>
