@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
+
+const decks = (await getPublished('flashcards')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout
+  title="Flashcards"
+  description="Card-by-card drills across Ontogony’s architectures — session-only, no backend."
+  kind="FLASHCARDS"
+  active={`${decks.length} ${decks.length === 1 ? 'DECK' : 'DECKS'}`}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">
+    FLASHCARDS · SESSION-ONLY DRILLS
+  </p>
+  <h1 class="h1">Flashcards.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    One card at a time. Flip, mark, and review what you missed. No account, no
+    persistence — your state lives only in this session.
+  </p>
+
+  {decks.length > 0 && (
+    <ul class="anchor-list" style="margin-top: 36px;">
+      {decks.map((deck) => (
+        <li>
+          <a class="a-title" href={`/flashcards/${deck.id}`}>{deck.data.title}</a>
+          {deck.data.description && <span class="a-gloss">{deck.data.description}</span>}
+          <span class="a-meta">
+            DECK · {deck.data.difficulty.toUpperCase()} · {deck.data.cards.length}{' '}
+            {deck.data.cards.length === 1 ? 'CARD' : 'CARDS'}
+          </span>
+          {deck.data.topics?.covered?.length ? (
+            <span class="a-gloss" style="font-style: italic;">
+              Covered: {deck.data.topics.covered.join(' · ')}
+            </span>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {decks.length === 0 && (
+    <p style="margin-top: 36px; color: var(--color-ink-soft); max-width: 60ch;">
+      No flashcard decks published yet.
+    </p>
+  )}
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">FORMAT</span>
+      Flip card-by-card; mark <span class="marker">✓</span> Got it or <span class="marker">•</span>{' '}
+      Review again.
+    </div>
+    <div class="note">
+      <span class="label">STATE</span>
+      Session-only. Refreshing clears progress.
+    </div>
+  </Fragment>
+</BaseLayout>
+

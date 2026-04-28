@@ -129,6 +129,11 @@ const quizQuestion = z.object({
   hint: z.string().optional(),
 });
 
+const flashcardItem = z.object({
+  front: z.string(),
+  back: z.string(),
+});
+
 const quizzes = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/quizzes' }),
   schema: z.object({
@@ -151,4 +156,26 @@ const quizzes = defineCollection({
   }),
 });
 
-export const collections = { concepts, essays, paths, diagrams, fragments, quizzes };
+const flashcards = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/flashcards' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    source: z.string().optional(),
+    chapterNumbers: z.array(z.number()).default([]),
+    concepts: z.array(z.string()).default([]),
+    difficulty: z.enum(['intro', 'intermediate', 'advanced']).default('intermediate'),
+    status: Status,
+    createdAt: z.coerce.date().optional(),
+    updatedAt: z.coerce.date().optional(),
+    topics: z
+      .object({
+        covered: z.array(z.string()).default([]),
+        followUp: z.array(z.string()).default([]),
+      })
+      .optional(),
+    cards: z.array(flashcardItem).min(1),
+  }),
+});
+
+export const collections = { concepts, essays, paths, diagrams, fragments, quizzes, flashcards };
