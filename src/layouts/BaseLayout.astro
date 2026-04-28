@@ -59,10 +59,16 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
           var posture = t && POSTURES.indexOf(t.posture) >= 0 ? t.posture : 'descend';
           var temp = t && TEMPS.indexOf(t.temperature) >= 0 ? t.temperature : 'ivory';
           var density = t && DENSITIES.indexOf(t.density) >= 0 ? t.density : 'canonical';
+          document.documentElement.setAttribute('data-posture', posture);
+          document.documentElement.setAttribute('data-temp', temp);
+          document.documentElement.setAttribute('data-density', density);
           document.body.setAttribute('data-posture', posture);
           document.body.setAttribute('data-temp', temp);
           document.body.setAttribute('data-density', density);
         } catch (e) {
+          document.documentElement.setAttribute('data-posture', 'descend');
+          document.documentElement.setAttribute('data-temp', 'ivory');
+          document.documentElement.setAttribute('data-density', 'canonical');
           document.body.setAttribute('data-posture', 'descend');
           document.body.setAttribute('data-temp', 'ivory');
           document.body.setAttribute('data-density', 'canonical');
@@ -101,7 +107,6 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
 
     <script>
       import '../scripts/path-ribbon.ts';
-      import '../scripts/tweaks-panel.ts';
     </script>
   </body>
 </html>
