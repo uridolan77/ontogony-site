@@ -118,6 +118,13 @@ const dateLabel = entry.data.date
       month: 'long',
     })
   : undefined;
+
+const sourceLabel =
+  entry.data.chapterNumber && entry.data.bookTitle
+    ? `Chapter ${entry.data.chapterNumber} — ${entry.data.bookTitle}`
+    : entry.data.chapterNumber
+      ? `Chapter ${entry.data.chapterNumber}`
+      : entry.data.bookTitle;
 ---
 
 <BaseLayout
@@ -182,10 +189,10 @@ const dateLabel = entry.data.date
         </dd>
       </div>
     )}
-    {entry.data.chapter && (
+    {sourceLabel && (
       <div class="ledger-row">
         <dt>Source</dt>
-        <dd>{entry.data.chapter}</dd>
+        <dd>{sourceLabel}</dd>
       </div>
     )}
     {whereNext.length > 0 && (

@@ -60,6 +60,13 @@ const orderLabel =
     ? `${String(order).padStart(3, '0')} / ${String(total).padStart(3, '0')}`
     : undefined;
 
+const sourceLabel =
+  entry.data.chapterNumber && entry.data.bookTitle
+    ? `Chapter ${entry.data.chapterNumber} — ${entry.data.bookTitle}`
+    : entry.data.chapterNumber
+      ? `Chapter ${entry.data.chapterNumber}`
+      : entry.data.bookTitle;
+
 const kickerLine =
   typeof order === 'number'
     ? `CONCEPT · ENTRY ${String(order).padStart(3, '0')} · ${register} ${stratumName[register]}`
@@ -162,10 +169,10 @@ const whereNext = (entry.data.whereNext ?? []).map((step) => {
       </div>
     )}
 
-    {entry.data.chapter && (
+    {sourceLabel && (
       <div class="ledger-row">
         <dt>Appears in</dt>
-        <dd><span class="muted">{entry.data.chapter}</span></dd>
+        <dd><span class="muted">{sourceLabel}</span></dd>
       </div>
     )}
 
