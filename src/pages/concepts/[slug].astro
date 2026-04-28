@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublished, isLinkable } from '../../lib/content';
+import DiagramPlate from '../../components/DiagramPlate.astro';
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
@@ -124,6 +125,19 @@ const whereNext = (entry.data.whereNext ?? []).map((step) => {
 
   return { href, title: title!, why: step.why, meta, linkable: Boolean(href) };
 });
+
+const featuredDiagramEntry = entry.data.featuredDiagram
+  ? diagramsById.get(entry.data.featuredDiagram)
+  : undefined;
+const featuredDiagram =
+  featuredDiagramEntry && featuredDiagramEntry.data.image
+    ? {
+        title: featuredDiagramEntry.data.title,
+        caption: featuredDiagramEntry.data.caption ?? '',
+        image: featuredDiagramEntry.data.image,
+        href: `/diagrams/${featuredDiagramEntry.id}`,
+      }
+    : undefined;
 ---
 
 <BaseLayout
@@ -235,6 +249,15 @@ const whereNext = (entry.data.whereNext ?? []).map((step) => {
       </div>
     )}
   </dl>
+
+  {featuredDiagram && (
+    <DiagramPlate
+      title={featuredDiagram.title}
+      caption={featuredDiagram.caption}
+      image={featuredDiagram.image}
+      href={featuredDiagram.href}
+    />
+  )}
 
   <div class="body" style="margin-top: 56px;">
     <Content />

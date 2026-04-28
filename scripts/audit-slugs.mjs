@@ -7,9 +7,15 @@
  *
  * Slug-bearing fields audited:
  *  - concept.related:           string[] -> concept
+ *  - concept.featuredDiagram:   string -> diagram
+ *  - concept.relatedDiagrams:   string[] -> diagram
  *  - concept.whereNext[].slug:  string,  kind-typed
  *  - essay.cites:               string[] -> concept
+ *  - essay.featuredDiagram:     string -> diagram
+ *  - essay.relatedDiagrams:     string[] -> diagram
  *  - essay.whereNext[].slug:    string,  kind-typed
+ *  - path.featuredDiagram:      string -> diagram
+ *  - path.relatedDiagrams:      string[] -> diagram
  *  - path.steps[].slug:         string,  kind-typed (concept | essay)
  *
  * Exits 1 if any orphan is found, 0 otherwise.
@@ -127,6 +133,18 @@ for (const entry of collections.concepts) {
       }),
     );
   }
+  check(entry.data.featuredDiagram, 'diagrams', {
+    file: fileLabel,
+    field: 'featuredDiagram',
+  });
+  if (Array.isArray(entry.data.relatedDiagrams)) {
+    entry.data.relatedDiagrams.forEach((slug, i) =>
+      check(slug, 'diagrams', {
+        file: fileLabel,
+        field: `relatedDiagrams[${i}]`,
+      }),
+    );
+  }
   checkWhereNext(entry.data.whereNext, fileLabel);
 }
 
@@ -141,12 +159,36 @@ for (const entry of collections.essays) {
       }),
     );
   }
+  check(entry.data.featuredDiagram, 'diagrams', {
+    file: fileLabel,
+    field: 'featuredDiagram',
+  });
+  if (Array.isArray(entry.data.relatedDiagrams)) {
+    entry.data.relatedDiagrams.forEach((slug, i) =>
+      check(slug, 'diagrams', {
+        file: fileLabel,
+        field: `relatedDiagrams[${i}]`,
+      }),
+    );
+  }
   checkWhereNext(entry.data.whereNext, fileLabel);
 }
 
 // paths: steps[].slug kind-typed (concept | essay); note kind has no slug
 for (const entry of collections.paths) {
   const fileLabel = relative(ROOT, entry.file);
+  check(entry.data.featuredDiagram, 'diagrams', {
+    file: fileLabel,
+    field: 'featuredDiagram',
+  });
+  if (Array.isArray(entry.data.relatedDiagrams)) {
+    entry.data.relatedDiagrams.forEach((slug, i) =>
+      check(slug, 'diagrams', {
+        file: fileLabel,
+        field: `relatedDiagrams[${i}]`,
+      }),
+    );
+  }
   if (!Array.isArray(entry.data.steps)) continue;
   entry.data.steps.forEach((step, i) => {
     if (!step || typeof step !== 'object') return;

@@ -5,6 +5,7 @@ import { getPublished, isLinkable } from '../../lib/content';
 import PullQuote from '../../components/mdx/PullQuote.astro';
 import SectionGlyph from '../../components/mdx/SectionGlyph.astro';
 import FootnoteMarker from '../../components/mdx/FootnoteMarker.astro';
+import DiagramPlate from '../../components/DiagramPlate.astro';
 
 const mdxComponents = { PullQuote, SectionGlyph, FootnoteMarker };
 
@@ -125,6 +126,19 @@ const sourceLabel =
     : entry.data.chapterNumber
       ? `Chapter ${entry.data.chapterNumber}`
       : entry.data.bookTitle;
+
+const featuredDiagramEntry = entry.data.featuredDiagram
+  ? diagramById.get(entry.data.featuredDiagram)
+  : undefined;
+const featuredDiagram =
+  featuredDiagramEntry && featuredDiagramEntry.data.image
+    ? {
+        title: featuredDiagramEntry.data.title,
+        caption: featuredDiagramEntry.data.caption ?? '',
+        image: featuredDiagramEntry.data.image,
+        href: `/diagrams/${featuredDiagramEntry.id}`,
+      }
+    : undefined;
 ---
 
 <BaseLayout
@@ -140,6 +154,15 @@ const sourceLabel =
   </p>
   <h1 class="h1">{entry.data.title}.</h1>
   <p class="standfirst" style="margin-top: 24px;">{entry.data.summary}</p>
+
+  {featuredDiagram && (
+    <DiagramPlate
+      title={featuredDiagram.title}
+      caption={featuredDiagram.caption}
+      image={featuredDiagram.image}
+      href={featuredDiagram.href}
+    />
+  )}
 
   <div class="body" style="margin-top: 40px;">
     <Content components={mdxComponents} />

@@ -205,6 +205,7 @@ export default defineConfig({
           createdAt: new Date().toISOString(),
           register: 'R2',
           related: [],
+          relatedDiagrams: [],
           genealogy: [],
           notThis: [],
           whereNext: [],
@@ -263,6 +264,17 @@ export default defineConfig({
             label: 'Related concepts (slugs)',
             list: true,
           },
+          {
+            type: 'string',
+            name: 'featuredDiagram',
+            label: 'Featured diagram (slug)',
+          },
+          {
+            type: 'string',
+            name: 'relatedDiagrams',
+            label: 'Related diagrams (slugs)',
+            list: true,
+          },
           whereNextField,
           ...metaFields,
           {
@@ -295,6 +307,7 @@ export default defineConfig({
           status: 'published',
           createdAt: new Date().toISOString(),
           cites: [],
+          relatedDiagrams: [],
           footnotes: [],
           whereNext: [],
         }),
@@ -319,6 +332,17 @@ export default defineConfig({
             type: 'string',
             name: 'cites',
             label: 'Cites (concept slugs)',
+            list: true,
+          },
+          {
+            type: 'string',
+            name: 'featuredDiagram',
+            label: 'Featured diagram (slug)',
+          },
+          {
+            type: 'string',
+            name: 'relatedDiagrams',
+            label: 'Related diagrams (slugs)',
             list: true,
           },
           {
@@ -370,6 +394,7 @@ export default defineConfig({
           status: 'published',
           createdAt: new Date().toISOString(),
           strataCovered: [],
+          relatedDiagrams: [],
           steps: [],
         }),
         fields: [
@@ -390,6 +415,17 @@ export default defineConfig({
             options: REGISTER_OPTIONS,
           },
           { type: 'number', name: 'totalMinutes', label: 'Total minutes' },
+          {
+            type: 'string',
+            name: 'featuredDiagram',
+            label: 'Featured diagram (slug)',
+          },
+          {
+            type: 'string',
+            name: 'relatedDiagrams',
+            label: 'Related diagrams (slugs)',
+            list: true,
+          },
           {
             type: 'number',
             name: 'chapters',

@@ -24,6 +24,8 @@ const concepts = defineCollection({
     short: z.string(),
     order: z.number().optional(),
     related: z.array(z.string()).default([]),
+    featuredDiagram: z.string().optional(),
+    relatedDiagrams: z.array(z.string()).default([]),
 
     // structural fields exposed to the ledger
     register: Register,
@@ -57,6 +59,8 @@ const essays = defineCollection({
     bookTitle: z.string().optional(),
     cites: z.array(z.string()).default([]),
     footnotes: z.array(essayFootnote).default([]),
+    featuredDiagram: z.string().optional(),
+    relatedDiagrams: z.array(z.string()).default([]),
     whereNext: z.array(whereNextStep).default([]),
 
     ...baseMeta,
@@ -81,6 +85,8 @@ const paths = defineCollection({
     chapters: z.number().array().default([]),
     strataCovered: z.array(Register).default([]),
     totalMinutes: z.number().optional(),
+    featuredDiagram: z.string().optional(),
+    relatedDiagrams: z.array(z.string()).default([]),
     steps: z.array(pathStop),
 
     ...baseMeta,

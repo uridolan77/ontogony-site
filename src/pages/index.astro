@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Colophon from '../components/Colophon.astro';
+import DiagramPlate from '../components/DiagramPlate.astro';
 import { getPublished } from '../lib/content';
 
 const concepts = await getPublished('concepts');
@@ -51,6 +52,13 @@ const grouped = stratumOrder.map((r, i) => ({
       <a class="link" href="/concepts/transduction">→ Begin with Transduction</a>
     </div>
   </section>
+
+  <DiagramPlate
+    title="The Book Spine"
+    caption="The book's thirteen chapters are arranged not as a ladder of ascent, but as a sequence of regimes, costs, closures, and ruptures."
+    image="/images/diagrams/book-spine.png"
+    href="/diagrams/book-spine"
+  />
 
   <div class="strata-stack">
     {

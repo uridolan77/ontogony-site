@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublished, isLinkable } from '../../lib/content';
+import DiagramPlate from '../../components/DiagramPlate.astro';
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
@@ -11,16 +12,18 @@ export async function getStaticPaths() {
   // even when a draft target is referenced from a published path.
   const concepts = await getCollection('concepts');
   const essays = await getCollection('essays');
+  const diagrams = await getCollection('diagrams');
   return entries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry, concepts, essays },
+    props: { entry, concepts, essays, diagrams },
   }));
 }
 
-const { entry, concepts, essays } = Astro.props;
+const { entry, concepts, essays, diagrams } = Astro.props;
 
 const conceptById = new Map(concepts.map((c) => [c.id, c]));
 const essayById = new Map(essays.map((e) => [e.id, e]));
+const diagramById = new Map(diagrams.map((d) => [d.id, d]));
 
 const stratumName: Record<Stratum, string> = {
   R1: 'FIELD',
@@ -101,6 +104,19 @@ const numberLabel = entry.data.number
   : 'READING PATH · CURATED ROUTE';
 const detail = `${stopCount} STOPS`;
 const active = totalMinutes ? `~${totalMinutes} MIN` : undefined;
+
+const featuredDiagramEntry = entry.data.featuredDiagram
+  ? diagramById.get(entry.data.featuredDiagram)
+  : undefined;
+const featuredDiagram =
+  featuredDiagramEntry && featuredDiagramEntry.data.image
+    ? {
+        title: featuredDiagramEntry.data.title,
+        caption: featuredDiagramEntry.data.caption ?? '',
+        image: featuredDiagramEntry.data.image,
+        href: `/diagrams/${featuredDiagramEntry.id}`,
+      }
+    : undefined;
 ---
 
 <BaseLayout
@@ -113,6 +129,15 @@ const active = totalMinutes ? `~${totalMinutes} MIN` : undefined;
   <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">{numberLabel}</p>
   <h1 class="h1">{entry.data.title}.</h1>
   <p class="standfirst" style="margin-top: 22px;">{entry.data.description}</p>
+
+  {featuredDiagram && (
+    <DiagramPlate
+      title={featuredDiagram.title}
+      caption={featuredDiagram.caption}
+      image={featuredDiagram.image}
+      href={featuredDiagram.href}
+    />
+  )}
 
   <dl class="ledger" style="margin-top: 32px;">
     <div class="ledger-row">
