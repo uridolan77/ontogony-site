@@ -1,0 +1,208 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('paths');
+  const concepts = await getCollection('concepts');
+  const essays = await getCollection('essays');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, concepts, essays },
+  }));
+}
+
+const { entry, concepts, essays } = Astro.props;
+
+const conceptById = new Map(concepts.map((c) => [c.id, c]));
+const essayById = new Map(essays.map((e) => [e.id, e]));
+
+const stratumName: Record<Stratum, string> = {
+  R1: 'FIELD',
+  R2: 'BIOLOGICAL',
+  R3: 'COGNITIVE',
+  R4: 'INSTITUTIONAL',
+};
+
+type Resolved = {
+  index: number;
+  href?: string;
+  kindLabel: string;
+  title: string;
+  gloss?: string;
+  meta?: string;
+  isNote: boolean;
+};
+
+const resolved: Resolved[] = entry.data.steps.map((step, i) => {
+  let title = step.title;
+  let href: string | undefined;
+  let kindLabel = step.kind.toUpperCase();
+  let metaParts: string[] = [];
+
+  if (step.kind === 'concept' && step.slug) {
+    const c = conceptById.get(step.slug);
+    title = title ?? c?.data.title ?? step.slug;
+    href = `/concepts/${step.slug}`;
+    if (c) metaParts.push(c.data.register);
+  } else if (step.kind === 'essay' && step.slug) {
+    const e = essayById.get(step.slug);
+    title = title ?? e?.data.title ?? step.slug;
+    href = `/essays/${step.slug}`;
+    if (e?.data.register) metaParts.push(e.data.register);
+  } else {
+    title = title ?? '';
+  }
+
+  const minutes = step.minutes;
+  if (minutes) metaParts.unshift(`~${minutes} MIN`);
+
+  return {
+    index: i,
+    href,
+    kindLabel,
+    title,
+    gloss: step.body,
+    meta: metaParts.join(' · ') || undefined,
+    isNote: step.kind === 'note',
+  };
+});
+
+// stops to persist for the ribbon, only those that are actual links
+const ribbonStops = resolved
+  .filter((r) => r.href)
+  .map((r) => ({
+    title: r.title,
+    href: r.href!,
+    kind: r.kindLabel,
+  }));
+
+const stopsJson = JSON.stringify({
+  name: entry.data.title,
+  slug: entry.id,
+  step: 0,
+  stops: ribbonStops,
+});
+
+const totalMinutes = entry.data.totalMinutes;
+const stopCount = resolved.length;
+const numberLabel = entry.data.number
+  ? `READING PATH · ${String(entry.data.number).padStart(2, '0')} · CURATED ROUTE`
+  : 'READING PATH · CURATED ROUTE';
+const detail = `${stopCount} STOPS`;
+const active = totalMinutes ? `~${totalMinutes} MIN` : undefined;
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  kind="PATH"
+  detail={detail}
+  active={active}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">{numberLabel}</p>
+  <h1 class="h1">{entry.data.title}.</h1>
+  <p class="standfirst" style="margin-top: 22px;">{entry.data.description}</p>
+
+  <dl class="ledger" style="margin-top: 32px;">
+    <div class="ledger-row">
+      <dt>Recommended order</dt>
+      <dd>Top to bottom. Each stop assumes the previous; do not skip.</dd>
+    </div>
+    {entry.data.strataCovered.length > 0 && (
+      <div class="ledger-row">
+        <dt>Strata covered</dt>
+        <dd>
+          {entry.data.strataCovered.map((s, i) => (
+            <>
+              {i > 0 && ' '}
+              <span class="tag plain">{s}</span>
+            </>
+          ))}
+          &nbsp;<span class="muted">— {entry.data.strataCovered.map((s) => stratumName[s].toLowerCase()).join(' · ')}</span>
+        </dd>
+      </div>
+    )}
+    {totalMinutes && (
+      <div class="ledger-row last">
+        <dt>Estimated time</dt>
+        <dd>~{totalMinutes} minutes at reading speed.</dd>
+      </div>
+    )}
+  </dl>
+
+  <p class="field-label" style="color: var(--color-ink-muted); margin: 48px 0 8px;">THE ROUTE</p>
+
+  <div class="route">
+    {
+      resolved.map((r) => {
+        if (r.isNote) {
+          return (
+            <div class="route-stop" data-step={r.index}>
+              <span class="num">{String(r.index + 1).padStart(2, '0')}</span>
+              <span class="body-cell">
+                <span class="kind">{r.kindLabel}</span>
+                <span class="title">{r.title}</span>
+                {r.gloss && <span class="gloss">{r.gloss}</span>}
+              </span>
+              {r.meta && <span class="meta">{r.meta}</span>}
+            </div>
+          );
+        }
+        return (
+          <a class="route-stop" href={r.href} data-step={r.index}>
+            <span class="num">{String(r.index + 1).padStart(2, '0')}</span>
+            <span class="body-cell">
+              <span class="kind">{r.kindLabel}</span>
+              <span class="title">{r.title}</span>
+              {r.gloss && <span class="gloss">{r.gloss}</span>}
+            </span>
+            {r.meta && <span class="meta">{r.meta}</span>}
+          </a>
+        );
+      })
+    }
+
+    <div class="route-end">
+      <div class="kind">END · WHERE TO GO FROM HERE</div>
+      <div class="title">Return to the atlas, or pick another route.</div>
+      <p style="margin: 8px 0 0; color: var(--color-ink-soft); font-size: 16px; line-height: 1.5;">
+        Continue with another curated <a class="link" href="/paths">reading path</a>, or return to the
+        <a class="link" href="/concepts">concepts atlas</a>.
+      </p>
+    </div>
+  </div>
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">HOW PATHS WORK</span>
+      Once you begin a path, a thin instrument bar appears at the foot of
+      every page in the route, marking the current stop in blue. Close the
+      bar to leave the path.
+    </div>
+    <div class="note">
+      <span class="label">PATH STATE</span>
+      Stored locally in your browser. No account, no server. Clear it any
+      time.
+    </div>
+    <div class="note">
+      <span class="label">A NOTE ON ORDER</span>
+      Stops are stations, not chapters. The recommended sequence is what
+      gets you through the route in the cleanest line.
+    </div>
+  </Fragment>
+</BaseLayout>
+
+<script is:inline define:vars={{ stopsJson }}>
+  const path = JSON.parse(stopsJson);
+  document.querySelectorAll('.route-stop[href]').forEach((a, i) => {
+    a.addEventListener('click', () => {
+      path.step = i;
+      try {
+        localStorage.setItem('ontogony.path', JSON.stringify(path));
+      } catch (_) {}
+    });
+  });
+</script>

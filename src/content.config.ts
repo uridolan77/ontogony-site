@@ -29,6 +29,11 @@ const concepts = defineCollection({
   }),
 });
 
+const essayFootnote = z.object({
+  id: z.string(),
+  body: z.string(),
+});
+
 const essays = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/essays' }),
   schema: z.object({
@@ -38,6 +43,9 @@ const essays = defineCollection({
     register: Register.optional(),
     readingTime: z.number().optional(),
     number: z.number().optional(),
+    chapter: z.string().optional(),
+    cites: z.array(z.string()).default([]),
+    footnotes: z.array(essayFootnote).default([]),
     whereNext: z.array(whereNextStep).default([]),
   }),
 });
