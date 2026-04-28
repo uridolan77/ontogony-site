@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
+
+const quizzes = (await getPublished('quizzes')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout
+  title="Quizzes"
+  description="Interactive checks across the strata — multiple-choice, with rationale."
+  kind="QUIZZES"
+  active={`${quizzes.length} ${quizzes.length === 1 ? 'ENTRY' : 'ENTRIES'}`}
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">QUIZZES · CHECKS ACROSS THE STRATA</p>
+  <h1 class="h1">Quizzes.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    Short diagnostic runs through Ontogony’s key architectures. No account,
+    no backend — your state lives only in this session.
+  </p>
+
+  {quizzes.length > 0 && (
+    <ul class="anchor-list" style="margin-top: 36px;">
+      {quizzes.map((quiz) => (
+        <li>
+          <a class="a-title" href={`/quizzes/${quiz.id}`}>{quiz.data.title}</a>
+          {quiz.data.description && <span class="a-gloss">{quiz.data.description}</span>}
+          <span class="a-meta">
+            QUIZ · {quiz.data.difficulty.toUpperCase()} · {quiz.data.questions.length}{' '}
+            {quiz.data.questions.length === 1 ? 'QUESTION' : 'QUESTIONS'}
+          </span>
+          {quiz.data.topics?.covered?.length ? (
+            <span class="a-gloss" style="font-style: italic;">
+              Covered: {quiz.data.topics.covered.join(' · ')}
+            </span>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {quizzes.length === 0 && (
+    <p style="margin-top: 36px; color: var(--color-ink-soft); max-width: 60ch;">
+      No quizzes published yet.
+    </p>
+  )}
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">FORMAT</span>
+      Multiple-choice with rationale. Hint toggle where available.
+    </div>
+    <div class="note">
+      <span class="label">STATE</span>
+      Session-only. Refreshing clears progress.
+    </div>
+  </Fragment>
+</BaseLayout>
+

@@ -117,4 +117,38 @@ const fragments = defineCollection({
   }),
 });
 
-export const collections = { concepts, essays, paths, diagrams, fragments };
+const quizOption = z.object({
+  text: z.string(),
+  isCorrect: z.boolean(),
+  rationale: z.string().optional(),
+});
+
+const quizQuestion = z.object({
+  question: z.string(),
+  options: z.array(quizOption).min(2),
+  hint: z.string().optional(),
+});
+
+const quizzes = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/quizzes' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    source: z.string().optional(),
+    chapterNumbers: z.array(z.number()).default([]),
+    concepts: z.array(z.string()).default([]),
+    difficulty: z.enum(['intro', 'intermediate', 'advanced']).default('intermediate'),
+    status: Status,
+    createdAt: z.coerce.date().optional(),
+    updatedAt: z.coerce.date().optional(),
+    topics: z
+      .object({
+        covered: z.array(z.string()).default([]),
+        followUp: z.array(z.string()).default([]),
+      })
+      .optional(),
+    questions: z.array(quizQuestion).min(1),
+  }),
+});
+
+export const collections = { concepts, essays, paths, diagrams, fragments, quizzes };

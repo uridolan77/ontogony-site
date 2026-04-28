@@ -1,0 +1,714 @@
+{
+  "title": "Symbolic Stratum and Affective Witness Quiz",
+  "description": "An advanced Ontogony quiz covering the Affective Witness, Symbolic Stratum, Stabilisation Engine, institutional failure modes, biological canalisation, and physical objectivity.",
+  "source": "NotebookLM quiz export",
+  "chapterNumbers": [6, 10, 12],
+  "concepts": [
+    "affective-witness",
+    "symbolic-exit",
+    "stabilisation-engine",
+    "witness-canon-architecture",
+    "landauer-floor",
+    "closure-crisis-lemma"
+  ],
+  "difficulty": "advanced",
+  "status": "published",
+  "createdAt": "2026-04-29",
+  "topics": {
+    "covered": [
+      "Affective Witness",
+      "Stratum 6 and the Symbolic Stratum",
+      "The Stabilisation Engine",
+      "Institutional Failure Modes",
+      "The Quartet of Answerability",
+      "Biological Canalisation and PSII",
+      "Physical Decoherence and Objective Reality"
+    ],
+    "followUp": [
+      "The Stratogonic Principle",
+      "Constructor Theory of Information",
+      "Variational Free Energy and the Markov Blanket",
+      "Quantum Contextuality and Sheaf Theory",
+      "AI Alignment as Institutional Coupling",
+      "The Synthesis Lemma"
+    ]
+  },
+  "questions": [
+    {
+      "question": "What is the primary function of the 'Affective Witness' in Chapter 10's architecture?",
+      "options": [
+        {
+          "text": "To provide a phenomenal commentary on internal states without influencing behavior.",
+          "isCorrect": false,
+          "rationale": "The framework explicitly argues that valence is not just an added commentary but is inside the pricing of navigation."
+        },
+        {
+          "text": "To price trajectories through an allocentric frame using interoceptive prediction error.",
+          "isCorrect": true,
+          "rationale": "The Affective Witness acts as the currency by which the organism selects one path over another based on homeostatic stakes."
+        },
+        {
+          "text": "To maintain core temperature and blood glucose through reactive local control.",
+          "isCorrect": false,
+          "rationale": "These are basic homeostatic functions that do not require the hierarchical prediction loops of the Affective Witness."
+        },
+        {
+          "text": "To represent the body as a 'controlled hallucination' within a generative model.",
+          "isCorrect": false,
+          "rationale": "This is the representationalist view held by Anil Seth, which the text explicitly differentiates from."
+        }
+      ],
+      "hint": "Think about how navigation needs a 'pricing' system to choose between paths."
+    },
+    {
+      "question": "According to the text, which brain region in humans is responsible for the re-representation of interoceptive signals that carries felt weight?",
+      "options": [
+        {
+          "text": "The posterior thalamic nucleus.",
+          "isCorrect": false,
+          "rationale": "The thalamus acts as a relay in the spinothalamic tract before reaching the cortical hierarchy."
+        },
+        {
+          "text": "The anterior insula.",
+          "isCorrect": true,
+          "rationale": "The text identifies the anterior insula as the site where prediction-error signals become the felt weight of the body's condition."
+        },
+        {
+          "text": "The dorsal horn of the spinal cord.",
+          "isCorrect": false,
+          "rationale": "Lamina I of the dorsal horn receives initial signals but does not perform the high-level re-representation described."
+        },
+        {
+          "text": "The hippocampus.",
+          "isCorrect": false,
+          "rationale": "The hippocampus is associated with navigation and place cells rather than the primary interoceptive hierarchy."
+        }
+      ],
+      "hint": "It is a specific part of the insular hierarchy elaborated in primates."
+    },
+    {
+      "question": "What is the 'burn-rate currency' associated with the Affective Witness?",
+      "options": [
+        {
+          "text": "ATP consumption in ion pumps.",
+          "isCorrect": false,
+          "rationale": "This is the currency for the lower bioelectric stratum, not the affective stratum."
+        },
+        {
+          "text": "Allostatic cost.",
+          "isCorrect": true,
+          "rationale": "Allostatic cost represents the cumulative metabolic expenditure of maintaining homeostasis under load."
+        },
+        {
+          "text": "Cerebral metabolic rate of oxygen ($CMRO_2$).",
+          "isCorrect": false,
+          "rationale": "This is specifically linked to the navigational stratum's energetic budget in the text."
+        },
+        {
+          "text": "Person-hours per year.",
+          "isCorrect": false,
+          "rationale": "This is the currency for the institutional/symbolic stratum, representing human labor."
+        }
+      ],
+      "hint": "Consider the term used to describe the metabolic price of maintaining set-points under stress."
+    },
+    {
+      "question": "In the courtroom scene of Chapter 12, why are the jurors described as a 'built' Witness?",
+      "options": [
+        {
+          "text": "Because they were present at the event and must reconstruct their memories.",
+          "isCorrect": false,
+          "rationale": "Jurors are selected specifically because they did not witness the act and have no prior knowledge."
+        },
+        {
+          "text": "Because they are strangers who must be trained to see the event through evidence.",
+          "isCorrect": true,
+          "rationale": "The legal apparatus constructs a Witness by instructing people on the law and walking them through exhibits."
+        },
+        {
+          "text": "Because their biological sensors are directly recording the crime in real-time.",
+          "isCorrect": false,
+          "rationale": "Symbolic witnessing is externalized and does not rely on the jurors' physical presence at the crime."
+        },
+        {
+          "text": "Because they are experts in forensic analysis hired by the state.",
+          "isCorrect": false,
+          "rationale": "Jurors are typically laypeople selected from voter rolls, not professional forensic witnesses."
+        }
+      ],
+      "hint": "The jurors' lack of prior knowledge is a requirement for their role."
+    },
+    {
+      "question": "Which node of the Stratum 6 quartet is responsible for the 'routinised procedures' that produce more cases and charges?",
+      "options": [
+        {
+          "text": "The Canon.",
+          "isCorrect": false,
+          "rationale": "The Canon refers to the static rules and statutes, not the active pipeline of production."
+        },
+        {
+          "text": "The Replicator.",
+          "isCorrect": true,
+          "rationale": "The Replicator is the machinery, like the DA's office, that propagates answerability by producing units of output."
+        },
+        {
+          "text": "The Renormaliser.",
+          "isCorrect": false,
+          "rationale": "The Renormaliser checks for errors and pushes back against drift; it doesn't generate the primary flow."
+        },
+        {
+          "text": "The Witness.",
+          "isCorrect": false,
+          "rationale": "The Witness provides the record or finding, but does not manage the procedural pipeline."
+        }
+      ],
+      "hint": "This node is compared to a biological mechanism that creates 'more of itself'."
+    },
+    {
+      "question": "What is the 'Dunbar threshold' mentioned in Chapter 12?",
+      "options": [
+        {
+          "text": "The minimum number of calories needed to sustain a human brain.",
+          "isCorrect": false,
+          "rationale": "The Dunbar limit refers to social group size, not an individual's caloric intake."
+        },
+        {
+          "text": "A social group size limit of approximately 150 people.",
+          "isCorrect": true,
+          "rationale": "This threshold marks the point where face-to-face mentalization fails and external scaffolding is required."
+        },
+        {
+          "text": "The maximum speed of a courtroom stenographer.",
+          "isCorrect": false,
+          "rationale": "The stenographer's speed is a technical detail of the Witness function, not a social limit."
+        },
+        {
+          "text": "The metabolic limit of the anterior insula.",
+          "isCorrect": false,
+          "rationale": "This confuses the interoceptive biology of Chapter 10 with the social limits of Chapter 12."
+        }
+      ],
+      "hint": "It is a ceiling for the number of stable relationships a human can maintain."
+    },
+    {
+      "question": "Which failure mode is characterized by rising regulatory costs and headcount with flat or worsening actual outcomes?",
+      "options": [
+        {
+          "text": "Strategic Flooding.",
+          "isCorrect": false,
+          "rationale": "Flooding involves overrunning a system with too much data, rather than internal capture of rules."
+        },
+        {
+          "text": "Canon Capture.",
+          "isCorrect": true,
+          "rationale": "Canon Capture occurs when the reading of rules is distorted by the very interests meant to be regulated."
+        },
+        {
+          "text": "Witness Degradation.",
+          "isCorrect": false,
+          "rationale": "This failure involves the decay of physical records and archives."
+        },
+        {
+          "text": "Parasitic Sclerosis.",
+          "isCorrect": false,
+          "rationale": "While related, Sclerosis specifically involves the defunding of the checking function as revenue decouples from outcome."
+        }
+      ],
+      "hint": "The text uses Dodd-Frank as a primary example of this failure."
+    },
+    {
+      "question": "In the 'Stabilisation Engine' framework, what does 'Publication' mean?",
+      "options": [
+        {
+          "text": "Printing a book or article in a physical format.",
+          "isCorrect": false,
+          "rationale": "Publication in this technical sense is about redundant encoding, not just traditional publishing."
+        },
+        {
+          "text": "Redundant environmental inscription across independent channels.",
+          "isCorrect": true,
+          "rationale": "A pattern is Published when it can be retrieved from many disjoint fragments of its environment."
+        },
+        {
+          "text": "The act of revealing a secret in a courtroom.",
+          "isCorrect": false,
+          "rationale": "This is too narrow; Publication applies to dust grains and DNA as well as legal proceedings."
+        },
+        {
+          "text": "The selective compression of irrelevant data.",
+          "isCorrect": false,
+          "rationale": "Compression is the function of the Canon, whereas Publication is the function of the Witness."
+        }
+      ],
+      "hint": "Think of the 'redundancy plateau' seen in the dust grain example."
+    },
+    {
+      "question": "What is 'Robustness' as defined in Chapter 6?",
+      "options": [
+        {
+          "text": "The physical strength of an organism's bone structure.",
+          "isCorrect": false,
+          "rationale": "Robustness refers to the stability of informational identity, not just physical durability."
+        },
+        {
+          "text": "Maintaining informational identity despite perturbations.",
+          "isCorrect": true,
+          "rationale": "Robustness allows a pattern to persist even when its environment or components are disturbed."
+        },
+        {
+          "text": "The ability of a system to grow without limits.",
+          "isCorrect": false,
+          "rationale": "Growth is not a requirement for Robustness; the focus is on maintaining a stable state."
+        },
+        {
+          "text": "The process of deleting unnecessary records.",
+          "isCorrect": false,
+          "rationale": "Deleting or ignoring data is part of compression (Canon), not Robustness."
+        }
+      ],
+      "hint": "It involves a pattern's ability to 'absorb' variation or stress."
+    },
+    {
+      "question": "What happens during a 'Gluing' failure?",
+      "options": [
+        {
+          "text": "A physical object breaks into smaller pieces.",
+          "isCorrect": false,
+          "rationale": "Gluing is a structural/logical failure in description, not necessarily a physical break."
+        },
+        {
+          "text": "Locally coherent descriptions cannot be globally assembled into one atlas.",
+          "isCorrect": true,
+          "rationale": "Gluing requires that different perspectives or 'patches' of information agree where they overlap."
+        },
+        {
+          "text": "The Replicator produces tokens faster than the Witness can record them.",
+          "isCorrect": false,
+          "rationale": "This describes Strategic Flooding, not a Gluing/assembly failure."
+        },
+        {
+          "text": "The Landauer Floor is breached by excessive energy consumption.",
+          "isCorrect": false,
+          "rationale": "The Landauer Floor is a physical limit on erasing data, not a description-assembly problem."
+        }
+      ],
+      "hint": "Think of the South Sea Bubble's mismatching accounting ledgers."
+    },
+    {
+      "question": "What is the 'Symbolic Self' as described in Chapter 12?",
+      "options": [
+        {
+          "text": "A first-person narrative that exists only inside a human skull.",
+          "isCorrect": false,
+          "rationale": "The text differentiates its view from purely internal narrative or phenomenal models."
+        },
+        {
+          "text": "An inert normative artifact and enforcement locus in the social world.",
+          "isCorrect": true,
+          "rationale": "It is the 'you' found in bank records and legal dockets that the state acts upon."
+        },
+        {
+          "text": "The biological metabolism of a person radiating 80 watts.",
+          "isCorrect": false,
+          "rationale": "This is the 'biological self' or substrate, not the symbolic artifact."
+        },
+        {
+          "text": "A useful illusion created by the brain's internal prediction model.",
+          "isCorrect": false,
+          "rationale": "The framework treats the Symbolic Self as a material reality in external substrates, not just an illusion."
+        }
+      ],
+      "hint": "It is the address where your legal and financial liabilities are delivered."
+    },
+    {
+      "question": "Which failure mode is caused by the cost of replication falling to zero while the cost of checking remains high?",
+      "options": [
+        {
+          "text": "Witness Degradation.",
+          "isCorrect": false,
+          "rationale": "Degradation is about the physical decay of records, not the speed of new data creation."
+        },
+        {
+          "text": "Strategic Flooding.",
+          "isCorrect": true,
+          "rationale": "Flooding exploits the gap between 'free' digital replication and 'expensive' human-rate checking."
+        },
+        {
+          "text": "Canon Capture.",
+          "isCorrect": false,
+          "rationale": "Capture is about distorting the rules, whereas flooding is about overwhelming the witnesses."
+        },
+        {
+          "text": "Parasitic Sclerosis.",
+          "isCorrect": false,
+          "rationale": "Sclerosis is about the defunding of oversight, though it can occur alongside flooding."
+        }
+      ],
+      "hint": "This mode is associated with the 'Firehose of Falsehood'."
+    },
+    {
+      "question": "What does 'Reference Rot' demonstrate in the context of Chapter 12?",
+      "options": [
+        {
+          "text": "The inability of scientists to agree on facts.",
+          "isCorrect": false,
+          "rationale": "The issue is technical and archival, not necessarily a disagreement in opinion."
+        },
+        {
+          "text": "Witness Degradation.",
+          "isCorrect": true,
+          "rationale": "The decay of URLs and digital citations means the 'Witness' for an old claim has dissolved."
+        },
+        {
+          "text": "A failure of the Replicator to produce enough copies.",
+          "isCorrect": false,
+          "rationale": "If anything, the Replicator produces too many copies that outlive their linked sources."
+        },
+        {
+          "text": "The success of the 'Stabilisation Engine' in preserving data.",
+          "isCorrect": false,
+          "rationale": "Reference rot is an example of the Engine failing due to lack of substrate maintenance."
+        }
+      ],
+      "hint": "It concerns the disappearance of the sources that legal and scientific claims point to."
+    },
+    {
+      "question": "In the biological stratum (PSII), what is the 'maintenance invoice' the cell must pay?",
+      "options": [
+        {
+          "text": "The continuous scattering of photons.",
+          "isCorrect": false,
+          "rationale": "Photon scattering is the 'zero intentional cost' mechanism of the physical stratum."
+        },
+        {
+          "text": "The repair and replacement of the D1 protein subunit.",
+          "isCorrect": true,
+          "rationale": "D1 is destroyed by photochemistry every 30 minutes and must be metabolically replaced."
+        },
+        {
+          "text": "The creation of redundant DNA copies in the nucleus.",
+          "isCorrect": false,
+          "rationale": "While DNA is important, the PSII case focuses specifically on the D1 repair cycle."
+        },
+        {
+          "text": "The cooling of the thylakoid membrane via HVAC systems.",
+          "isCorrect": false,
+          "rationale": "HVAC systems are an institutional/physical expense of courtrooms or data centers."
+        }
+      ],
+      "hint": "The D1 protein subunit has a very short lifespan under sunlight."
+    },
+    {
+      "question": "What does the 'Formal Isomorphism Principle' (FIP) state?",
+      "options": [
+        {
+          "text": "That all systems across all levels are identical in their physical mechanisms.",
+          "isCorrect": false,
+          "rationale": "The FIP explicitly denies this, noting that substrates and costs are incommensurable."
+        },
+        {
+          "text": "That functional roles are similar across strata, but substrates and costs are different.",
+          "isCorrect": true,
+          "rationale": "It allows us to use terms like 'Witness' and 'Canon' while acknowledging that DNA is not a ledger."
+        },
+        {
+          "text": "That mathematical formulas are the only things that exist.",
+          "isCorrect": false,
+          "rationale": "The FIP is about the mapping of functional roles in a materialist framework, not math-only ontology."
+        },
+        {
+          "text": "That the bioelectric field is the most important stratum.",
+          "isCorrect": false,
+          "rationale": "The FIP does not prioritize one stratum; it explains the relationships between them."
+        }
+      ],
+      "hint": "It suggests the 'diagram' of how things work is the same, but the 'fuel' is different."
+    },
+    {
+      "question": "What is the 'Landauer Floor' mentioned in Chapter 6?",
+      "options": [
+        {
+          "text": "The minimum altitude at which life can exist.",
+          "isCorrect": false,
+          "rationale": "This is a biological concept unrelated to the thermodynamic principle of Landauer."
+        },
+        {
+          "text": "The minimum thermodynamic cost to erase one bit of information ($k_B T \\ln 2$).",
+          "isCorrect": true,
+          "rationale": "This principle ensures that there is no 'free forgetting' or costless record-keeping."
+        },
+        {
+          "text": "The lowest floor of a county courthouse archive.",
+          "isCorrect": false,
+          "rationale": "This is a literal interpretation of 'floor' rather than the scientific limit."
+        },
+        {
+          "text": "The maximum number of jurors that can fit in a box.",
+          "isCorrect": false,
+          "rationale": "The Landauer limit concerns information processing, not physical seating capacity."
+        }
+      ],
+      "hint": "It relates to the energy required for logically irreversible computation."
+    },
+    {
+      "question": "According to Chapter 12, what is 'Parasitic Sclerosis'?",
+      "options": [
+        {
+          "text": "A biological disease affecting the D1 protein subunit.",
+          "isCorrect": false,
+          "rationale": "Sclerosis here is an institutional failure mode, not a biological one."
+        },
+        {
+          "text": "An institutional failure where revenue decouples from actual outcome verification.",
+          "isCorrect": true,
+          "rationale": "Higher education is the example given, where administrative growth continues despite 'skills gaps'."
+        },
+        {
+          "text": "The rapid decay of magnetic domains on a server's hard drive.",
+          "isCorrect": false,
+          "rationale": "This is Witness Degradation, specifically relating to substrate decay."
+        },
+        {
+          "text": "The capture of the Supreme Court by special interest groups.",
+          "isCorrect": false,
+          "rationale": "This is a specific example of Canon Capture, rather than the general sclerosis of decoupling."
+        }
+      ],
+      "hint": "Think of rising tuition costs paired with declining job readiness."
+    },
+    {
+      "question": "What does the 'Closure-Crisis Lemma' predict?",
+      "options": [
+        {
+          "text": "That all systems will eventually reach perfect stability.",
+          "isCorrect": false,
+          "rationale": "The Lemma suggests that stability itself creates the conditions for new problems."
+        },
+        {
+          "text": "That successful stabilisation creates boundary conditions for a new crisis.",
+          "isCorrect": true,
+          "rationale": "By-products of maintenance (like entropy or complexity) eventually overwhelm the system."
+        },
+        {
+          "text": "That the Replicator will always win over the Renormaliser.",
+          "isCorrect": false,
+          "rationale": "The Lemma is a general stratal principle, not just about the S6 quartet."
+        },
+        {
+          "text": "That the dust grain will eventually turn into a planet.",
+          "isCorrect": false,
+          "rationale": "While matter accumulates, the Lemma refers to the logical and thermodynamic limits of stability."
+        }
+      ],
+      "hint": "Maintenance activities produce 'trash' or noise that eventually causes trouble."
+    },
+    {
+      "question": "Why is the 'dust grain' considered operationally objective in Chapter 6?",
+      "options": [
+        {
+          "text": "Because it has a physical shape that can be touched.",
+          "isCorrect": false,
+          "rationale": "Touch is a subjective measurement; the text focuses on redundant environmental recording."
+        },
+        {
+          "text": "Because its position is redundantly inscribed across $10^{20}$ environmental fragments.",
+          "isCorrect": true,
+          "rationale": "Objectivity is achieved through consensus grounded in massive redundant records (photons, molecules)."
+        },
+        {
+          "text": "Because a scientist has looked at it through a microscope.",
+          "isCorrect": false,
+          "rationale": "The grain is recorded by its environment whether or not a scientist is present."
+        },
+        {
+          "text": "Because it follows the laws of quantum superposition perfectly.",
+          "isCorrect": false,
+          "rationale": "Decoherence (the loss of superposition) is actually what produces classical objectivity."
+        }
+      ],
+      "hint": "It involves the environment acting as a 'relentless' recorder."
+    },
+    {
+      "question": "What is the 'Renormaliser' node in the Stratum 6 quartet?",
+      "options": [
+        {
+          "text": "The part of the system that makes more copies of a charge.",
+          "isCorrect": false,
+          "rationale": "This is the Replicator's function."
+        },
+        {
+          "text": "The part that prices the Replicator's output against the Canon to check for drift.",
+          "isCorrect": true,
+          "rationale": "Appellate courts and audit processes are examples of Renormalisers."
+        },
+        {
+          "text": "The physical paper on which a statute is printed.",
+          "isCorrect": false,
+          "rationale": "The paper is the inert substrate of the Canon, not the Renormaliser function."
+        },
+        {
+          "text": "The jury that listens to testimony and makes a finding.",
+          "isCorrect": false,
+          "rationale": "The jury is the primary built Witness, though they also participate in the loop."
+        }
+      ],
+      "hint": "It serves as the 'quality control' or oversight mechanism."
+    },
+    {
+      "question": "In the case of the 'South Sea Bubble', what was the 'Gluing' failure?",
+      "options": [
+        {
+          "text": "The physical glue on the ledgers dried out.",
+          "isCorrect": false,
+          "rationale": "This is a literal interpretation; Gluing failure is about mismatched data."
+        },
+        {
+          "text": "The company's books, Parliament's view, and market valuations disagreed on every overlap.",
+          "isCorrect": true,
+          "rationale": "Locally coherent descriptions could not be assembled into one consistent global reality."
+        },
+        {
+          "text": "The company ran out of money to pay its clerks.",
+          "isCorrect": false,
+          "rationale": "While true eventually, the Gluing failure specifically refers to the structural incoherence of the records."
+        },
+        {
+          "text": "The Replicator produced shares faster than the printing press could work.",
+          "isCorrect": false,
+          "rationale": "This is a throughput problem, not a multi-perspective assembly problem."
+        }
+      ],
+      "hint": "It involves a lack of consistency between different institutional 'atlases'."
+    },
+    {
+      "question": "What distinguishes Stratum 6 (Symbolic) from the biological and bioelectric strata below it?",
+      "options": [
+        {
+          "text": "It uses more energy per unit of processing.",
+          "isCorrect": false,
+          "rationale": "The text doesn't claim it uses *more* energy, but that the *payment structure* is externalized."
+        },
+        {
+          "text": "It is instantiated in inert matter that cannot repair itself.",
+          "isCorrect": true,
+          "rationale": "Unlike a healing body, a courtroom or a database requires humans to keep its 'limestone' from decaying."
+        },
+        {
+          "text": "It is the only stratum that uses prediction loops.",
+          "isCorrect": false,
+          "rationale": "Prediction loops are already installed at the affective stratum (Stratum 3)."
+        },
+        {
+          "text": "It does not require any human metabolic subsidy.",
+          "isCorrect": false,
+          "rationale": "The symbolic stratum is *entirely* parasitic on the metabolic subsidy of living humans."
+        }
+      ],
+      "hint": "Consider the durability of paper and stone versus living tissue."
+    },
+    {
+      "question": "What happens when an organism's 'Affective Witness' fails (the cessation signature)?",
+      "options": [
+        {
+          "text": "It begins to feel excessive pain and anxiety.",
+          "isCorrect": false,
+          "rationale": "Failure of the witness typically results in a loss or flattening of these signals, not an increase."
+        },
+        {
+          "text": "It fails to price internal states or generate felt urgency to defend its integrity.",
+          "isCorrect": true,
+          "rationale": "The internal landscape becomes 'flat', and information arrives without being 'inside' the organism."
+        },
+        {
+          "text": "Its heart stops beating immediately.",
+          "isCorrect": false,
+          "rationale": "Basic homeostatic functions might continue, but the 'affective weight' of the condition is lost."
+        },
+        {
+          "text": "It loses its ability to navigate a physical room.",
+          "isCorrect": false,
+          "rationale": "A map might remain intact, but the *preference* for paths (the pricing) is what fails."
+        }
+      ],
+      "hint": "Patients with certain brain lesions report a 'pervasive flatness' of the body's internal signals."
+    },
+    {
+      "question": "What is the 'Thermodynamic Firewall'?",
+      "options": [
+        {
+          "text": "A protective layer in a data center to prevent heat damage.",
+          "isCorrect": false,
+          "rationale": "This is a literal technical device, not the conceptual firewall of the framework."
+        },
+        {
+          "text": "The principle that maintenance costs at different strata are incommensurable.",
+          "isCorrect": true,
+          "rationale": "It prevents collapsing institutional labor (person-hours) into literal physics ($W/K$)."
+        },
+        {
+          "text": "The high temperature at which a bioelectric field collapses.",
+          "isCorrect": false,
+          "rationale": "While fields collapse at high heat, the 'firewall' refers to the typing of costs."
+        },
+        {
+          "text": "A regulation meant to limit carbon emissions from courtrooms.",
+          "isCorrect": false,
+          "rationale": "This confuses environmental policy with the book's architectural principles."
+        }
+      ],
+      "hint": "It ensures that 'clerk labor' and 'entropy' are treated as distinct types of cost."
+    },
+    {
+      "question": "In Chapter 6, what is used as a 'negative demonstration' of Witness without Canon?",
+      "options": [
+        {
+          "text": "The dust grain.",
+          "isCorrect": false,
+          "rationale": "The dust grain is the positive demonstration of physical witnessing."
+        },
+        {
+          "text": "The prion.",
+          "isCorrect": true,
+          "rationale": "Prions replicate (Witness) but have no regulatory buffering (Canon) to guide them into a viable phenotype."
+        },
+        {
+          "text": "The chloroplast.",
+          "isCorrect": false,
+          "rationale": "The chloroplast (PSII) is the positive demonstration of metabolic canalization."
+        },
+        {
+          "text": "Double-entry bookkeeping.",
+          "isCorrect": false,
+          "rationale": "Bookkeeping is a positive demonstration of institutional coupling."
+        }
+      ],
+      "hint": "It is a misfolded protein that templates its form onto others without any oversight."
+    },
+    {
+      "question": "What does 'Sovereignty' mean in the context of Chapter 6's institutional analysis?",
+      "options": [
+        {
+          "text": "The absolute power of a king over his subjects.",
+          "isCorrect": false,
+          "rationale": "The text uses a more technical, structural definition related to maintenance loops."
+        },
+        {
+          "text": "The occupant of the position that sets the Canon's compression parameters.",
+          "isCorrect": true,
+          "rationale": "It is the control point that decides which social degrees of freedom count as noise."
+        },
+        {
+          "text": "The ability of a country to print its own currency.",
+          "isCorrect": false,
+          "rationale": "While a function of sovereignty, the technical definition is about maintenance-loop control."
+        },
+        {
+          "text": "The physical force used to arrest a defendant.",
+          "isCorrect": false,
+          "rationale": "Force is part of enforcement, but sovereignty is the 'decision' position in the loop."
+        }
+      ],
+      "hint": "It is the institutional analogue of the Hamiltonian in physics."
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuizPlayer from '../../components/QuizPlayer';
+import { getPublished, isLinkable } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const published = await getPublished('quizzes');
+  return published.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+
+const concepts = await getCollection('concepts');
+const conceptsById = new Map(concepts.map((c) => [c.id, c]));
+
+const conceptRefs = (entry.data.concepts ?? []).map((slug) => {
+  const c = conceptsById.get(slug);
+  const title = c?.data?.title ?? slug;
+  const href = `/concepts/${slug}`;
+  const linkable = isLinkable(c);
+  return { slug, title, href: import.meta.env.PROD && !linkable ? undefined : href };
+});
+
+const chapters = entry.data.chapterNumbers ?? [];
+const difficulty = entry.data.difficulty.toUpperCase();
+const kind = 'QUIZ';
+const detail = difficulty;
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  kind={kind}
+  detail={detail}
+  active={`${entry.data.questions.length} ${entry.data.questions.length === 1 ? 'QUESTION' : 'QUESTIONS'}`}
+  narrow
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">
+    QUIZ · {difficulty}
+  </p>
+  <h1 class="h1">{entry.data.title}</h1>
+  {entry.data.description && <p class="standfirst" style="margin-top: 22px;">{entry.data.description}</p>}
+
+  <dl class="ledger" style="margin-top: 28px;">
+    <div class="ledger-row">
+      <dt>Difficulty</dt>
+      <dd><span class="tag plain">{difficulty}</span></dd>
+    </div>
+
+    {chapters.length > 0 && (
+      <div class="ledger-row">
+        <dt>Chapters</dt>
+        <dd>{chapters.join(' · ')}</dd>
+      </div>
+    )}
+
+    {entry.data.source && (
+      <div class="ledger-row">
+        <dt>Source</dt>
+        <dd><span class="muted">{entry.data.source}</span></dd>
+      </div>
+    )}
+
+    {conceptRefs.length > 0 && (
+      <div class="ledger-row last">
+        <dt>Concepts</dt>
+        <dd>
+          {conceptRefs.map((c, i) => (
+            <>
+              {i > 0 && ' · '}
+              {c.href ? (
+                <a class="link" href={c.href}>{c.title}</a>
+              ) : (
+                <span class="muted">{c.title}</span>
+              )}
+            </>
+          ))}
+        </dd>
+      </div>
+    )}
+  </dl>
+
+  <QuizPlayer title={entry.data.title} questions={entry.data.questions} client:idle />
+
+  {(entry.data.topics?.covered?.length || entry.data.topics?.followUp?.length) && (
+    <div class="ledger-meta">
+      {entry.data.topics?.covered?.length ? (
+        <>
+          <div class="ledger-meta-label">Covered</div>
+          <ul class="ledger-meta-values">
+            {entry.data.topics.covered.map((t) => <li>{t}</li>)}
+          </ul>
+        </>
+      ) : null}
+
+      {entry.data.topics?.followUp?.length ? (
+        <>
+          <div class="ledger-meta-label">Follow-up</div>
+          <ul class="ledger-meta-values">
+            {entry.data.topics.followUp.map((t) => <li>{t}</li>)}
+          </ul>
+        </>
+      ) : null}
+    </div>
+  )}
+
+  <Fragment slot="margin-notes">
+    {entry.data.topics?.covered?.length ? (
+      <div class="note">
+        <span class="label">COVERED</span>
+        {entry.data.topics.covered.join(' · ')}.
+      </div>
+    ) : null}
+    {entry.data.topics?.followUp?.length ? (
+      <div class="note">
+        <span class="label">FOLLOW-UP</span>
+        {entry.data.topics.followUp.join(' · ')}.
+      </div>
+    ) : null}
+    <div class="note">
+      <span class="label">NOTE</span>
+      State is session-only; restarting or refreshing clears answers.
+    </div>
+  </Fragment>
+</BaseLayout>
+
