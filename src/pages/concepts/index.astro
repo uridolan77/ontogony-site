@@ -22,14 +22,15 @@ const concepts = (await getCollection('concepts')).sort((a, b) => {
   </p>
   <hr />
 
-  <ul class="concept-index-list">
+  <ul class="ledger-list">
     {
       concepts.map((concept) => (
         <li>
-          <h2>
-            <a href={`/concepts/${concept.id}`}>{concept.data.title}</a>
-          </h2>
-          <p>{concept.data.short}</p>
+          <a class="ledger-row" href={`/concepts/${concept.id}`}>
+            <span class="ledger-row-title">{concept.data.title}</span>
+            <span class="ledger-row-def">{concept.data.short}</span>
+            <span class="ledger-row-marker" aria-hidden="true">·→</span>
+          </a>
         </li>
       ))
     }

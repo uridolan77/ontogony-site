@@ -1,0 +1,26 @@
+---
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const links = [
+  { href: '/theory', label: 'Theory' },
+  { href: '/concepts', label: 'Concepts' },
+];
+
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header class="instrument-bar">
+  <div class="instrument-bar-inner">
+    <a class="instrument-bar-mark" href="/">Ontogony</a>
+    <nav class="instrument-bar-nav" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a href={link.href} class:list={[{ 'is-active': isActive(link.href) }]}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
