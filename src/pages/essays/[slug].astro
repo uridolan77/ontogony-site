@@ -2,6 +2,11 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublished } from '../../lib/content';
+import PullQuote from '../../components/mdx/PullQuote.astro';
+import SectionGlyph from '../../components/mdx/SectionGlyph.astro';
+import FootnoteMarker from '../../components/mdx/FootnoteMarker.astro';
+
+const mdxComponents = { PullQuote, SectionGlyph, FootnoteMarker };
 
 type Stratum = 'R1' | 'R2' | 'R3' | 'R4';
 
@@ -96,7 +101,7 @@ const dateLabel = entry.data.date
   <p class="standfirst" style="margin-top: 24px;">{entry.data.summary}</p>
 
   <div class="body" style="margin-top: 40px;">
-    <Content />
+    <Content components={mdxComponents} />
   </div>
 
   <dl class="ledger">

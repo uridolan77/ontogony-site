@@ -1,0 +1,9 @@
+---
+interface Props {
+  glyph?: string;
+}
+
+const { glyph = '§' } = Astro.props;
+---
+
+<div class="section-glyph">{glyph}</div>

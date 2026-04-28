@@ -91,6 +91,54 @@ const metaFields = [
   },
 ];
 
+// MDX components available inside an essay body. Each maps to an Astro
+// component under src/components/mdx/ that the essay template renders via
+// `<Content components={...} />`. Names must match the JSX names used in
+// the MDX source.
+const essayBodyTemplates = [
+  {
+    name: 'PullQuote',
+    label: 'Pull quote',
+    fields: [
+      {
+        type: 'rich-text' as const,
+        name: 'children',
+        label: 'Quote body',
+      },
+    ],
+  },
+  {
+    name: 'SectionGlyph',
+    label: 'Section glyph',
+    fields: [
+      {
+        type: 'string' as const,
+        name: 'glyph',
+        label: 'Glyph (default §)',
+      },
+    ],
+  },
+  {
+    name: 'FootnoteMarker',
+    label: 'Footnote marker',
+    inline: true as const,
+    fields: [
+      {
+        type: 'string' as const,
+        name: 'id',
+        label: 'Footnote id (e.g. fn1)',
+        required: true,
+      },
+      {
+        type: 'string' as const,
+        name: 'n',
+        label: 'Number / superscript (e.g. ¹)',
+        required: true,
+      },
+    ],
+  },
+];
+
 const whereNextField = {
   type: 'object' as const,
   name: 'whereNext',
@@ -294,6 +342,7 @@ export default defineConfig({
             name: 'body',
             label: 'Body',
             isBody: true,
+            templates: essayBodyTemplates,
           },
         ],
       },
