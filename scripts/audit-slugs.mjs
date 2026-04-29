@@ -18,6 +18,9 @@
  *  - path.relatedDiagrams:      string[] -> diagram
  *  - path.steps[].slug:         string,  kind-typed (concept | essay)
  *
+ * Asset path checks audited:
+ *  - diagram.image:            string -> local public file (if it is a local absolute path)
+ *
  * Exits 1 if any orphan is found, 0 otherwise.
  */
 
@@ -28,6 +31,7 @@ import yaml from 'js-yaml';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const CONTENT = join(ROOT, 'src', 'content');
+const PUBLIC = join(ROOT, 'public');
 
 const COLLECTIONS = ['concepts', 'essays', 'paths', 'diagrams', 'fragments'];
 
@@ -122,6 +126,45 @@ function checkWhereNext(arr, fileLabel) {
   });
 }
 
+function isHttpUrl(s) {
+  return typeof s === 'string' && /^https?:\/\//i.test(s);
+}
+
+function checkDiagramImage(imagePath, fileLabel) {
+  if (typeof imagePath !== 'string') return;
+  const p = imagePath.trim();
+  if (!p) return;
+
+  // Allow external URLs / inline data URIs.
+  if (isHttpUrl(p) || p.startsWith('data:')) return;
+
+  // UI expects site-local absolute paths like "/images/diagrams/x.png".
+  if (!p.startsWith('/')) {
+    orphans.push({
+      file: fileLabel,
+      field: 'image',
+      slug: p,
+      target: 'diagram-image',
+      reason: 'non-absolute-path',
+    });
+    return;
+  }
+
+  const rel = p.slice(1); // "/images/..." -> "images/..."
+  const abs = join(PUBLIC, rel);
+  try {
+    statSync(abs);
+  } catch {
+    orphans.push({
+      file: fileLabel,
+      field: 'image',
+      slug: p,
+      target: 'diagram-image',
+      reason: 'missing-image',
+    });
+  }
+}
+
 // concepts: related[] -> concepts; whereNext[].slug kind-typed
 for (const entry of collections.concepts) {
   const fileLabel = relative(ROOT, entry.file);
@@ -172,6 +215,12 @@ for (const entry of collections.essays) {
     );
   }
   checkWhereNext(entry.data.whereNext, fileLabel);
+}
+
+// diagrams: image path must exist under public/
+for (const entry of collections.diagrams) {
+  const fileLabel = relative(ROOT, entry.file);
+  checkDiagramImage(entry.data.image, fileLabel);
 }
 
 // paths: steps[].slug kind-typed (concept | essay); note kind has no slug

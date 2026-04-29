@@ -48,6 +48,7 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
     <title>{fullTitle}</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <script is:inline>
       (function () {
         try {
@@ -86,7 +87,7 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
         </div>
       </aside>
 
-      <main class={readingClass}>
+      <main id="main-content" class={readingClass}>
         <slot />
       </main>
 

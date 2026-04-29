@@ -67,14 +67,25 @@ const essays = defineCollection({
   }),
 });
 
-const pathStop = z.object({
-  kind: z.enum(['concept', 'essay', 'note']),
-  slug: z.string().optional(),
-  title: z.string().optional(),
-  body: z.string().optional(),
-  register: Register.optional(),
-  minutes: z.number().optional(),
-});
+const pathStop = z
+  .object({
+    kind: z.enum(['concept', 'essay', 'note']),
+    slug: z.string().optional(),
+    title: z.string().optional(),
+    body: z.string().optional(),
+    register: Register.optional(),
+    minutes: z.number().optional(),
+  })
+  // Schema safety: note stops may omit `slug`, but concept/essay stops need it.
+  .refine(
+    (v) =>
+      v.kind === 'note' ||
+      (typeof v.slug === 'string' && v.slug.trim() !== ''),
+    {
+      message: 'Path stops of kind concept/essay require a non-empty `slug`.',
+      path: ['slug'],
+    },
+  );
 
 const paths = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/paths' }),

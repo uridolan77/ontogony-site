@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The route you requested does not exist on this field guide."
+  kind="NOT FOUND"
+>
+  <p class="micro" style="color: var(--color-ink-muted); margin: 0 0 18px;">
+    NOT FOUND · THIS ROUTE DOES NOT EXIST
+  </p>
+  <h1 class="h1">The route you requested isn’t here.</h1>
+  <p class="standfirst" style="margin-top: 22px; max-width: 60ch;">
+    The atlas is still growing — but this path isn’t mapped yet.
+  </p>
+
+  <div style="display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap;">
+    <a class="link" href="/concepts">→ Concepts</a>
+    <a class="link" href="/essays">→ Essays</a>
+    <a class="link" href="/paths">→ Paths</a>
+    <a class="link" href="/diagrams">→ Diagrams</a>
+    <a class="link" href="/quizzes">→ Quizzes</a>
+    <a class="link" href="/flashcards">→ Flashcards</a>
+    <a class="link" href="/">→ Home</a>
+  </div>
+
+  <Fragment slot="margin-notes">
+    <div class="note">
+      <span class="label">SUGGESTION</span>
+      Start with the concepts atlas, then follow where-next links from an
+      entry — or begin with a quiz/flashcard run.
+    </div>
+  </Fragment>
+</BaseLayout>
+

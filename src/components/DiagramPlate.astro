@@ -1,4 +1,6 @@
 ---
+import { createHash } from 'node:crypto';
+
 interface Props {
   title: string;
   caption: string;
@@ -19,7 +21,11 @@ const {
   openLabel = 'Open diagram page',
 } = Astro.props as Props;
 
-const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
+const modalId = (() => {
+  const key = `${href}|${image}|${title}`;
+  const hash = createHash('sha256').update(key).digest('base64url').slice(0, 10);
+  return `diagram-modal-${hash}`;
+})();
 ---
 
 <figure class="diagram-plate" data-diagram-plate>
@@ -83,11 +89,9 @@ const modalId = `diagram-modal-${Math.random().toString(36).slice(2, 10)}`;
   (() => {
     const modal = document.getElementById(modalId);
     if (!modal) return;
-
-    const plate = modal.previousElementSibling;
-    if (!(plate instanceof HTMLElement)) return;
-
-    const expandButtons = plate.querySelectorAll('[data-expand-trigger]');
+    const expandButtons = document.querySelectorAll(
+      `[data-expand-trigger][aria-controls="${modalId}"]`,
+    );
     const closeTargets = modal.querySelectorAll('[data-close-trigger]');
     const closeButton = modal.querySelector('.close-button');
     let previousOverflow = '';

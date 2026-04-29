@@ -67,6 +67,31 @@
     margin: 0;
   }
 
+  /* accessibility: keyboard-only skip link */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 10px;
+    z-index: 1000;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    padding: 10px 12px;
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    left: 16px;
+    outline: 2px solid var(--color-active);
+    outline-offset: 2px;
+  }
+
   ::selection {
     background: var(--color-ink);
     color: var(--color-paper);
