@@ -2,9 +2,20 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublished } from '../../lib/content';
 
-const quizzes = (await getPublished('quizzes')).sort((a, b) =>
-  a.data.title.localeCompare(b.data.title),
-);
+function parseCreatedAt(s: unknown) {
+  if (typeof s !== 'string') return null;
+  const t = Date.parse(s);
+  return Number.isFinite(t) ? t : null;
+}
+
+const quizzes = (await getPublished('quizzes')).sort((a, b) => {
+  const ta = parseCreatedAt(a.data.createdAt);
+  const tb = parseCreatedAt(b.data.createdAt);
+  if (ta !== null && tb !== null) return tb - ta;
+  if (ta !== null) return -1;
+  if (tb !== null) return 1;
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
 
 <BaseLayout
@@ -30,9 +41,15 @@ const quizzes = (await getPublished('quizzes')).sort((a, b) =>
             QUIZ · {quiz.data.difficulty.toUpperCase()} · {quiz.data.questions.length}{' '}
             {quiz.data.questions.length === 1 ? 'QUESTION' : 'QUESTIONS'}
           </span>
+          {quiz.data.chapterNumbers?.length ? (
+            <span class="a-gloss" style="font-style: italic;">
+              Chapters: {quiz.data.chapterNumbers.join(' · ')}
+            </span>
+          ) : null}
           {quiz.data.topics?.covered?.length ? (
             <span class="a-gloss" style="font-style: italic;">
-              Covered: {quiz.data.topics.covered.join(' · ')}
+              Covered: {quiz.data.topics.covered.slice(0, 5).join(' · ')}
+              {quiz.data.topics.covered.length > 5 ? ' · …' : ''}
             </span>
           ) : null}
         </li>

@@ -26,6 +26,7 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
   const [marks, setMarks] = useState<Record<number, Mark>>({});
   const [reviewMode, setReviewMode] = useState<'all' | 'missed'>('all');
   const [liveMessage, setLiveMessage] = useState('');
+  const [showSummary, setShowSummary] = useState(false);
 
   const activeIndices = useMemo(() => {
     if (reviewMode === 'all') return cards.map((_, i) => i);
@@ -59,7 +60,6 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
     return c;
   }, [marks, total]);
 
-  const isCompleteAll = total > 0 && markedCount === total;
   const hasMissed = reviewAgainCount > 0;
 
   function go(delta: number) {
@@ -70,8 +70,14 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
   }
 
   function setMark(mark: Exclude<Mark, 'unmarked'>) {
+    const wasUnmarked = (marks[absoluteIndex] ?? 'unmarked') === 'unmarked';
+    const willBeFullyMarked = reviewMode === 'all' && wasUnmarked && markedCount + 1 >= total;
+
     setMarks((prev) => ({ ...prev, [absoluteIndex]: mark }));
     setLiveMessage(mark === 'got-it' ? 'Marked: got it.' : 'Marked: review again.');
+
+    if (willBeFullyMarked) return;
+
     if (viewTotal > 0) {
       const next = viewIndex + 1;
       if (next < viewTotal) {
@@ -86,7 +92,8 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
     setIsFlipped(false);
     setMarks({});
     setReviewMode('all');
-    setLiveMessage('Restarted.');
+    setLiveMessage('');
+    setShowSummary(false);
   }
 
   function reviewMissed() {
@@ -94,6 +101,7 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
     setCurrentIndex(0);
     setIsFlipped(false);
     setLiveMessage('Reviewing missed cards.');
+    setShowSummary(false);
   }
 
   const liveId = `${deckId}-live`;
@@ -107,7 +115,7 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
     );
   }
 
-  if (isCompleteAll && reviewMode === 'all') {
+  if (showSummary) {
     return (
       <section className="flash-shell" aria-label={`Flashcards: ${title}`}>
         <header className="flash-header">
@@ -159,6 +167,7 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
   const isLastInView = viewIndex === viewTotal - 1;
   const inMissedMode = reviewMode === 'missed';
   const modeLabel = inMissedMode ? 'MISSED ONLY' : 'ALL CARDS';
+  const isCompleteAll = reviewMode === 'all' && total > 0 && markedCount === total;
 
   return (
     <section className="flash-shell" aria-label={`Flashcards: ${title}`}>
@@ -238,6 +247,19 @@ export default function FlashcardPlayer({ title, cards }: FlashcardPlayerProps) 
                 Review again
               </button>
             </div>
+          )}
+
+          {isCompleteAll && !inMissedMode && (
+            <button
+              type="button"
+              className="flash-btn"
+              onClick={() => {
+                setShowSummary(true);
+                setLiveMessage('');
+              }}
+            >
+              Finish deck
+            </button>
           )}
 
           <button

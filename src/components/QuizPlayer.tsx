@@ -35,15 +35,11 @@ export default function QuizPlayer({ title, questions }: QuizPlayerProps) {
   const [answers, setAnswers] = useState<Record<number, AnswerState>>({});
   const [hintOpen, setHintOpen] = useState<Record<number, boolean>>({});
   const [liveMessage, setLiveMessage] = useState<string>('');
+  const [showSummary, setShowSummary] = useState(false);
 
   const current = questions[currentIndex];
   const currentAnswer = answers[currentIndex] ?? { selectedIndex: null, isCorrect: null };
   const hasAnswered = currentAnswer.selectedIndex !== null;
-
-  const correctIndex = useMemo(() => {
-    const idx = current.options.findIndex((o) => o.isCorrect);
-    return idx >= 0 ? idx : null;
-  }, [current.options]);
 
   const score = useMemo(() => {
     let s = 0;
@@ -62,7 +58,6 @@ export default function QuizPlayer({ title, questions }: QuizPlayerProps) {
     return c;
   }, [answers, total]);
 
-  const isComplete = total > 0 && answeredCount === total;
   const percent = total > 0 ? Math.round((score / total) * 100) : 0;
 
   const feedbackId = `${quizId}-feedback`;
@@ -88,7 +83,8 @@ export default function QuizPlayer({ title, questions }: QuizPlayerProps) {
     setCurrentIndex(0);
     setAnswers({});
     setHintOpen({});
-    setLiveMessage('Restarted.');
+    setLiveMessage('');
+    setShowSummary(false);
   }
 
   if (total === 0) {
@@ -99,7 +95,7 @@ export default function QuizPlayer({ title, questions }: QuizPlayerProps) {
     );
   }
 
-  if (isComplete && currentIndex >= total) {
+  if (showSummary) {
     return (
       <section className="quiz-shell" aria-label={`Quiz: ${title}`}>
         <header className="quiz-header">
@@ -128,11 +124,12 @@ export default function QuizPlayer({ title, questions }: QuizPlayerProps) {
             type="button"
             className="quiz-btn quiz-btn-secondary"
             onClick={() => {
-              setCurrentIndex(total - 1);
+              setShowSummary(false);
+              setCurrentIndex(0);
               setLiveMessage('');
             }}
           >
-            Review last question
+            Review questions
           </button>
         </div>
 
@@ -264,14 +261,13 @@ export default function QuizPlayer({ title, questions }: QuizPlayerProps) {
             type="button"
             className="quiz-btn"
             onClick={() => {
-              const next = currentIndex + 1;
-              if (next >= total) {
-                setCurrentIndex(total);
+              if (currentIndex >= total - 1) {
+                setShowSummary(true);
                 setLiveMessage('');
-              } else {
-                setCurrentIndex(next);
-                setLiveMessage('');
+                return;
               }
+              setCurrentIndex((prev) => clampIndex(prev + 1, total));
+              setLiveMessage('');
             }}
           >
             Next

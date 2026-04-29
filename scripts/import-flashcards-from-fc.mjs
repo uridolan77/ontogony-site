@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Expects a local temporary file at `src/content/flashcards/fc.html`.
+// `fc.html` is an intermediate NotebookLM export artifact and should NOT be committed.
+// The normalized JSON deck in `src/content/flashcards/*.json` is the committed source of truth.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';

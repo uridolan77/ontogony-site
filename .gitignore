@@ -26,3 +26,7 @@ pnpm-debug.log*
 # editors
 .vscode/
 .idea/
+
+# local import/export artifacts (do not commit)
+src/content/flashcards/fc.html
+src/content/quizzes/*.html
