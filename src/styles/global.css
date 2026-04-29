@@ -499,6 +499,8 @@
   .reading.narrow { max-width: 58ch; }
 
   /* nav (left rail) */
+  .nav-logo { display: block; margin-bottom: 24px; line-height: 0; }
+  .nav-logo img { width: 56px; height: 56px; object-fit: contain; }
   .nav { list-style: none; padding: 0; margin: 0 0 40px 0; }
   .nav li { margin: 0; }
   .nav a {
