@@ -1822,6 +1822,11 @@ export default function App() {
   const [inspectorData, setInspectorData] = useState(null);
   const [seedCopied, setSeedCopied] = useState(false);
   const [isFullView, setIsFullView] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('alfloys-fullview', isFullView);
+    return () => { document.body.classList.remove('alfloys-fullview'); };
+  }, [isFullView]);
   
   const audioEngineRef = useRef(new SonificationEngine());
 
