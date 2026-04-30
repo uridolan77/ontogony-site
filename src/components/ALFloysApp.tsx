@@ -2311,7 +2311,7 @@ export default function App() {
   const currEngine = (overlays.abCompare && activeEngineId === 'B' && engineB) ? engineB : engine;
 
   return (
-    <div className={`h-screen w-screen flex overflow-hidden font-sans relative transition-colors duration-700 ${overlays.dark ? 'bg-[#0a0a0c] text-zinc-300' : 'bg-[#fcfcfc] text-zinc-900'} selection:bg-blue-100`}>
+    <div className={`h-full w-full flex overflow-hidden font-sans relative transition-colors duration-700 ${overlays.dark ? 'bg-[#0a0a0c] text-zinc-300' : 'bg-[#fcfcfc] text-zinc-900'} selection:bg-blue-100`}>
       <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
       
       {/* --- CANVAS LAYER --- */}
