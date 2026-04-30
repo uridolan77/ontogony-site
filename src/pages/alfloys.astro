@@ -62,17 +62,62 @@ import ALFloysApp from '../components/ALFloysApp';
   }
 
   .al-embed {
-    width: 100%;
-    height: 460px;
+    width: min(1160px, calc(100vw - 96px));
+    aspect-ratio: 16 / 9;
     min-height: 420px;
-    border-top: 1px solid var(--color-rule, #e0ddd6);
-    border-bottom: 1px solid var(--color-rule, #e0ddd6);
+    max-height: 680px;
+    margin: 0 auto 56px;
+    border: 1px solid var(--color-rule, #e0ddd6);
+    border-radius: 10px;
+    background: var(--color-paper, #faf9f6);
+    box-shadow: 0 20px 48px rgba(20, 16, 8, 0.12);
     overflow: hidden;
-    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      border-radius 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   :global(body.alfloys-fullview) .al-embed {
-    height: calc(100vh - 68px);
-    border: none;
+    position: fixed;
+    top: 68px;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    width: auto;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    margin: 0;
+    z-index: 50;
+    border-radius: 12px;
+    border: 1px solid var(--color-rule-strong, #cbc6bd);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+  }
+
+  :global(body.alfloys-fullview) {
+    overflow: hidden;
+  }
+
+  @media (max-width: 760px) {
+    .al-header-band {
+      padding: 32px 16px 20px;
+    }
+
+    .al-embed {
+      width: calc(100vw - 24px);
+      min-height: 320px;
+      margin-bottom: 24px;
+      border-radius: 8px;
+    }
+
+    :global(body.alfloys-fullview) .al-embed {
+      top: 60px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 10px;
+    }
   }
 </style>
