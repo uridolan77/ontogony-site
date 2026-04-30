@@ -1,4 +1,3 @@
-﻿// @ts-nocheck
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Play, Pause, SkipForward, SkipBack, MousePointer2, Paintbrush, 
@@ -117,7 +116,7 @@ const WALKTHROUGHS = {
   ],
   lenia: [
     { text: "Lenia is a continuous cellular automaton. Unlike Conway's Game of Life, space, time, and states are continuous. Particles interact using a smooth Gaussian kernel.", setup: (e) => { e.setPreset('lenia'); e.params.lenia.mu = 0.15; e.params.lenia.sigma = 0.017; } },
-    { text: "Growth Î¼ determines the 'ideal' distance for attraction, while Ïƒ determines the strictness. A tiny shift breaks the balance, dissolving the ordered blobs into a chaotic, writhing mass.", setup: (e) => { e.params.lenia.sigma = 0.035; } }
+    { text: "Growth μ determines the 'ideal' distance for attraction, while σ determines the strictness. A tiny shift breaks the balance, dissolving the ordered blobs into a chaotic, writhing mass.", setup: (e) => { e.params.lenia.sigma = 0.035; } }
   ],
   physarum: [
     { text: "Physarum simulates Slime Mold. Each particle moves blindly forward, depositing a chemical pheromone trail onto a hidden grid below it.", setup: (e) => { e.setPreset('physarum'); e.params.physarum.sensorAngle = 0; } },
@@ -1709,7 +1708,7 @@ const WalkthroughModal = ({ isOpen, onClose, onSelect }) => {
         <div className="mb-8">
           <span className="font-mono text-[10px] text-blue-600 uppercase tracking-widest">Guided Walkthroughs</span>
           <h2 className="font-serif text-4xl mt-2 text-zinc-900 tracking-tight">Pick a scenario</h2>
-          <p className="text-zinc-500 text-sm mt-2">Each tour drives the simulation and highlights the controls in play. ESC to exit, â† / â†’ to step.</p>
+          <p className="text-zinc-500 text-sm mt-2">Each tour drives the simulation and highlights the controls in play. ESC to exit, ← / → to step.</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -2162,7 +2161,7 @@ export default function App() {
       }
 
       const text = await callGemini(sysPrompt, `Stats: ${stats}`, false);
-      setNarrative(`âœ¨ ${text}`);
+      setNarrative(`✨ ${text}`);
     } catch (err) {
       setNarrative("The simulation is too chaotic to analyze right now.");
     } finally { setIsAnalyzing(false); }
@@ -2186,7 +2185,7 @@ export default function App() {
       const res = await callGemini(sysPrompt, "Cause chaos.", true);
 
       if (res && res.action) {
-        setNarrative(`âš¡ ${res.narrative}`);
+        setNarrative(`⚡ ${res.narrative}`);
         const pCount = MAX_PARTICLES;
         if (res.action === 'plague') {
           for(let i=0; i<pCount; i++) { if(e.alive[i] && Math.random() < 0.5) e.alive[i] = 0; }
@@ -2628,10 +2627,10 @@ export default function App() {
                          {currEngine.mode === 'lenia' && (
                            <>
                              <SectionHeader title="Lenia Parameters" num="03" tooltip="Continuous cellular automata Gaussian parameters."/>
-                             <Slider label="Growth Î¼" value={currEngine.params.lenia.mu} min={0.05} max={0.4} step={0.005} onChange={v => updateLenia('mu', v)} format={v => v.toFixed(3)} tooltip="Center of the growth peak." variant="blue"/>
-                             <Slider label="Growth Ïƒ" value={currEngine.params.lenia.sigma} min={0.005} max={0.05} step={0.001} onChange={v => updateLenia('sigma', v)} format={v => v.toFixed(3)} tooltip="Width of the growth peak." variant="blue"/>
+                             <Slider label="Growth μ" value={currEngine.params.lenia.mu} min={0.05} max={0.4} step={0.005} onChange={v => updateLenia('mu', v)} format={v => v.toFixed(3)} tooltip="Center of the growth peak." variant="blue"/>
+                             <Slider label="Growth σ" value={currEngine.params.lenia.sigma} min={0.005} max={0.05} step={0.001} onChange={v => updateLenia('sigma', v)} format={v => v.toFixed(3)} tooltip="Width of the growth peak." variant="blue"/>
                              <Slider label="Kernel R" value={currEngine.params.lenia.kernel} min={5} max={30} step={1} onChange={v => updateLenia('kernel', v)} format={v => v.toString()} tooltip="Radius multiplier." variant="blue"/>
-                             <Slider label="Î”t" value={currEngine.params.lenia.dt} min={0.01} max={0.5} step={0.01} onChange={v => updateLenia('dt', v)} format={v => v.toFixed(2)} tooltip="Integration time step." variant="blue"/>
+                             <Slider label="Δt" value={currEngine.params.lenia.dt} min={0.01} max={0.5} step={0.01} onChange={v => updateLenia('dt', v)} format={v => v.toFixed(2)} tooltip="Integration time step." variant="blue"/>
                            </>
                          )}
                          {currEngine.mode === 'physarum' && (
@@ -2697,7 +2696,7 @@ export default function App() {
 
                        {/* Footer Stats */}
                        <div className={`mt-8 pt-4 border-t flex justify-between items-center text-[8px] font-mono uppercase tracking-widest ${overlays.dark ? 'border-zinc-800 text-zinc-500' : 'border-zinc-200 text-zinc-400'}`}>
-                          <span>Runtime Â· Canvas2D Â· {fps}fps</span>
+                          <span>Runtime · Canvas2D · {fps}fps</span>
                           <span>AL.Floys</span>
                        </div>
                    </div>
@@ -2749,11 +2748,11 @@ export default function App() {
                          <div className="flex gap-2 mt-4">
                              <button onClick={handleAnalyzeSimulation} disabled={isAnalyzing} className={`flex-1 text-[9px] font-mono font-bold uppercase tracking-widest py-2 rounded transition-colors flex justify-center items-center gap-1.5 ${overlays.dark ? 'bg-zinc-800 text-blue-400 hover:bg-zinc-700' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}`}>
                                {isAnalyzing ? <Loader2 size={10} className="animate-spin" /> : <Sparkles size={10} />}
-                               Analysis âœ¨
+                               Analysis ✨
                              </button>
                              <button onClick={handleAIChaos} disabled={isCausingChaos} className={`flex-1 text-[9px] font-mono font-bold uppercase tracking-widest py-2 rounded transition-colors flex justify-center items-center gap-1.5 ${overlays.dark ? 'bg-red-900/20 text-red-400 hover:bg-red-900/40' : 'bg-red-50 text-red-600 hover:bg-red-100'}`}>
                                {isCausingChaos ? <Loader2 size={10} className="animate-spin" /> : <Zap size={10} />}
-                               God Mode âš¡
+                               God Mode ⚡
                              </button>
                          </div>
 
