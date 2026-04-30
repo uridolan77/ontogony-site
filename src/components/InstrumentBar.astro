@@ -3,15 +3,31 @@ interface Props {
   kind?: string;
   detail?: string;
   active?: string;
+  showMenuToggle?: boolean;
 }
 
-const { kind, detail, active } = Astro.props;
+const { kind, detail, active, showMenuToggle = false } = Astro.props;
 ---
 
 <header class="instrument-bar">
   <div class="inner">
     <a class="wordmark" href="/">ONTOGONY <em>a field guide</em></a>
     <div class="readouts">
+      {
+        showMenuToggle && (
+          <button
+            type="button"
+            class="rail-toggle"
+            data-nav-toggle
+            aria-pressed="false"
+            aria-label="Collapse side menu"
+            title="Collapse side menu"
+          >
+            <span class="state-open">Hide Menu</span>
+            <span class="state-closed">Show Menu</span>
+          </button>
+        )
+      }
       {kind && <span>{kind}</span>}
       {detail && <span class="gold">{detail}</span>}
       {active && <span class="active">{active}</span>}

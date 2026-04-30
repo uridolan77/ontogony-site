@@ -1,40 +1,30 @@
 ---
-import '../styles/global.css';
-import InstrumentBar from '../components/InstrumentBar.astro';
-import Nav from '../components/Nav.astro';
+import NoRailLayout from '../layouts/NoRailLayout.astro';
 import ALFloysApp from '../components/ALFloysApp';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AL.Floys — Ontogony</title>
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <meta name="description" content="Interactive artificial life playground featuring boids, ecosystem evolution, Lenia, Physarum, Turing reaction-diffusion, and N-body gravity." />
-  </head>
-  <body>
-    <InstrumentBar kind="PLAYGROUND" detail="ARTIFICIAL LIFE" />
-
-    <div class="al-header-band">
-      <nav class="al-nav"><Nav /></nav>
-      <div class="al-intro">
-        <h1>AL.Floys</h1>
-        <p>
-          An interactive artificial-life laboratory. Six simulation kernels — flocking boids,
-          genetic ecosystems, Lenia continuous automata, Physarum slime-mold, Turing
-          reaction-diffusion, and N-body gravity — running live in your browser.
-          Double-click any particle to track it; use the controls panel to tune physics in real time.
-        </p>
-      </div>
+<NoRailLayout
+  title="AL.Floys"
+  description="Interactive artificial life playground featuring boids, ecosystem evolution, Lenia, Physarum, Turing reaction-diffusion, and N-body gravity."
+  kind="PLAYGROUND"
+  detail="ARTIFICIAL LIFE"
+>
+  <div class="al-header-band">
+    <div class="al-intro">
+      <h1>AL.Floys</h1>
+      <p>
+        An interactive artificial-life laboratory. Six simulation kernels — flocking boids,
+        genetic ecosystems, Lenia continuous automata, Physarum slime-mold, Turing
+        reaction-diffusion, and N-body gravity — running live in your browser.
+        Double-click any particle to track it; use the controls panel to tune physics in real time.
+      </p>
     </div>
+  </div>
 
-    <div class="al-embed">
-      <ALFloysApp client:only="react" />
-    </div>
-  </body>
-</html>
+  <div class="al-embed">
+    <ALFloysApp client:only="react" />
+  </div>
+</NoRailLayout>
 
 <style>
   body {
@@ -45,17 +35,9 @@ import ALFloysApp from '../components/ALFloysApp';
   }
 
   .al-header-band {
-    display: flex;
-    align-items: flex-start;
-    gap: 48px;
     max-width: 1280px;
     margin: 0 auto;
     padding: 48px 32px 32px;
-  }
-
-  .al-nav {
-    flex: 0 0 180px;
-    font-family: var(--font-sans);
   }
 
   .al-intro {

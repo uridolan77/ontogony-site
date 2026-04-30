@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+import InstrumentBar from '../components/InstrumentBar.astro';
+import TweaksPanel from '../components/TweaksPanel.tsx';
+
+interface Props {
+  title?: string;
+  description?: string;
+  kind?: string;
+  detail?: string;
+  active?: string;
+}
+
+const {
+  title,
+  description = 'A field guide to the Transductive Universe.',
+  kind,
+  detail,
+  active,
+} = Astro.props;
+
+const fullTitle = title
+  ? `${title} — Ontogony`
+  : 'Ontogony — A Field Guide to the Transductive Universe';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <script is:inline>
+      (function () {
+        try {
+          var raw = window.localStorage.getItem('ontogony.tweaks');
+          var t = raw ? JSON.parse(raw) : null;
+          var POSTURES = ['descend', 'ascend', 'level'];
+          var TEMPS = ['ivory', 'bone', 'graphite'];
+          var DENSITIES = ['generous', 'canonical', 'dense'];
+          var posture = t && POSTURES.indexOf(t.posture) >= 0 ? t.posture : 'descend';
+          var temp = t && TEMPS.indexOf(t.temperature) >= 0 ? t.temperature : 'ivory';
+          var density = t && DENSITIES.indexOf(t.density) >= 0 ? t.density : 'canonical';
+          document.documentElement.setAttribute('data-posture', posture);
+          document.documentElement.setAttribute('data-temp', temp);
+          document.documentElement.setAttribute('data-density', density);
+          document.body.setAttribute('data-posture', posture);
+          document.body.setAttribute('data-temp', temp);
+          document.body.setAttribute('data-density', density);
+        } catch (e) {
+          document.documentElement.setAttribute('data-posture', 'descend');
+          document.documentElement.setAttribute('data-temp', 'ivory');
+          document.documentElement.setAttribute('data-density', 'canonical');
+          document.body.setAttribute('data-posture', 'descend');
+          document.body.setAttribute('data-temp', 'ivory');
+          document.body.setAttribute('data-density', 'canonical');
+        }
+      })();
+    </script>
+
+    <InstrumentBar kind={kind} detail={detail} active={active} />
+
+    <main id="main-content" class="no-rail-main">
+      <slot />
+    </main>
+
+    <TweaksPanel client:idle />
+
+    <script>
+      import '../scripts/path-ribbon.ts';
+    </script>
+  </body>
+</html>
+
+<style>
+  .no-rail-main {
+    min-width: 0;
+    padding-bottom: 120px;
+  }
+</style>

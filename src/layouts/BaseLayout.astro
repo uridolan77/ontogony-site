@@ -55,6 +55,7 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
         try {
           var raw = window.localStorage.getItem('ontogony.tweaks');
           var t = raw ? JSON.parse(raw) : null;
+          var navCollapsed = window.localStorage.getItem('ontogony.navCollapsed') === '1';
           var POSTURES = ['descend', 'ascend', 'level'];
           var TEMPS = ['ivory', 'bone', 'graphite'];
           var DENSITIES = ['generous', 'canonical', 'dense'];
@@ -64,21 +65,60 @@ const hasMarginNotes = Astro.slots.has('margin-notes');
           document.documentElement.setAttribute('data-posture', posture);
           document.documentElement.setAttribute('data-temp', temp);
           document.documentElement.setAttribute('data-density', density);
+          document.documentElement.setAttribute('data-nav-collapsed', navCollapsed ? 'true' : 'false');
           document.body.setAttribute('data-posture', posture);
           document.body.setAttribute('data-temp', temp);
           document.body.setAttribute('data-density', density);
+          document.body.setAttribute('data-nav-collapsed', navCollapsed ? 'true' : 'false');
         } catch (e) {
           document.documentElement.setAttribute('data-posture', 'descend');
           document.documentElement.setAttribute('data-temp', 'ivory');
           document.documentElement.setAttribute('data-density', 'canonical');
+          document.documentElement.setAttribute('data-nav-collapsed', 'false');
           document.body.setAttribute('data-posture', 'descend');
           document.body.setAttribute('data-temp', 'ivory');
           document.body.setAttribute('data-density', 'canonical');
+          document.body.setAttribute('data-nav-collapsed', 'false');
         }
       })();
     </script>
 
-    <InstrumentBar kind={kind} detail={detail} active={active} />
+    <InstrumentBar kind={kind} detail={detail} active={active} showMenuToggle={true} />
+
+    <script is:inline>
+      (function () {
+        var KEY = 'ontogony.navCollapsed';
+
+        function getState() {
+          return window.localStorage.getItem(KEY) === '1';
+        }
+
+        function applyState(collapsed) {
+          var value = collapsed ? 'true' : 'false';
+          document.documentElement.setAttribute('data-nav-collapsed', value);
+          document.body.setAttribute('data-nav-collapsed', value);
+
+          var btn = document.querySelector('[data-nav-toggle]');
+          if (!btn) return;
+
+          btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+          btn.setAttribute('aria-label', collapsed ? 'Expand side menu' : 'Collapse side menu');
+          btn.setAttribute('title', collapsed ? 'Expand side menu' : 'Collapse side menu');
+        }
+
+        function onToggleClick() {
+          var collapsed = !getState();
+          window.localStorage.setItem(KEY, collapsed ? '1' : '0');
+          applyState(collapsed);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          applyState(getState());
+          var btn = document.querySelector('[data-nav-toggle]');
+          if (btn) btn.addEventListener('click', onToggleClick);
+        });
+      })();
+    </script>
 
     <div class="frame">
       <aside class="rail-left">
