@@ -8,6 +8,9 @@ export default defineConfig({
   site: 'https://ontogony.net',
   integrations: [mdx(), react(), sitemap()],
   vite: {
+    optimizeDeps: {
+      include: ['react', 'react/jsx-runtime', 'react-dom', 'react-dom/client'],
+    },
     plugins: [tailwindcss()],
   },
 });
