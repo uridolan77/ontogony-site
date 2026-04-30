@@ -1,35 +1,69 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+import InstrumentBar from '../components/InstrumentBar.astro';
+import Nav from '../components/Nav.astro';
 import ALFloysApp from '../components/ALFloysApp';
 ---
 
-<BaseLayout
-  title="AL.Floys"
-  description="Interactive artificial life playground featuring boids, ecosystem evolution, Lenia, Physarum, Turing reaction-diffusion, and N-body gravity."
-  kind="PLAYGROUND"
-  detail="ARTIFICIAL LIFE"
->
-  <header class="al-header">
-    <h1>AL.Floys</h1>
-    <p class="al-lead">
-      An interactive artificial-life laboratory. Six simulation kernels — flocking boids,
-      genetic ecosystems, Lenia continuous automata, Physarum slime-mold, Turing
-      reaction-diffusion, and N-body gravity — running live in your browser. Double-click
-      any particle to track it; use the controls panel to tune physics in real time.
-    </p>
-  </header>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AL.Floys — Ontogony</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="description" content="Interactive artificial life playground featuring boids, ecosystem evolution, Lenia, Physarum, Turing reaction-diffusion, and N-body gravity." />
+  </head>
+  <body>
+    <InstrumentBar kind="PLAYGROUND" detail="ARTIFICIAL LIFE" />
 
-  <div class="al-embed">
-    <ALFloysApp client:only="react" />
-  </div>
-</BaseLayout>
+    <div class="al-header-band">
+      <nav class="al-nav"><Nav /></nav>
+      <div class="al-intro">
+        <h1>AL.Floys</h1>
+        <p>
+          An interactive artificial-life laboratory. Six simulation kernels — flocking boids,
+          genetic ecosystems, Lenia continuous automata, Physarum slime-mold, Turing
+          reaction-diffusion, and N-body gravity — running live in your browser.
+          Double-click any particle to track it; use the controls panel to tune physics in real time.
+        </p>
+      </div>
+    </div>
+
+    <div class="al-embed">
+      <ALFloysApp client:only="react" />
+    </div>
+  </body>
+</html>
 
 <style>
-  .al-header {
-    margin-bottom: 1.5rem;
+  body {
+    margin: 0;
+    background: var(--color-paper, #faf9f6);
+    color: var(--color-ink, #1a1a18);
+    font-family: var(--font-sans, system-ui, sans-serif);
   }
 
-  .al-header h1 {
+  .al-header-band {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 32px 32px;
+  }
+
+  .al-nav {
+    flex: 0 0 180px;
+    font-family: var(--font-sans);
+  }
+
+  .al-intro {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .al-intro h1 {
     font-family: var(--font-serif, Georgia, serif);
     font-size: clamp(1.75rem, 3vw, 2.5rem);
     font-weight: 400;
@@ -37,7 +71,7 @@ import ALFloysApp from '../components/ALFloysApp';
     margin: 0 0 0.75rem;
   }
 
-  .al-lead {
+  .al-intro p {
     font-size: 0.9rem;
     line-height: 1.65;
     color: var(--color-ink-muted, #555);
@@ -46,12 +80,11 @@ import ALFloysApp from '../components/ALFloysApp';
   }
 
   .al-embed {
-    position: relative;
     width: 100%;
     height: 80vh;
-    min-height: 520px;
-    border: 1px solid var(--color-rule, #e0ddd6);
-    border-radius: 4px;
+    min-height: 560px;
+    border-top: 1px solid var(--color-rule, #e0ddd6);
+    border-bottom: 1px solid var(--color-rule, #e0ddd6);
     overflow: hidden;
   }
 </style>
